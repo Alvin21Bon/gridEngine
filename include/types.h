@@ -4,7 +4,7 @@
 #include "shared.h"
 
 struct CanvasPixel {
-	GLboolean isSolid;
+	GLboolean isVisible;
 	Vec3 color;
 };
 
@@ -25,6 +25,7 @@ struct CoordinateCanvas {
 	struct CanvasPixel** canvasData; 
 	struct CanvasBorder border;
 	GLboolean isMovable;
+	GLboolean isVisible;
 };
 
 #endif // GRID_TYPES_H
