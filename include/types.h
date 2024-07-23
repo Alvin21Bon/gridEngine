@@ -22,6 +22,7 @@ struct CoordinateCanvas {
 	};
 	struct CanvasPixel** canvasData; // dynamically allocated 2D array based on the gridUnitCnt values
 	struct CanvasBorder border;
+	GLboolean isMovable;
 };
 
 #endif // GRID_TYPES_H
