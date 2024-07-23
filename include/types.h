@@ -20,7 +20,9 @@ struct CoordinateCanvas {
 	struct gridUnitCnt {
 		unsigned int x, y;
 	};
-	struct CanvasPixel** canvasData; // dynamically allocated 2D array based on the gridUnitCnt values
+	// dynamically allocated 2D array based on the gridUnitCnt values
+	// coordinate for the grid start at (0, 0)
+	struct CanvasPixel** canvasData; 
 	struct CanvasBorder border;
 	GLboolean isMovable;
 };
