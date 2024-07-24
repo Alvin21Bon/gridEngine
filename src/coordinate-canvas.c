@@ -71,23 +71,67 @@ void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUn
 	canvas->canvasData = newCanvas2DArray;
 }
 
-void canvasToggleBorder(struct CoordinateCanvas* const canvas);
-void canvasMakeBorderVisible(struct CoordinateCanvas* const canvas);
-void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas);
+void canvasToggleBorder(struct CoordinateCanvas* const canvas)
+{
+	borderToggleVisibility(&(canvas->border));
+}
+void canvasMakeBorderVisible(struct CoordinateCanvas* const canvas)
+{
+	canvas->border.isVisible = GL_TRUE;
+}
+void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas)
+{
+	canvas->border.isVisible = GL_FALSE;
+}
 
-void canvasToggleMovable(struct CoordinateCanvas* const canvas);
+void canvasToggleMovable(struct CoordinateCanvas* const canvas)
+{
+	canvas->isMovable = !canvas->isMovable;
+}
 
-void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate);
-void canvasScale(struct CoordinateCanvas* const canvas, const float scalar);
+void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate)
+{
+	canvas->origin = vec2Add(canvas->origin, translate);
+}
+void canvasScale(struct CoordinateCanvas* const canvas, const float scalar)
+{
+	canvas->size = vec2Scaled(canvas->size, scalar);
+}
 
 // CANVAS DATA MANIPULATING FUNCTIONS
-void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color);
-void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum, const Vec3 color);
-void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel);
+void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color)
+{
+	struct CanvasPixel fillPixel = pixel(color);
+
+	// traverse through grid linearely since it is contiguous memory
+	int numPixels = canvas->gridUnitCnt.x * canvas->gridUnitCnt.y;
+	for (int idx = 0; idx < numPixels; idx++)
+	{
+		canvas->canvasData[0][idx] = fillPixel;
+	}
+}
+// NOTE: grid coordinates start at (0, 0)
+void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum, const Vec3 color)
+{
+	// ERR
+	if (rowNum >= canvas->gridUnitCnt.y) return;
+
+	struct CanvasPixel fillPixel = pixel(color);
+	for (int columnIdx = 0; columnIdx < canvas->gridUnitCnt.x; columnIdx++)
+	{
+		canvas->canvasData[columnIdx][rowNum] = fillPixel;
+	}
+}
+void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel)
+{
+	// ERR
+	if (pixelCoords.x >= canvas->gridUnitCnt.x || pixelCoords.y >= canvas->gridUnitCnt.y) return;
+
+	// TODO: DAMN, FORGOT THAT VEC2 IS ONLY FLOATS. MIGHT NEED TO MAKE AN INT VERSION
+	canvas->canvasData[(int)pixelCoords.x][(int)pixelCoords.y] = pixel;
+}
 
 // CANVAS DRAWING FUNCTIONS
-
-	// window and other needed window stuff is provided by the engine
 void canvasDraw(const struct CoordinateCanvas* const canvas); 
 
 /* 

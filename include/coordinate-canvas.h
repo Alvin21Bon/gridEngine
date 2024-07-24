@@ -48,8 +48,6 @@ void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum,
 void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel);
 
 // CANVAS DRAWING FUNCTIONS
-
-	// window and other needed window stuff is provided by the engine
 void canvasDraw(const struct CoordinateCanvas* const canvas); 
 
 /* 
