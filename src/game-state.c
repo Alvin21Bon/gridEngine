@@ -63,6 +63,6 @@ void gameStateDraw(struct GameState* game)
 {
 	for (int idx = 0; idx < game->numCanvases; idx++)
 	{
-		canvasDraw(game->window, game->canvasRenderingArray + idx);
+		canvasDraw(game->canvasRenderingArray + idx);
 	}
 }

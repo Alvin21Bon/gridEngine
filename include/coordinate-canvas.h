@@ -48,7 +48,7 @@ void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum,
 void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel);
 
 // CANVAS DRAWING FUNCTIONS
-void canvasDraw(GLFWwindow* window, const struct CoordinateCanvas* const canvas); 
+void canvasDraw(const struct CoordinateCanvas* const canvas); 
 
 /* 
  * === DESTORYER FUNCTIONS ===

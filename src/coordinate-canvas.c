@@ -132,7 +132,7 @@ void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoord
 }
 
 // CANVAS DRAWING FUNCTIONS
-void canvasDraw(GLFWwindow* window, const struct CoordinateCanvas* const canvas); 
+void canvasDraw(const struct CoordinateCanvas* const canvas); 
 
 /* 
  * === DESTORYER FUNCTIONS ===
