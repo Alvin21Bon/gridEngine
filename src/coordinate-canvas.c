@@ -132,6 +132,7 @@ void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoord
 }
 
 // CANVAS DRAWING FUNCTIONS
+		// openGL window context already set by engine
 void canvasDraw(const struct CoordinateCanvas* const canvas); 
 
 /* 
