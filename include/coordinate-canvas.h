@@ -8,9 +8,9 @@ struct CoordinateCanvas {
 	char* id; // name associated for help with searching through arrays of canvases
 	Vec2 origin;
 	Vec2 size;
-	struct gridUnitCnt {
+	struct {
 		unsigned int x, y;
-	};
+	} gridUnitCnt;
 	// dynamically allocated 2D array based on the gridUnitCnt values
 	// coordinate for the grid start at (0, 0)
 	struct CanvasPixel** canvasData; 
@@ -58,3 +58,4 @@ void canvasDraw(const struct CoordinateCanvas* const canvas);
 void canvasFree(struct CoordinateCanvas* canvas);
 
 #endif // GRID_COORDINATE_CANVAS_H
+//

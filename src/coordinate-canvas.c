@@ -1,0 +1,81 @@
+#include "../include/grid-engine.h"
+
+static struct CanvasPixel** allocate2DPixelArray(unsigned int numColumns, unsigned int numRows)
+{
+	// 1. allocate array of POINTERS to pixels
+	// 2. allocate contiguous memory enough to store entire grid of pixels
+	// 3. increment through array of POINTERS to pixels, point them to the 
+	//    contigous memory in such a way that it takes the form of the 2D array
+	// 4. to FREE the 2D array, first free the contiguous memory (stored at arr[0]),
+	//    then free the array of POINTERS (stored at arr)
+	
+	struct CanvasPixel** canvas2DArray = malloc(numColumns * sizeof(struct CanvasPixel*)); // 1
+	struct CanvasPixel* contiguousGridMemory = malloc(numColumns * numRows * sizeof(struct CanvasPixel)); // 2
+	
+	for (int i = 0; i < numColumns; i++) // 3
+	{
+		canvas2DArray[i] = contiguousGridMemory + (i * numRows);
+	}
+
+	return canvas2DArray;
+}
+
+/* 
+ * === CONSTRUCTOR FUNCTIONS === 
+*/
+	// space is allocated for the canvasData, MEMORY MUST BE FREED (see above allocate function)
+struct CoordinateCanvas canvas(const char* const id, const Vec2 origin, const Vec2 size, 
+			       const unsigned int xUnitCnt, const unsigned int yUnitCnt)
+{
+	struct CoordinateCanvas canvas;
+	canvas.id = id;
+	canvas.origin = origin;
+	canvas.size = size;
+	canvas.gridUnitCnt.x = xUnitCnt;
+	canvas.gridUnitCnt.y = yUnitCnt;
+	canvas.border = border(vec3(255,255,255), 1);
+	canvas.isMovable = GL_TRUE;
+	canvas.isVisible = GL_TRUE;
+	// dynamically allocate 2D array of CanvasPixels for canvasData
+	canvas.canvasData = allocate2DPixelArray(xUnitCnt, yUnitCnt);
+
+	return canvas;
+}
+
+/* 
+ * === SETTING FUNCTIONS ===
+*/
+
+// TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
+void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt);
+
+void canvasToggleBorder(struct CoordinateCanvas* const canvas);
+void canvasMakeBorderVisible(struct CoordinateCanvas* const canvas);
+void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas);
+
+void canvasToggleMovable(struct CoordinateCanvas* const canvas);
+
+void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate);
+void canvasScale(struct CoordinateCanvas* const canvas, const float scalar);
+
+// CANVAS DATA MANIPULATING FUNCTIONS
+void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color);
+void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum, const Vec3 color);
+void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel);
+
+// CANVAS DRAWING FUNCTIONS
+
+	// window and other needed window stuff is provided by the engine
+void canvasDraw(const struct CoordinateCanvas* const canvas); 
+
+/* 
+ * === DESTORYER FUNCTIONS ===
+*/
+void canvasFree(struct CoordinateCanvas* canvas)
+{
+	// first free the grid of pixels
+	free(canvas->canvasData[0]);
+	// then free the array of pointers to each column of pixels
+	free(canvas->canvasData);
+}
+
