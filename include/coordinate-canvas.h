@@ -34,30 +34,30 @@ struct CoordinateCanvas canvasInit();
 */
 
 // TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
-struct CoordinateCanvas canvasSetGrid(const struct CoordinateCanvas canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt);
+void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt);
 
-struct CoordinateCanvas canvasToggleBorder(const struct CoordinateCanvas canvas);
-struct CoordinateCanvas canvasMakeBorderVisible(const struct CoordinateCanvas canvas);
-struct CoordinateCanvas canvasMakeBorderInvisible(const struct CoordinateCanvas canvas);
+void canvasToggleBorder(struct CoordinateCanvas* const canvas);
+void canvasMakeBorderVisible(struct CoordinateCanvas* const canvas);
+void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas);
 
-struct CoordinateCanvas canvasToggleMovable(const struct CoordinateCanvas canvas);
+void canvasToggleMovable(struct CoordinateCanvas* const canvas);
 
-struct CoordinateCavnas canvasTranslate(const struct CoordinateCanvas canvas, const Vec2 translate);
-struct CoordinateCanvas canvasScale(const struct CoordinateCanvas canvas, const float scalar);
+void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate);
+void canvasScale(struct CoordinateCanvas* const canvas, const float scalar);
 
 // CANVAS DATA MANIPULATING FUNCTIONS
-struct CoordinateCanvas canvasFillColor(const struct CoordinateCanvas canvas, const Vec3 color);
-struct CoordinateCanvas canvasRowFillColor(const struct CoordinateCanvas canvas, const Vec3 color);
-struct CoordinateCanvas canvasSetPixel(const struct CoordinateCanvas canvas, const struct CanvasPixel pixel);
+void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color);
+void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum, const Vec3 color);
+void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel);
 
 // CANVAS DRAWING FUNCTIONS
 
 	// window and other needed window stuff is provided by the engine
-void canvasDraw(const struct CoordinateCanvas canvas); 
+void canvasDraw(const struct CoordinateCanvas* const canvas); 
 
 /* 
  * === DESTORYER FUNCTIONS ===
 */
-void canvasFree(const struct CoordinateCanvas);
+void canvasFree(struct CoordinateCanvas* canvas);
 
 #endif // GRID_COORDINATE_CANVAS_H

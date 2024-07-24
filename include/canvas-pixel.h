@@ -15,6 +15,6 @@ struct CanvasPixel pixel(const Vec3 color);
 struct CanvasPixel whitePixel();
 struct CanvasPixel blackPixel();
 
-struct CanvasPixel pixelToggleVisibility(const struct CanvasPixel pixel);
+void pixelToggleVisibility(struct CanvasPixel* const pixel);
 
 #endif // GRID_CANVAS_PIXEL_H

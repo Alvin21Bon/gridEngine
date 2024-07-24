@@ -17,6 +17,6 @@ const struct CanvasBorder border(const Vec3 color, const float thickness);
 /* 
  * === SETTING FUNCTIONS ===
 */
-const struct CanvasbOrder borderToggleVisibility(const CanvasBorder border);
+void borderToggleVisibility(struct CanvasBorder* const border);
 
 #endif // GRID_CANVAS_BORDER_H
