@@ -26,9 +26,6 @@ struct CoordinateCanvas {
 struct CoordinateCanvas canvas(const Vec2 origin, const Vec2 size, 
 			       const unsigned int xUnitCnt, const unsigned int yUnitCnt);
 
-// default empty values
-struct CoordinateCanvas canvasInit();
-
 /* 
  * === SETTING FUNCTIONS ===
 */
