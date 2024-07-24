@@ -1,7 +1,23 @@
 #ifndef GRID_COORDINATE_CANVAS_H
 #define GRID_COORDINATE_CANVAS_H
 
-#include "types.h"
+#include "shared.h"
+#include "canvas-border.h"
+
+struct CoordinateCanvas {
+	char* id; // name associated for help with searching through arrays of canvases
+	Vec2 origin;
+	Vec2 size;
+	struct gridUnitCnt {
+		unsigned int x, y;
+	};
+	// dynamically allocated 2D array based on the gridUnitCnt values
+	// coordinate for the grid start at (0, 0)
+	struct CanvasPixel** canvasData; 
+	struct CanvasBorder border;
+	GLboolean isMovable;
+	GLboolean isVisible;
+};
 
 /* 
  * === CONSTRUCTOR FUNCTIONS === 

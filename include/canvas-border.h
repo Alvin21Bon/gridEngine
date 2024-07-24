@@ -1,7 +1,13 @@
 #ifndef GRID_CANVAS_BORDER_H
 #define GRID_CANVAS_BORDER_H
 
-#include "types.h"
+#include "shared.h"
+
+struct CanvasBorder {
+	GLboolean isVisible;
+	Vec3 color;
+	float thickness;
+};
 
 /* 
  * === CONSTRUCTOR FUNCTIONS ===

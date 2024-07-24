@@ -1,7 +1,12 @@
 #ifndef GRID_CANVAS_PIXEL_H
 #define GRID_CANVAS_PIXEL_H
 
-#include "types.h"
+#include "shared.h"
+
+struct CanvasPixel {
+	GLboolean isVisible;
+	Vec3 color;
+};
 
 /* 
  * === CONSTRUCTOR FUNCTIONS ===
@@ -11,6 +16,5 @@ struct CanvasPixel whitePixel();
 struct CanvasPixel blackPixel();
 
 struct CanvasPixel pixelToggleVisibility(const struct CanvasPixel pixel);
-
 
 #endif // GRID_CANVAS_PIXEL_H

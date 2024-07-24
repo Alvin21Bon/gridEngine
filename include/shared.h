@@ -8,5 +8,6 @@
 #include <lina/lina.h>
 #include "shaders.h"
 #include "toml-c.h"
+#include "preprocessor.h"
 
 #endif // GRID_SHARED_H
