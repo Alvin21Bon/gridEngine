@@ -55,7 +55,7 @@ void canvasDraw(const struct CoordinateCanvas* const canvas);
 /* 
  * === DESTORYER FUNCTIONS ===
 */
-void canvasFree(struct CoordinateCanvas* canvas);
+void canvasDataFree(struct CoordinateCanvas* canvas);
 
 #endif // GRID_COORDINATE_CANVAS_H
 //

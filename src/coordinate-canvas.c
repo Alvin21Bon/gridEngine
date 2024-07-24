@@ -47,7 +47,29 @@ struct CoordinateCanvas canvas(const char* const id, const Vec2 origin, const Ve
 */
 
 // TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
-void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt);
+void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt)
+{
+	// due to the structure of the canvas grid data, a call to realloc would not suffice
+	// since it would not accurately truncate or expand rows of the grid.
+	// We must essentially implement a custom realloc to cover all bases
+	
+	// allocated new space for 2D array
+	struct CanvasPixel** newCanvas2DArray = allocate2DPixelArray(xUnitCnt, yUnitCnt);
+
+	// COPY ALL FITTING DATA FROM ORIGINAL 2D ARRAY TO NEW ALLOCATED 2D ARRAY
+	unsigned int smallerColumnCnt = MIN(xUnitCnt, canvas->gridUnitCnt.x);
+	unsigned int smallerRowCnt = MIN(yUnitCnt, canvas->gridUnitCnt.y);
+	for (int newColumnIdx = 0; newColumnIdx < smallerColumnCnt; newColumnIdx++)
+	{
+		memcpy(newCanvas2DArray[newColumnIdx], canvas->canvasData[newColumnIdx], smallerRowCnt * sizeof(struct CanvasPixel));
+	}
+
+	// update canvas
+	canvas->gridUnitCnt.x = xUnitCnt;
+	canvas->gridUnitCnt.y = yUnitCnt;
+	canvasDataFree(canvas);
+	canvas->canvasData = newCanvas2DArray;
+}
 
 void canvasToggleBorder(struct CoordinateCanvas* const canvas);
 void canvasMakeBorderVisible(struct CoordinateCanvas* const canvas);
@@ -71,7 +93,7 @@ void canvasDraw(const struct CoordinateCanvas* const canvas);
 /* 
  * === DESTORYER FUNCTIONS ===
 */
-void canvasFree(struct CoordinateCanvas* canvas)
+void canvasDataFree(struct CoordinateCanvas* canvas)
 {
 	// first free the grid of pixels
 	free(canvas->canvasData[0]);
