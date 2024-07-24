@@ -18,6 +18,9 @@ struct GameState {
 	struct CoordinateCanvas canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
 	int numCanvases;
 	void (*update)(struct GameState*);
+
+	// SHOULD NOT BE ACCESSED OR SET BY THE USER
+	GLFWwindow* window;
 };
 
 void initGameState(struct GameState* const game); // user defined function
