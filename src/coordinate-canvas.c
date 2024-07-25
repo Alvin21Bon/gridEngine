@@ -91,6 +91,7 @@ void canvasToggleMovable(struct CoordinateCanvas* const canvas)
 
 void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate)
 {
+	if (!canvas->isMovable) return;
 	canvas->origin = vec2Add(canvas->origin, translate);
 }
 void canvasScale(struct CoordinateCanvas* const canvas, const float scalar)
