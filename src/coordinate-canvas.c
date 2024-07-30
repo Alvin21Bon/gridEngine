@@ -134,7 +134,7 @@ struct CoordinateCanvas canvas(const char* const id, const Vec2 origin, const Ve
 */
 
 // TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
-// FIXME: MUST REALLOCATE OPENGL BUFFERS (VBO) SOMEHOW AHH. DONT USE. ALSO UPDATE NEW CANVAS SIZE NUM PIXELS MEMBERS ETC
+// REALLOCATES THE VBO AND FILLS IN NEW DATA. VAO SHOULD NOT NEED TO BE RESPECIFIED SINCE VBO WILL HAVE THE SAME ID
 void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt)
 {
 	// due to the structure of the canvas grid data, a call to realloc would not suffice
@@ -155,8 +155,17 @@ void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUn
 	// update canvas
 	canvas->gridUnitCnt.x = xUnitCnt;
 	canvas->gridUnitCnt.y = yUnitCnt;
+	canvas->numPixels = xUnitCnt * yUnitCnt;
+	canvas->sizeOfCanvasData = canvas->numPixels * sizeof(struct CanvasPixel);
+
 	canvasDataFree(canvas);
 	canvas->canvasData = newCanvas2DArray;
+	canvas->canvasDataMemoryLocation = canvas->canvasData[0];
+
+	// update vertex array buffer
+	// NOTE: this should free the last buffer and simply reallocate another space in GPU memory for the vertex buffer, while also keeping the same VBO ID.
+	// 	 Thus, nothing else should not to be updated
+	canvasAllocateAndFillVBO(canvas);
 }
 
 void canvasToggleBorder(struct CoordinateCanvas* const canvas)
