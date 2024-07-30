@@ -65,6 +65,7 @@ void canvasDraw(const struct CoordinateCanvas* const canvas);
  * === DESTORYER FUNCTIONS ===
 */
 void canvasDataFree(struct CoordinateCanvas* canvas);
+void canvasDestroy(struct CoordinateCanvas* canvas);
 
 #endif // GRID_COORDINATE_CANVAS_H
 //

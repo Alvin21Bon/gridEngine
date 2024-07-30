@@ -225,7 +225,6 @@ void canvasDraw(const struct CoordinateCanvas* const canvas);
 /* 
  * === DESTORYER FUNCTIONS ===
 */
-// TODO: add canvasDestory function that will also destory all buffers
 void canvasDataFree(struct CoordinateCanvas* canvas)
 {
 	// first free the grid of pixels
@@ -233,4 +232,16 @@ void canvasDataFree(struct CoordinateCanvas* canvas)
 	// then free the array of pointers to each column of pixels
 	free(canvas->canvasData);
 }
+void canvasDestroy(struct CoordinateCanvas* canvas)
+{
+	// free the canvas data
+	canvasDataFree(canvas);
 
+	// destroy the allocated buffers
+	glDeleteBuffers(1, &(canvas->glBuffers.VBO));
+	glDeleteBuffers(1, &(canvas->glBuffers.EBO));
+	glDeleteVertexArrays(1, &(canvas->glBuffers.VAO));
+
+	// defensive way to make sure canvas is not used and cannot be retrieved? idk, might as well
+	canvas->id = "NULL";
+}
