@@ -5,7 +5,10 @@
 */
 const struct CanvasBorder border(const Vec3 color, const float thickness)
 {
-	struct CanvasBorder border = {GL_TRUE, color, thickness};
+	struct CanvasBorder border;
+	border.color = color;
+	border.thickness = thickness;
+	border.isVisible = GL_TRUE;
 	return border;
 }
 

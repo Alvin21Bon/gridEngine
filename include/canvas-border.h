@@ -4,9 +4,9 @@
 #include "shared.h"
 
 struct CanvasBorder {
-	GLboolean isVisible;
 	Vec3 color;
 	float thickness;
+	GLboolean isVisible;
 };
 
 /* 

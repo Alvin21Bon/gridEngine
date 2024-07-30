@@ -5,7 +5,9 @@
 */
 struct CanvasPixel pixel(const Vec3 color)
 {
-	struct CanvasPixel pixel = {GL_TRUE, color};
+	struct CanvasPixel pixel;
+	pixel.color = color;
+	pixel.isVisible = GL_TRUE;
 	return pixel;
 }
 struct CanvasPixel whitePixel() { return pixel(vec3(255,255,255)); }

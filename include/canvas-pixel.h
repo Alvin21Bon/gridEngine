@@ -5,8 +5,8 @@
 
 // RGB values for color go up to 255
 struct CanvasPixel {
-	GLboolean isVisible;
 	Vec3 color;
+	GLboolean isVisible;
 };
 
 /* 
