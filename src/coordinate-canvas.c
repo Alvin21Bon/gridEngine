@@ -1,5 +1,8 @@
 #include "../include/grid-engine.h"
 
+/* 
+ * === ALLOCATE CANVAS DATA MEMORY AND INITIALIZE/ALLOCATE/FILL OPENGL BUFFERS FOR RENDERING ===
+*/
 static struct CanvasPixel** allocate2DPixelArray(unsigned int numColumns, unsigned int numRows)
 {
 	// 1. allocate array of POINTERS to pixels
@@ -21,10 +24,85 @@ static struct CanvasPixel** allocate2DPixelArray(unsigned int numColumns, unsign
 	return canvas2DArray;
 }
 
+// openGL stuff starts here
+static void canvasInitializeGLBuffers(struct CoordinateCanvas* const canvas)
+{
+	glGenBuffers(1, &(canvas->glBuffers.VBO));
+	glGenBuffers(1, &(canvas->glBuffers.EBO));
+	glGenVertexArrays(1, &(canvas->glBuffers.VAO));
+}
+static void canvasAllocateAndFillVBO(struct CoordinateCanvas* const canvas)
+{
+	// create grid square unit model data
+		// origin is bottom left for easy positioning in the grid during rendering
+	const float lengthOfNDCRange = 2; // NDC range in openGL is (-1, 1)
+	float canvasSquareUnitWidthNormalized = lengthOfNDCRange / canvas->gridUnitCnt.x;
+	float canvasSquareUnitHeightNormalized = lengthOfNDCRange / canvas->gridUnitCnt.y;
+	float canvasSquareUnitModel[4][2] = {
+		{0.0, 0.0}, // bottom left
+		{0.0, canvasSquareUnitHeightNormalized}, // top left
+		{canvasSquareUnitWidthNormalized, canvasSquareUnitHeightNormalized}, // top right
+		{canvasSquareUnitWidthNormalized, 0.0} // bottom right
+	};
+
+	// allocate memory (memory layout: canvas data first, square unit model second)
+	unsigned long sizeOfBuffer = canvas->sizeOfCanvasData + sizeof(canvasSquareUnitModel);
+
+	glBindBuffer(GL_ARRAY_BUFFER, canvas->glBuffers.VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeOfBuffer, NULL, GL_DYNAMIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, canvas->sizeOfCanvasData, canvas->canvasDataMemoryLocation); // canvas data contigous first
+		glBufferSubData(GL_ARRAY_BUFFER, canvas->sizeOfCanvasData, sizeof(canvasSquareUnitModel), canvasSquareUnitModel); // square unit model second
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+// this function encompasses formatting vertex attributes, EBOS, and instanced arrays (anything VAO state)
+static void canvasSetVAOVertexSpecification(struct CoordinateCanvas* const canvas)
+{
+	unsigned int squareUnitIndices[2][3] = {
+		{0, 1, 2},
+		{0, 2, 3}
+	};
+
+	glBindVertexArray(canvas->glBuffers.VAO);
+		// index buffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, canvas->glBuffers.EBO);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareUnitIndices), squareUnitIndices, GL_STATIC_DRAW);
+		
+		// vertex attribute pointers
+		glBindBuffer(GL_ARRAY_BUFFER, canvas->glBuffers.VBO);
+			// instanced array: color
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(struct CanvasPixel), (void*)0);
+			glVertexAttribDivisor(0, 1);
+
+			// instanced array: isVisible
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 1, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(struct CanvasPixel), (void*)sizeof(Vec3));
+			glVertexAttribDivisor(1, 1);
+			
+			// square unit model position attribute
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)canvas->sizeOfCanvasData);
+	glBindVertexArray(0);
+}
+static void canvasSetUpVAOState(struct CoordinateCanvas* const canvas)
+{
+	canvasInitializeGLBuffers(canvas);
+	canvasAllocateAndFillVBO(canvas);
+	canvasSetVAOVertexSpecification(canvas);
+}
+
+static void canvasUpdateVBOCanvasData(struct CoordinateCanvas* const canvas)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, canvas->glBuffers.VBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, canvas->sizeOfCanvasData, canvas->canvasDataMemoryLocation);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 /* 
  * === CONSTRUCTOR FUNCTIONS === 
 */
 	// space is allocated for the canvasData, MEMORY MUST BE FREED (see above allocate function)
+	// allocted buffers for openGL must also be destoryed
 struct CoordinateCanvas canvas(const char* const id, const Vec2 origin, const Vec2 size, 
 			       const unsigned int xUnitCnt, const unsigned int yUnitCnt)
 {
@@ -34,11 +112,19 @@ struct CoordinateCanvas canvas(const char* const id, const Vec2 origin, const Ve
 	canvas.size = size;
 	canvas.gridUnitCnt.x = xUnitCnt;
 	canvas.gridUnitCnt.y = yUnitCnt;
+
 	canvas.border = border(vec3(255,255,255), 1);
 	canvas.isMovable = GL_TRUE;
 	canvas.isVisible = GL_TRUE;
+
 	// dynamically allocate 2D array of CanvasPixels for canvasData
 	canvas.canvasData = allocate2DPixelArray(xUnitCnt, yUnitCnt);
+	canvas.canvasDataMemoryLocation = canvas.canvasData[0];
+	canvas.numPixels = xUnitCnt * yUnitCnt;
+	canvas.sizeOfCanvasData = canvas.numPixels * sizeof(struct CanvasPixel);
+
+	// set up canvas VAO to be drawable
+	canvasSetUpVAOState(&canvas);
 
 	return canvas;
 }
@@ -48,6 +134,7 @@ struct CoordinateCanvas canvas(const char* const id, const Vec2 origin, const Ve
 */
 
 // TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
+// FIXME: MUST REALLOCATE OPENGL BUFFERS (VBO) SOMEHOW AHH. DONT USE. ALSO UPDATE NEW CANVAS SIZE NUM PIXELS MEMBERS ETC
 void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt)
 {
 	// due to the structure of the canvas grid data, a call to realloc would not suffice
@@ -106,13 +193,11 @@ void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color)
 	struct CanvasPixel fillPixel = pixel(color);
 
 	// traverse through grid linearely since it is contiguous memory
-	int numPixels = canvas->gridUnitCnt.x * canvas->gridUnitCnt.y;
-	for (int idx = 0; idx < numPixels; idx++)
+	for (int idx = 0; idx < canvas->numPixels; idx++)
 	{
-		canvas->canvasData[0][idx] = fillPixel;
+		canvas->canvasDataMemoryLocation[idx] = fillPixel;
 	}
 }
-// NOTE: grid coordinates start at (0, 0)
 void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum, const Vec3 color)
 {
 	// ERR
@@ -140,6 +225,7 @@ void canvasDraw(const struct CoordinateCanvas* const canvas);
 /* 
  * === DESTORYER FUNCTIONS ===
 */
+// TODO: add canvasDestory function that will also destory all buffers
 void canvasDataFree(struct CoordinateCanvas* canvas)
 {
 	// first free the grid of pixels
