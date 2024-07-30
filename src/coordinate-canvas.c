@@ -229,7 +229,20 @@ void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoord
 
 // CANVAS DRAWING FUNCTIONS
 		// openGL window context already set by engine
-void canvasDraw(const struct CoordinateCanvas* const canvas); 
+// TODO: ADD BORDER SUPPORT WHEN DRAWING
+void canvasDraw(const struct CoordinateCanvas* const canvas) 
+{
+	// skip entire graphics pipeline if canvas is not visible
+	if (canvas->isVisible == GL_FALSE) return;
+
+	// viewport encompasses the canvas boundary in the GLFW window for easy positioning of each square unit in the canvas grid
+	glViewport(canvas->origin.x, canvas->origin.y, canvas->size.width, canvas->size.height);
+
+	// FINALLY, the draw call. Shader program already set during engine initialization.
+	glBindVertexArray(canvas->glBuffers.VAO);
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, canvas->numPixels);
+	glBindVertexArray(0);
+}
 
 /* 
  * === DESTORYER FUNCTIONS ===
