@@ -13,8 +13,8 @@ static struct CanvasPixel** allocate2DPixelArray(unsigned int numColumns, unsign
 	//    then free the array of POINTERS (stored at arr)
 	
 	struct CanvasPixel** canvas2DArray = malloc(numColumns * sizeof(struct CanvasPixel*)); // 1
-						// use CALLOC (from toml-c.h apparenlty) so checks for isVisible turn to GL_FALSE :/
-	struct CanvasPixel* contiguousGridMemory = CALLOC(numColumns * numRows, sizeof(struct CanvasPixel)); // 2
+						// calloc so checks for isVisible turn to GL_FALSE :/
+	struct CanvasPixel* contiguousGridMemory = calloc(numColumns * numRows, sizeof(struct CanvasPixel)); // 2
 	
 	for (int i = 0; i < numColumns; i++) // 3
 	{
