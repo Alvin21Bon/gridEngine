@@ -76,7 +76,7 @@ static void canvasSetVAOVertexSpecification(struct CoordinateCanvas* const canva
 
 			// instanced array: isVisible
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 1, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(struct CanvasPixel), (void*)sizeof(Vec3));
+			glVertexAttribIPointer(1, 1, GL_UNSIGNED_BYTE, sizeof(struct CanvasPixel), (void*)sizeof(Vec3));
 			glVertexAttribDivisor(1, 1);
 			
 			// square unit model position attribute
