@@ -230,10 +230,12 @@ void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoord
 // CANVAS DRAWING FUNCTIONS
 		// openGL window context already set by engine
 // TODO: ADD BORDER SUPPORT WHEN DRAWING
-void canvasDraw(const struct CoordinateCanvas* const canvas) 
+void canvasDraw(struct CoordinateCanvas* const canvas) 
 {
 	// skip entire graphics pipeline if canvas is not visible
 	if (canvas->isVisible == GL_FALSE) return;
+
+	canvasUpdateVBOCanvasData(canvas);
 
 	// viewport encompasses the canvas boundary in the GLFW window for easy positioning of each square unit in the canvas grid
 	glViewport(canvas->origin.x, canvas->origin.y, canvas->size.width, canvas->size.height);
