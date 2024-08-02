@@ -126,6 +126,17 @@ struct CoordinateCanvas canvas(const char* const id, const Vec2 origin, const Ve
 	// set up canvas VAO to be drawable
 	canvasSetUpVAOState(&canvas);
 
+	/* 
+	 * NOTE: this uniform is assigned in the constructor to simplify code so that the uniform location does not need to be 
+	 * 	 passed in the draw calls every time. This only "impacts" performance on canvas creation
+	 *
+	 * WARN: this means that game state init function must be called after the program is set, since this is where
+	 * 	 canvases are first made and hooked into the game state
+	*/
+	ShaderProgram currentlyActiveProgram;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &currentlyActiveProgram);
+	canvas.locationOfGridUnitCntUniform = glGetUniformLocation(currentlyActiveProgram, "gridUnitCnt");
+
 	return canvas;
 }
 
@@ -235,7 +246,9 @@ void canvasDraw(struct CoordinateCanvas* const canvas)
 	// skip entire graphics pipeline if canvas is not visible
 	if (canvas->isVisible == GL_FALSE) return;
 
+	// update vertex arrays and uniforms
 	canvasUpdateVBOCanvasData(canvas);
+	glUniform2ui(canvas->locationOfGridUnitCntUniform, canvas->gridUnitCnt.x, canvas->gridUnitCnt.y);
 
 	// viewport encompasses the canvas boundary in the GLFW window for easy positioning of each square unit in the canvas grid
 	glViewport(canvas->origin.x, canvas->origin.y, canvas->size.width, canvas->size.height);

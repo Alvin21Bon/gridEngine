@@ -29,6 +29,9 @@ struct CoordinateCanvas {
 	struct {
 		unsigned int VBO, EBO, VAO;
 	} glBuffers;
+
+	/* UNIFORM LOCATION FOR USE IN SHADERS. DO NOT MODIFY */
+	int locationOfGridUnitCntUniform;
 };
 
 /* 
