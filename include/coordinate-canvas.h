@@ -3,6 +3,7 @@
 
 #include "shared.h"
 #include "canvas-border.h"
+#include "canvas-pixel.h"
 
 struct CoordinateCanvas {
 	char* id; // name associated for help with searching through arrays of canvases
