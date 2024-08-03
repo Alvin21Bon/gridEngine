@@ -15,7 +15,7 @@ out vec3 pixelColor;
 void main()
 {
 	// determine the row and column position of this instance
-	uint columnPos = uint(gl_InstanceID) / gridUnitCnt.x;
+	uint columnPos = uint(gl_InstanceID) / gridUnitCnt.y;
 	uint rowPos = uint(gl_InstanceID) % gridUnitCnt.y;
 
 	// figure out the NDC to move the vertices of this instance to for its column/row placement
