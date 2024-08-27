@@ -1,8 +1,8 @@
 #ifndef GRID_GAME_STATE_H
 #define GRID_GAME_STATE_H
 
+#include "shared.h"
 #include "coordinate-canvas.h"
-#include "preprocessor.h"
 
 /* 
  * ===
@@ -22,6 +22,8 @@ struct GameState {
 	// SHOULD NOT BE ACCESSED OR SET BY THE USER
 	GLFWwindow* window;
 };
+
+struct GameState gameState(GLFWwindow* window);
 
 void initGameState(struct GameState* const game); // user defined function
 

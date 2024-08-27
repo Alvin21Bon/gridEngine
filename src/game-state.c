@@ -1,5 +1,14 @@
 #include "../include/grid-engine.h"
 
+struct GameState gameState(GLFWwindow* window)
+{
+	struct GameState gameState;
+	gameState.numCanvases = 0;
+	gameState.window = window;
+
+	return gameState;
+}
+
 struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const char* const id)
 {
 	for (int idx = 0; idx < game->numCanvases; idx++)
