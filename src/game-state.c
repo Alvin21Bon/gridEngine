@@ -4,9 +4,10 @@ struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, 
 {
 	for (int idx = 0; idx < game->numCanvases; idx++)
 	{
-		if (strcmp(game->canvasRenderingArray[idx].id, id) == 0)
+		struct CoordinateCanvas* canvas = game->canvasRenderingArray[idx];
+		if (strcmp(canvas->id, id) == 0)
 		{
-			return game->canvasRenderingArray + idx;
+			return canvas;
 		}
 	}
 
@@ -17,10 +18,11 @@ struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const 
 {
 	for (int idx = 0; idx < game->numCanvases; idx++)
 	{
-		if (strcmp(game->canvasRenderingArray[idx].id, id) == 0)
+		struct CoordinateCanvas* canvas = game->canvasRenderingArray[idx];
+		if (strcmp(canvas->id, id) == 0)
 		{
 			*idxOfCanvas = idx;
-			return game->canvasRenderingArray + idx;
+			return canvas;
 		}
 	}
 
@@ -29,7 +31,7 @@ struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const 
 }
 
 // returns copy, NULL if canvas array full
-struct GameState* gameStateAddCanvas(struct GameState* const game, const struct CoordinateCanvas canvas)
+struct GameState* gameStateAddCanvas(struct GameState* const game, const struct CoordinateCanvas* canvas)
 {
 	if (game->numCanvases == GRID_GAME_MAX_CANVAS_AMT) return NULL;
 	
@@ -63,6 +65,6 @@ void gameStateDraw(struct GameState* game)
 {
 	for (int idx = 0; idx < game->numCanvases; idx++)
 	{
-		canvasDraw(game->canvasRenderingArray + idx);
+		canvasDraw(game->canvasRenderingArray[idx]);
 	}
 }

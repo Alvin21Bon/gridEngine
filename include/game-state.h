@@ -15,7 +15,7 @@
  * ===
 */
 struct GameState {
-	struct CoordinateCanvas canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
+	struct CoordinateCanvas* canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
 	int numCanvases;
 	void (*update)(struct GameState*);
 
@@ -32,7 +32,7 @@ struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, 
 struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const game, const char* const id, int* idxOfCanvas);
 
 // returns copy, NULL if canvas array full
-struct GameState* gameStateAddCanvas(struct GameState* const game, const struct CoordinateCanvas canvas);
+struct GameState* gameStateAddCanvas(struct GameState* const game, const struct CoordinateCanvas* canvas);
 
 // return canvas that was removed, NULL if "id" not found in array
 struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, const char* const id);
