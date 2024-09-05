@@ -2,7 +2,7 @@
 #define GRID_GAME_STATE_H
 
 #include "shared.h"
-#include "coordinate-canvas.h"
+#include "canvas-types.h"
 
 /* 
  * ===
@@ -54,7 +54,7 @@ struct GameState* gameStateAddCanvas(struct GameState* const game, const struct 
 struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, const char* const id);
 
 // called as the final drawing call in the game loop
-void gameStateDraw(struct GameState* game);
+void gameStateDraw(struct GameState* const game);
 
 // setting function to ensure the correct program is in use. NOTE: will change the program back to what is originally was if changed
 void gameStateSetGridUnitCntUniform(struct GameState* const game, const unsigned int xCnt, const unsigned int yCnt);

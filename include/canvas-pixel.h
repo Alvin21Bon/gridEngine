@@ -2,12 +2,7 @@
 #define GRID_CANVAS_PIXEL_H
 
 #include "shared.h"
-
-// RGB values for color go up to 255
-struct CanvasPixel {
-	Vec3 color;
-	GLboolean isVisible;
-};
+#include "canvas-types.h"
 
 /* 
  * === CONSTRUCTOR FUNCTIONS ===
