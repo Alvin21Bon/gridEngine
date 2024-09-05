@@ -1,17 +1,20 @@
 #include "../include/grid-engine.h"
 
-struct GameState gameState(GLFWwindow* window)
+struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border)
 {
 	struct GameState gameState;
-	gameState.numCanvases = 0;
-	gameState.window = window;
+	gameState.gameInfo.numCanvases = 0;
+	gameState.gameInfo.window = window;
+	gameState.gameInfo.programs.canvas = canvas;
+	gameState.gameInfo.programs.border = border;
+	gameState.gameInfo.uniforms.canvasGridUnitCnt = glGetUniformLocation(canvas, "gridUnitCnt");
 
 	return gameState;
 }
 
 struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const char* const id)
 {
-	for (int idx = 0; idx < game->numCanvases; idx++)
+	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
 	{
 		struct CoordinateCanvas* canvas = game->canvasRenderingArray[idx];
 		if (strcmp(canvas->id, id) == 0)
@@ -25,7 +28,7 @@ struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, 
 // this is the same as the usual function but also sets the parameter to the idx of the canvas in the array
 struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const game, const char* const id, int* idxOfCanvas)
 {
-	for (int idx = 0; idx < game->numCanvases; idx++)
+	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
 	{
 		struct CoordinateCanvas* canvas = game->canvasRenderingArray[idx];
 		if (strcmp(canvas->id, id) == 0)
@@ -42,10 +45,10 @@ struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const 
 // returns copy, NULL if canvas array full
 struct GameState* gameStateAddCanvas(struct GameState* const game, const struct CoordinateCanvas* canvas)
 {
-	if (game->numCanvases == GRID_GAME_MAX_CANVAS_AMT) return NULL;
+	if (game->gameInfo.numCanvases == GRID_GAME_MAX_CANVAS_AMT) return NULL;
 	
-	game->canvasRenderingArray[game->numCanvases] = canvas;
-	game->numCanvases++;
+	game->canvasRenderingArray[game->gameInfo.numCanvases] = canvas;
+	game->gameInfo.numCanvases++;
 
 	return game;
 }
@@ -59,12 +62,12 @@ struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, con
 	removedCanvas = gameStateGetCanvasAndIdx(game, id, &idxOfRemovedCanvas);
 	if (removedCanvas == NULL) return NULL;
 	
-	for (int idx = idxOfRemovedCanvas; idx < game->numCanvases - 1; idx++)
+	for (int idx = idxOfRemovedCanvas; idx < game->gameInfo.numCanvases - 1; idx++)
 	{
 		// shift all canvases after removed canvas to the left
 		game->canvasRenderingArray[idx] = game->canvasRenderingArray[idx + 1];
 	}
-	game->numCanvases--;
+	game->gameInfo.numCanvases--;
 
 	return removedCanvas;
 }
@@ -72,8 +75,23 @@ struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, con
 // called as the final drawing call in the game loop
 void gameStateDraw(struct GameState* game)
 {
-	for (int idx = 0; idx < game->numCanvases; idx++)
+	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
 	{
 		canvasDraw(game->canvasRenderingArray[idx]);
 	}
+}
+
+void gameStateSetGridUnitCntUniform(struct GameState* const game, const unsigned int xCnt, const unsigned int yCnt)
+{
+	ShaderProgram originalProgram = game->gameInfo.programs.currentlyActive;
+
+	gameStateUseProgram(game, game->gameInfo.programs.canvas);
+		glUniform2ui(game->gameInfo.uniforms.canvasGridUnitCnt, xCnt, yCnt);
+	gameStateUseProgram(game, originalProgram);
+}
+
+void gameStateUseProgram(struct GameState* const game, ShaderProgram program)
+{
+	glUseProgram(program);
+	game->gameInfo.programs.currentlyActive = program;
 }

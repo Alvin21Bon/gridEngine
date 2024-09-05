@@ -16,14 +16,28 @@
 */
 struct GameState {
 	struct CoordinateCanvas* canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
-	int numCanvases;
 	void (*update)(struct GameState*);
 
-	// SHOULD NOT BE ACCESSED OR SET BY THE USER
-	GLFWwindow* window;
+	// SHOULD NOT BE MODIFIED BY THE USER
+	struct {
+		GLFWwindow* window;
+		int numCanvases;
+
+		struct {
+			// seperate programs are used for rendering the canvas and the canvas border
+			ShaderProgram canvas;
+			ShaderProgram border;
+			ShaderProgram currentlyActive;
+		} programs;
+
+		struct {
+			Uniform canvasGridUnitCnt;
+		} uniforms;
+		
+	} gameInfo;
 };
 
-struct GameState gameState(GLFWwindow* window);
+struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border);
 
 void initGameState(struct GameState* const game); // user defined function
 
@@ -41,5 +55,11 @@ struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, con
 
 // called as the final drawing call in the game loop
 void gameStateDraw(struct GameState* game);
+
+// setting function to ensure the correct program is in use. NOTE: will change the program back to what is originally was if changed
+void gameStateSetGridUnitCntUniform(struct GameState* const game, const unsigned int xCnt, const unsigned int yCnt);
+
+// WARN: USE THIS FUNCTION INSTEAD TO UPDATE THE CURRENTLY ACTIVE PROGRAM
+void gameStateUseProgram(struct GameState* const game, ShaderProgram program);
 
 #endif // GRID_GAME_STATE_H
