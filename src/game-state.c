@@ -73,11 +73,11 @@ struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, con
 }
 
 // called as the final drawing call in the game loop
-void gameStateDraw(struct GameState* game)
+void gameStateDraw(struct GameState* const game)
 {
 	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
 	{
-		canvasDraw(game->canvasRenderingArray[idx]);
+		canvasDraw(game->canvasRenderingArray[idx], game);
 	}
 }
 
