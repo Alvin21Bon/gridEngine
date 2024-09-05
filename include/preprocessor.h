@@ -3,6 +3,8 @@
 
 #define GRID_GAME_MAX_CANVAS_AMT 64
 
+typedef int Uniform;
+
 static inline int MIN(int a, int b)
 {
 	return (a < b ? a : b);
