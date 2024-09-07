@@ -7,7 +7,7 @@
 /* 
  * === CONSTRUCTOR FUNCTIONS ===
 */
-const struct CanvasBorder border(const Vec3 color, const float thickness);
+struct CanvasBorder border(const Vec3 color, const float thickness);
 
 /* 
  * === SETTING FUNCTIONS ===
