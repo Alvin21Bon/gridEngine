@@ -229,23 +229,36 @@ void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoord
 
 // CANVAS DRAWING FUNCTIONS
 		// openGL window context already set by engine
-// TODO: ADD BORDER SUPPORT WHEN DRAWING
 void canvasDraw(struct CoordinateCanvas *const canvas, struct GameState* const game)
 {
-	// FIXME: UPDATE THIS FUNCTION FOR BORDER SUPPORT AND FOR NEW GAMESTATE FUNCTIONALITY
-	
 	// skip entire graphics pipeline if canvas is not visible
 	if (canvas->isVisible == GL_FALSE) return;
 
-	// update vertex arrays and uniforms
-	canvasUpdateVBOCanvasData(canvas);
-	glUniform2ui(canvas->locationOfGridUnitCntUniform, canvas->gridUnitCnt.x, canvas->gridUnitCnt.y);
-
-	// viewport encompasses the canvas boundary in the GLFW window for easy positioning of each square unit in the canvas grid
-	glViewport(canvas->origin.x, canvas->origin.y, canvas->size.width, canvas->size.height);
-
-	// FINALLY, the draw call. Shader program already set during engine initialization.
 	glBindVertexArray(canvas->glBuffers.VAO);
+		/* BORDER RENDERING */
+		if (canvas->border.isVisible)
+		{
+			gameStateUseProgram(game, game->gameInfo.programs.border);
+			gameStateSetBorderColorUniform(game, canvas->border.color);
+
+			// viewport encloses the canvas from above and the border is drawn behind the canvas
+			int thicknessMultiplier = 1; // pixels per unit thickness the border should be
+			int pixelThickness = thicknessMultiplier * canvas->border.thickness;
+			
+			glViewport(canvas->origin.x - pixelThickness, canvas->origin.y - pixelThickness, 
+				   canvas->size.width + (2 * pixelThickness), canvas->size.height + (2 * pixelThickness));
+			
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		}
+
+		/* CANVAS RENDERING */
+		gameStateUseProgram(game, game->gameInfo.programs.canvas);
+
+		canvasUpdateVBOCanvasData(canvas);
+		gameStateSetGridUnitCntUniform(game, canvas->gridUnitCnt.x, canvas->gridUnitCnt.y);
+
+		// viewport encompasses the canvas boundary in the GLFW window for easy positioning of each square unit in the canvas grid
+		glViewport(canvas->origin.x, canvas->origin.y, canvas->size.width, canvas->size.height);
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, canvas->numPixels);
 	glBindVertexArray(0);
 }
