@@ -33,6 +33,7 @@ struct GameState {
 		struct {
 			Uniform canvasGridUnitCnt;
 			Uniform borderColor;
+			Uniform canvasBottomLeftCoordsInNDC;
 		} uniforms;
 		
 	} gameInfo;
@@ -60,6 +61,7 @@ void gameStateDraw(struct GameState* const game);
 // setting function to ensure the correct program is in use. NOTE: will change the program back to what is originally was if changed
 void gameStateSetGridUnitCntUniform(struct GameState* const game, const unsigned int xCnt, const unsigned int yCnt);
 void gameStateSetBorderColorUniform(struct GameState* const game, const Vec3 color);
+void gameStateSetCanvasBottomLeftCoordsUniform(struct GameState* const game, const Vec2 coordsInNDC);
 
 // WARN: USE THIS FUNCTION INSTEAD TO UPDATE THE CURRENTLY ACTIVE PROGRAM
 void gameStateUseProgram(struct GameState* const game, ShaderProgram program);

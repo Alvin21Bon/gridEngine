@@ -7,8 +7,10 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	gameState.gameInfo.window = window;
 	gameState.gameInfo.programs.canvas = canvas;
 	gameState.gameInfo.programs.border = border;
+
 	gameState.gameInfo.uniforms.canvasGridUnitCnt = glGetUniformLocation(canvas, "gridUnitCnt");
 	gameState.gameInfo.uniforms.borderColor = glGetUniformLocation(border, "borderColor");
+	gameState.gameInfo.uniforms.canvasBottomLeftCoordsInNDC = glGetUniformLocation(border, "aCanvasBottomLeftCoordsInNDC");
 
 	return gameState;
 }
@@ -96,6 +98,14 @@ void gameStateSetBorderColorUniform(struct GameState* const game, const Vec3 col
 
 	gameStateUseProgram(game, game->gameInfo.programs.border);
 		glUniform3fv(game->gameInfo.uniforms.borderColor, 1, color.elements);
+	gameStateUseProgram(game, originalProgram);
+}
+void gameStateSetCanvasBottomLeftCoordsUniform(struct GameState* const game, const Vec2 coordsInNDC)
+{
+	ShaderProgram originalProgram = game->gameInfo.programs.currentlyActive;
+
+	gameStateUseProgram(game, game->gameInfo.programs.border);
+		glUniform2fv(game->gameInfo.uniforms.canvasBottomLeftCoordsInNDC, 1, coordsInNDC.elements);
 	gameStateUseProgram(game, originalProgram);
 }
 

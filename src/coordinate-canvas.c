@@ -241,12 +241,18 @@ void canvasDraw(struct CoordinateCanvas *const canvas, struct GameState* const g
 			gameStateUseProgram(game, game->gameInfo.programs.border);
 			gameStateSetBorderColorUniform(game, canvas->border.color);
 
-			// viewport encloses the canvas from above and the border is drawn behind the canvas
+			// viewport encloses the canvas viewport
 			int thicknessMultiplier = 1; // pixels per unit thickness the border should be
 			int pixelThickness = thicknessMultiplier * canvas->border.thickness;
+			Vec2 borderOrigin = vec2(canvas->origin.x - pixelThickness, canvas->origin.y - pixelThickness);
+			Vec2 borderSize = vec2(canvas->size.width + (2 * pixelThickness), canvas->size.height + (2 * pixelThickness));
 			
-			glViewport(canvas->origin.x - pixelThickness, canvas->origin.y - pixelThickness, 
-				   canvas->size.width + (2 * pixelThickness), canvas->size.height + (2 * pixelThickness));
+			glViewport(borderOrigin.x, borderOrigin.y, borderSize.width, borderSize.height);
+
+			Vec2 NDCrange = vec2(-1, 1);
+			Vec2 canvasOriginInNDC = vec2(MAP_RANGE(canvas->origin.x, vec2(borderOrigin.x, borderOrigin.x + borderSize.width), NDCrange), 
+						      MAP_RANGE(canvas->origin.y, vec2(borderOrigin.y, borderOrigin.y + borderSize.height), NDCrange));
+			gameStateSetCanvasBottomLeftCoordsUniform(game, canvasOriginInNDC);
 			
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
