@@ -140,6 +140,8 @@ void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUn
 	// due to the structure of the canvas grid data, a call to realloc would not suffice
 	// since it would not accurately truncate or expand rows of the grid.
 	// We must essentially implement a custom realloc to cover all bases
+
+	if (xUnitCnt <= 0 || yUnitCnt <= 0) printf("canvasSetGrid WARNING: grid units cannot be zero!\n"); // haha my error handling is trash
 	
 	// allocated new space for 2D array
 	struct CanvasPixel** newCanvas2DArray = allocate2DPixelArray(xUnitCnt, yUnitCnt);
@@ -164,8 +166,8 @@ void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUn
 
 	// update vertex array buffer
 	// NOTE: this should free the last buffer and simply reallocate another space in GPU memory for the vertex buffer, while also keeping the same VBO ID.
-	// 	 Thus, nothing else should not to be updated
 	canvasAllocateAndFillVBO(canvas);
+	canvasSetVAOVertexSpecification(canvas); // needs to be respecified since model data is now at a different offset. NOTE: Might be able to avoid this by making model data first in array buffer?
 }
 
 void canvasToggleBorder(struct CoordinateCanvas* const canvas)
