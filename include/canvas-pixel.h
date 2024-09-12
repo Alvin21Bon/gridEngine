@@ -8,8 +8,6 @@
  * === CONSTRUCTOR FUNCTIONS ===
 */
 struct CanvasPixel pixel(const Vec3 color);
-struct CanvasPixel whitePixel();
-struct CanvasPixel blackPixel();
 
 void pixelToggleVisibility(struct CanvasPixel* const pixel);
 
