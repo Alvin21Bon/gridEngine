@@ -94,6 +94,8 @@ ShaderProgram constructShaderProgramVF(const char* vertexPath, const char* fragm
 		return 0;
 	}
 
+	glDetachShader(shaderProgram, vertexShader);
+	glDetachShader(shaderProgram, fragmentShader);
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	free((void*)vertexSource);
