@@ -19,6 +19,9 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 
 	gameState.inputData = inputData();
 
+	// this function is defined by the user
+	initGameState(&gameState);
+
 	return gameState;
 }
 
