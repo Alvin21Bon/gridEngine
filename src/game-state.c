@@ -12,6 +12,8 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	gameState.gameInfo.uniforms.borderColor = glGetUniformLocation(border, "borderColor");
 	gameState.gameInfo.uniforms.canvasBottomLeftCoordsInNDC = glGetUniformLocation(border, "aCanvasBottomLeftCoordsInNDC");
 
+	gameState.inputData = inputData();
+
 	return gameState;
 }
 

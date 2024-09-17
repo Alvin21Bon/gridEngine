@@ -2,6 +2,7 @@
 #define GRID_GAME_STATE_H
 
 #include "shared.h"
+#include "input-data.h"
 #include "canvas-types.h"
 
 /* 
@@ -12,6 +13,10 @@
  * A singleton GameState will be made on program run, and will be initiated with a user defined
  * init function, where canvas will be hooked into the array and the update function will be
  * defined
+ *
+ * NOTE: This singleton GameState is stored in the GLFW window user pointer at all times
+ * 	 for use in the GLFW callback functions
+ *
  * ===
 */
 struct GameState {
@@ -37,6 +42,8 @@ struct GameState {
 		} uniforms;
 		
 	} gameInfo;
+
+	struct InputData inputData;
 };
 
 struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border);

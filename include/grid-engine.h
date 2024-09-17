@@ -5,6 +5,7 @@
 #include "canvas-border.h"
 #include "canvas-pixel.h"
 #include "coordinate-canvas.h"
+#include "input-data.h"
 #include "game-state.h"
 #include "shared.h"
 
