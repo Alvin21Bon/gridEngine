@@ -46,33 +46,16 @@ static void compileShader(unsigned int shaderID, int* success)
 	}
 }
 
-ShaderProgram constructShaderProgramVF(const char* vertexPath, const char* fragmentPath)
+ShaderProgram constructShaderProgramFromString(const char* vertexSource, const char* fragmentSource)
 {
-	// load the shaders into strings
-	// make shader objects
-	// compile them with error checking
-	// make a shader program
-	// link shaders with error checking
-	// return the shader program iD
-	// REMEMBER TO FREEEEEEEEEEEEEEEEEEEEEEEEEEEEE THE SOURCE STRINGS
-	
-	const char* vertexSource, *fragmentSource;
 	unsigned int vertexShader, fragmentShader;
-	int success;
 	ShaderProgram shaderProgram;
+	int success;
 	char log[512];
-
-	vertexSource = loadFileIntoString(vertexPath);
-	fragmentSource = loadFileIntoString(fragmentPath);
-	if (!vertexSource || !fragmentSource)
-	{
-		printf("constructShaderProgramVF ERROR: failed to load shader source\n");
-		return 0;
-	}
 
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	
+
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 
@@ -98,6 +81,24 @@ ShaderProgram constructShaderProgramVF(const char* vertexPath, const char* fragm
 	glDetachShader(shaderProgram, fragmentShader);
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+
+	return shaderProgram;
+}
+ShaderProgram constructShaderProgramFromFile(const char* vertexPath, const char* fragmentPath)
+{
+	const char* vertexSource, *fragmentSource;
+	ShaderProgram shaderProgram;
+
+	vertexSource = loadFileIntoString(vertexPath);
+	fragmentSource = loadFileIntoString(fragmentPath);
+	if (!vertexSource || !fragmentSource)
+	{
+		printf("constructShaderProgramVF ERROR: failed to load shader source\n");
+		return 0;
+	}
+
+	shaderProgram = constructShaderProgramFromString(vertexSource, fragmentSource);
+
 	free((void*)vertexSource);
 	free((void*)fragmentSource);
 

@@ -3,6 +3,7 @@
 
 typedef unsigned int ShaderProgram;
 
-ShaderProgram constructShaderProgramVF(const char* vertexPath, const char* fragmentPath);
+ShaderProgram constructShaderProgramFromString(const char* vertexSource, const char* fragmentSource);
+ShaderProgram constructShaderProgramFromFile(const char* vertexPath, const char* fragmentPath);
 
 #endif
