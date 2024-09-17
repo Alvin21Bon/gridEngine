@@ -21,7 +21,7 @@
 */
 struct GameState {
 	struct CoordinateCanvas* canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
-	void (*update)(struct GameState*);
+	int (*update)(struct GameState*);
 
 	// SHOULD NOT BE MODIFIED BY THE USER
 	struct {
@@ -43,12 +43,22 @@ struct GameState {
 		
 	} gameInfo;
 
+	// these values are modified every frame of the game loop function
+	struct {
+		double currentTime;
+		double previousTime;
+		double deltaTime;
+		double FPS;
+	} timeData;
+
 	struct InputData inputData;
 };
 
 struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border);
 
 void initGameState(struct GameState* const game); // user defined function
+
+void gameStateUpdateTime(struct GameState* const game);
 
 // NULL IF NOT FOUND
 struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const char* const id);
@@ -72,5 +82,9 @@ void gameStateSetCanvasBottomLeftCoordsUniform(struct GameState* const game, con
 
 // WARN: USE THIS FUNCTION INSTEAD TO UPDATE THE CURRENTLY ACTIVE PROGRAM
 void gameStateUseProgram(struct GameState* const game, ShaderProgram program);
+
+// destroys every canvas in the rendering array and destroys every shader program
+// NOTE: a complete destroying of the engine is done in a seperate encapsulating functions which also calls gameStateDestroy 
+void gameStateDestory(struct GameState* game);
 
 #endif // GRID_GAME_STATE_H

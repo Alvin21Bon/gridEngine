@@ -12,9 +12,22 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	gameState.gameInfo.uniforms.borderColor = glGetUniformLocation(border, "borderColor");
 	gameState.gameInfo.uniforms.canvasBottomLeftCoordsInNDC = glGetUniformLocation(border, "aCanvasBottomLeftCoordsInNDC");
 
+	gameState.timeData.currentTime = glfwGetTime();
+	gameState.timeData.previousTime = gameState.timeData.currentTime;
+	gameState.timeData.deltaTime = 0;
+	gameState.timeData.FPS = GRID_GAME_MAX_FPS;
+
 	gameState.inputData = inputData();
 
 	return gameState;
+}
+
+void gameStateUpdateTime(struct GameState* const game)
+{
+	game->timeData.previousTime = game->timeData.currentTime;
+	game->timeData.currentTime = glfwGetTime();
+	game->timeData.deltaTime = game->timeData.currentTime - game->timeData.previousTime;
+	game->timeData.FPS = 1.0 / game->timeData.deltaTime;
 }
 
 struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const char* const id)
@@ -115,4 +128,16 @@ void gameStateUseProgram(struct GameState* const game, ShaderProgram program)
 {
 	glUseProgram(program);
 	game->gameInfo.programs.currentlyActive = program;
+}
+
+void gameStateDestory(struct GameState* game)
+{
+	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
+	{
+		canvasDestroy(game->canvasRenderingArray[idx]);
+	}
+
+	glDeleteProgram(game->gameInfo.programs.canvas);
+	glDeleteProgram(game->gameInfo.programs.border);
+	game->gameInfo.programs.currentlyActive = 0;
 }

@@ -4,6 +4,7 @@
 #include <lina/lina.h>
 
 #define GRID_GAME_MAX_CANVAS_AMT 64
+#define GRID_GAME_MAX_FPS 60
 
 typedef int Uniform;
 
