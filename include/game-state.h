@@ -58,7 +58,7 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 
 void initGameState(struct GameState* const game); // user defined function
 
-void gameStateUpdateTime(struct GameState* const game, bool shouldPreviousTimeBeUpdated);
+void gameStateUpdateTime(struct GameState* const game);
 
 // NULL IF NOT FOUND
 struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const char* const id);

@@ -111,12 +111,26 @@ static int gridEngineUpdateGameState(struct GameState* game)
 	glfwPollEvents();
 	return game->update(game);
 }
+static void waitOnMaxFPS(struct GameState* game)
+{
+	double timeAtStartOfGameLoop = game->timeData.currentTime;
+	double currentTime = glfwGetTime();
+	double currentDeltaTime = currentTime - timeAtStartOfGameLoop;
+	double currentFPS = 1.0 / currentDeltaTime;
+
+	while (currentFPS > GRID_GAME_MAX_FPS)
+	{
+		currentTime = glfwGetTime();
+		currentDeltaTime = currentTime - timeAtStartOfGameLoop;
+		currentFPS = 1.0 / currentDeltaTime;
+	}
+}
 
 int gridEngineGameLoop(struct GameState* game)
 {
 	while (!glfwWindowShouldClose(game->gameInfo.window))
 	{
-		gameStateUpdateTime(game, true);
+		gameStateUpdateTime(game);
 
 		// ========================================
 		// CORE OF GAME LOOP
@@ -128,12 +142,8 @@ int gridEngineGameLoop(struct GameState* game)
 		gridEngineRender(game);
 		// ========================================
 
-		// now wait on the max frame rate
-		gameStateUpdateTime(game, false); // the false in second argument keeps the previous time at the start of the game loop
-		while (game->timeData.FPS > GRID_GAME_MAX_FPS)
-		{
-			gameStateUpdateTime(game, false);
-		}
+		// puts the loop in a spin cycle until FPS is not above defined max FPS
+		waitOnMaxFPS(game);
 	}
 
 	return GRID_ENGINE_SUCCESS;

@@ -25,9 +25,9 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	return gameState;
 }
 
-void gameStateUpdateTime(struct GameState* const game, bool shouldPreviousTimeBeUpdated)
+void gameStateUpdateTime(struct GameState* const game)
 {
-	if (shouldPreviousTimeBeUpdated) game->timeData.previousTime = game->timeData.currentTime;
+	game->timeData.previousTime = game->timeData.currentTime;
 	game->timeData.currentTime = glfwGetTime();
 	game->timeData.deltaTime = game->timeData.currentTime - game->timeData.previousTime;
 	game->timeData.FPS = 1.0 / game->timeData.deltaTime;
