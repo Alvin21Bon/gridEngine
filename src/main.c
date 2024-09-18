@@ -7,12 +7,6 @@ int main()
 		printf("GRID_MAIN ERROR: GLFW init failed\n");
 		return GRID_ENGINE_ERROR;
 	}
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		printf("GRID_MAIN ERROR: GLAD failed to load openGL\n");
-		glfwTerminate();
-		return GRID_ENGINE_ERROR;
-	}
 
 	GLFWwindow* window = gridEngineCreateAndSetupWindow();
 	if (window == NULL)
@@ -21,6 +15,14 @@ int main()
 		glfwTerminate();
 		return GRID_ENGINE_ERROR;
 	}
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		printf("GRID_MAIN ERROR: GLAD failed to load openGL\n");
+		glfwTerminate();
+		return GRID_ENGINE_ERROR;
+	}
+
 	ShaderProgram canvasProgram = gridEngineGenerateCanvasProgram();
 	ShaderProgram borderProgram = gridEngineGenerateBorderProgram();
 
