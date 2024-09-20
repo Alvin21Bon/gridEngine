@@ -290,7 +290,4 @@ void canvasDestroy(struct CoordinateCanvas* canvas)
 	glDeleteBuffers(1, &(canvas->glBuffers.VBO));
 	glDeleteBuffers(1, &(canvas->glBuffers.EBO));
 	glDeleteVertexArrays(1, &(canvas->glBuffers.VAO));
-
-	// defensive way to make sure canvas is not used and cannot be retrieved? idk, might as well
-	canvas->id = "NULL";
 }
