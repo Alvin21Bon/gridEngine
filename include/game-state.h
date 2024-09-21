@@ -20,6 +20,7 @@
  * ===
 */
 struct GameState {
+	// NOTE: arrays will always stay sorted by their IDs
 	struct CoordinateCanvas* canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
 	int (*update)(struct GameState*);
 
@@ -62,15 +63,14 @@ void gameStateUpdateTime(struct GameState* const game);
 
 // NULL IF NOT FOUND
 struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const uint id);
-// this is the same as the usual function but also sets the parameter to the idx of the canvas in the array
-// NULL IF NOT FOUND
-struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const game, const uint id, int* idxOfCanvas);
 
-// returns copy, NULL if canvas array full
-struct GameState* gameStateAddCanvas(struct GameState* const game, const struct CoordinateCanvas* canvas);
+// this function will allocate the canvas in the heap and store it in the array
+// returns pointer to canvas in the array, NULL if canvas array full
+struct CoordinateCanvas* gameStateAddCopyOfCanvas(struct GameState* const game, const struct CoordinateCanvas canvas);
 
-// return canvas that was removed, NULL if "id" not found in array
-struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, const uint id);
+// this function will destroy the canvas, free the allocated memory for the canvas, and remove the pointer from the array
+// return 1 on success, 0 if canvas not found 
+int gameStateRemoveCanvas(struct GameState* const game, const uint id);
 
 // called as the final drawing call in the game loop
 void gameStateDraw(struct GameState* const game);
@@ -83,7 +83,7 @@ void gameStateSetCanvasBottomLeftCoordsUniform(struct GameState* const game, con
 // WARN: USE THIS FUNCTION INSTEAD TO UPDATE THE CURRENTLY ACTIVE PROGRAM
 void gameStateUseProgram(struct GameState* const game, ShaderProgram program);
 
-// destroys every canvas in the rendering array and destroys every shader program
+// removes every canvas in the rendering array and destroys every shader program
 // NOTE: a complete destroying of the engine is done in a seperate encapsulating functions which also calls gameStateDestroy 
 void gameStateDestory(struct GameState* game);
 
