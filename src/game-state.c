@@ -33,12 +33,12 @@ void gameStateUpdateTime(struct GameState* const game)
 	game->timeData.FPS = 1.0 / game->timeData.deltaTime;
 }
 
-struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const char* const id)
+struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const uint id)
 {
 	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
 	{
 		struct CoordinateCanvas* canvas = game->canvasRenderingArray[idx];
-		if (strcmp(canvas->id, id) == 0)
+		if (canvas->id == id)
 		{
 			return canvas;
 		}
@@ -47,12 +47,12 @@ struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, 
 	return NULL;
 }
 // this is the same as the usual function but also sets the parameter to the idx of the canvas in the array
-struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const game, const char* const id, int* idxOfCanvas)
+struct CoordinateCanvas* gameStateGetCanvasAndIdx(const struct GameState* const game, const uint id, int* idxOfCanvas)
 {
 	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
 	{
 		struct CoordinateCanvas* canvas = game->canvasRenderingArray[idx];
-		if (strcmp(canvas->id, id) == 0)
+		if (canvas->id == id)
 		{
 			*idxOfCanvas = idx;
 			return canvas;
@@ -75,7 +75,7 @@ struct GameState* gameStateAddCanvas(struct GameState* const game, const struct 
 }
 
 // return canvas that was removed, NULL if "id" not found in array
-struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, const char* const id)
+struct CoordinateCanvas* gameStateRemoveCanvas(struct GameState* const game, const uint id)
 {
 	int idxOfRemovedCanvas;
 	struct CoordinateCanvas* removedCanvas;

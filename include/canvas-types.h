@@ -23,7 +23,7 @@ struct CanvasPixel {
 };
 
 struct CoordinateCanvas {
-	char* id; // name associated for help with searching through arrays of canvases
+	uint id; // user may make enum of canvas IDs 
 	Vec2 origin;
 	Vec2 size;
 
