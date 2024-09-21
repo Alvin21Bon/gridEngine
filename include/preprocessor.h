@@ -5,8 +5,6 @@
 
 #define GRID_GAME_MAX_CANVAS_AMT 64
 #define GRID_GAME_MAX_FPS 60
-#define GRID_ENGINE_SUCCESS 0
-#define GRID_ENGINE_ERROR 1
 
 typedef int Uniform;
 

@@ -1,0 +1,9 @@
+#ifndef GRID_GRID_ENGINE_STATES_H
+#define GRID_GRID_ENGINE_STATES_H
+
+enum GRID_ENGINE_ERROR_HANDLING {
+	GRID_ENGINE_SUCCESS = 0,
+	GRID_ENGINE_ERROR = 1 // this is 1 so it can be returned from main
+};
+
+#endif // GRID_GRID_ENGINE_STATES_H

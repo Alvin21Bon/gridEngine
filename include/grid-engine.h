@@ -7,6 +7,7 @@
 #include "coordinate-canvas.h"
 #include "input-data.h"
 #include "game-state.h"
+#include "grid-engine-states.h"
 #include "shared.h"
 
 // TODO: ADD CONFIG SUPPORT WITH TOML
