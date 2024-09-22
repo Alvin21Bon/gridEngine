@@ -116,6 +116,7 @@ static int gridEngineUpdateGameState(struct GameState* game)
 
 	// PERFORM ALL GAME OBJECT UPDATE AND DRAW FUNCTIONS
 	struct GameObject* object;
+	struct CoordinateCanvas* canvasToDrawOn;
 	for (int idx = 0; idx < game->gameInfo.numObjects; idx++)
 	{
 		object = game->objectArray[idx];
@@ -124,8 +125,9 @@ static int gridEngineUpdateGameState(struct GameState* game)
 		if (object->update(object, game) == GRID_ENGINE_ERROR) return GRID_ENGINE_ERROR;
 
 		// object draw (on canvas) function
-		if (gameStateGetCanvas(game, object->canvasId) != NULL) 
-			object->draw(object);
+		canvasToDrawOn = gameStateGetCanvas(game, object->canvasId);
+		if (canvasToDrawOn != NULL) 
+			object->draw(object, canvasToDrawOn);
 		// ^^^ this error checking is done here since EVERY draw call would need to have this anyway. So in the draw calls, it is guaranteed the canvas is in the canvas array
 	}
 

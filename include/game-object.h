@@ -24,17 +24,17 @@ struct GameObject {
 	uint id;
 	uint canvasId; // stores ID since storing a pointer to the canvas could be dangerous if canvas is already removed from the renderingArray
 	int (*update)(struct GameObject* const, struct GameState* const);
-	void (*draw)(const struct GameObject* const);
+	void (*draw)(const struct GameObject* const, struct CoordinateCanvas* const);
 	void (*destroy)(struct GameObject*);
 };
 
 struct GameObject gameObject(const uint id, const uint canvasId);
 void gameObjectAttachUpdateFunction(struct GameObject* const object, int (*updateFunction)(struct GameObject* const, struct GameState* const));
-void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const));
+void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const, struct CoordinateCanvas* const));
 void gameObjectAttachDestroyFunction(struct GameObject* const object, void (*destroyFunction)(struct GameObject*));
 
 int defaultObjectUpdateFunction(struct GameObject* const object, struct GameState* const game);
-void defaultObjectDrawFunction(const struct GameObject* const object);
+void defaultObjectDrawFunction(const struct GameObject* const object, struct CoordinateCanvas* const canvas);
 void defaultObjectDestroyFunction(struct GameObject* object);
 
 #endif // GRID_GAME_OBJECT_H

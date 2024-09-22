@@ -1,7 +1,7 @@
 #include "../include/grid-engine.h"
 
 int defaultObjectUpdateFunction(struct GameObject* const object, struct GameState* const game) {return GRID_ENGINE_SUCCESS;}
-void defaultObjectDrawFunction(const struct GameObject* const object) {return;}
+void defaultObjectDrawFunction(const struct GameObject* const object, struct CoordinateCanvas* const canvas) {return;}
 void defaultObjectDestroyFunction(struct GameObject* object) {return;}
 
 struct GameObject gameObject(const uint id, const uint canvasId)
@@ -19,7 +19,7 @@ void gameObjectAttachUpdateFunction(struct GameObject* const object, int (*updat
 {
 	object->update = updateFunction;
 }
-void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const))
+void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const, struct CoordinateCanvas* const))
 {
 	object->draw = drawFunction;
 }
