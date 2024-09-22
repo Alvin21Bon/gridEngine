@@ -112,7 +112,11 @@ static int gridEngineUpdateGameState(struct GameState* game)
 	glfwPollEvents();
 
 	// PRE UPDATE
-	if (game->preUpdate(game) == GRID_ENGINE_ERROR) return GRID_ENGINE_ERROR;
+	if (game->preUpdate(game) == GRID_ENGINE_ERROR) 
+	{
+		printf("GRID_GAME_STATE_UPDATE ERROR: GameState pre-update returned an error\n");
+		return GRID_ENGINE_ERROR;
+	}
 
 	// PERFORM ALL GAME OBJECT UPDATE AND DRAW FUNCTIONS
 	struct GameObject* object;
@@ -122,7 +126,11 @@ static int gridEngineUpdateGameState(struct GameState* game)
 		object = game->objectArray[idx];
 
 		// object function function
-		if (object->update(object, game) == GRID_ENGINE_ERROR) return GRID_ENGINE_ERROR;
+		if (object->update(object, game) == GRID_ENGINE_ERROR) 
+		{
+			printf("GRID_GAME_STATE_UPDATE ERROR: object with ID %d update returned an error\n", object->id);
+			return GRID_ENGINE_ERROR;
+		}
 
 		// object draw (on canvas) function
 		canvasToDrawOn = gameStateGetCanvas(game, object->canvasId);
@@ -132,7 +140,11 @@ static int gridEngineUpdateGameState(struct GameState* game)
 	}
 
 	// POST UPDATE
-	if (game->postUpdate(game) == GRID_ENGINE_ERROR) return GRID_ENGINE_ERROR;
+	if (game->postUpdate(game) == GRID_ENGINE_ERROR) 
+	{
+		printf("GRID_GAME_STATE_UPDATE ERROR: GameState post-update returned an error\n");
+		return GRID_ENGINE_ERROR;
+	}
 	
 	return GRID_ENGINE_SUCCESS;
 }
