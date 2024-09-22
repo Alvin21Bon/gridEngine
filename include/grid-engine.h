@@ -6,6 +6,7 @@
 #include "canvas-pixel.h"
 #include "coordinate-canvas.h"
 #include "input-data.h"
+#include "game-object.h"
 #include "game-state.h"
 #include "grid-engine-states.h"
 #include "shared.h"
