@@ -102,7 +102,7 @@ static void canvasUpdateVBOCanvasData(struct CoordinateCanvas* const canvas)
  * === CONSTRUCTOR FUNCTIONS === 
 */
 	// space is allocated for the canvasData, MEMORY MUST BE FREED (see above allocate function)
-	// allocted buffers for openGL must also be destoryed
+	// allocted buffers for openGL must also be destroyed
 struct CoordinateCanvas canvas(const uint id, const Vec2 origin, const Vec2 size, 
 			       const unsigned int xUnitCnt, const unsigned int yUnitCnt)
 {
@@ -272,7 +272,7 @@ void canvasDraw(struct CoordinateCanvas *const canvas, struct GameState* const g
 }
 
 /* 
- * === DESTORYER FUNCTIONS ===
+ * === DESTROYER FUNCTIONS ===
 */
 void canvasDataFree(struct CoordinateCanvas* canvas)
 {

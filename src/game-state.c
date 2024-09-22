@@ -1,9 +1,12 @@
 #include "../include/grid-engine.h"
 
+int defaultFunctionForPreAndPostUpdate(struct GameState* game) {return GRID_ENGINE_SUCCESS;}
+
 struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border)
 {
 	struct GameState gameState;
 	gameState.gameInfo.numCanvases = 0;
+	gameState.gameInfo.numObjects = 0;
 	gameState.gameInfo.window = window;
 	gameState.gameInfo.programs.canvas = canvas;
 	gameState.gameInfo.programs.border = border;
@@ -19,6 +22,9 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 
 	gameState.inputData = inputData();
 
+	gameState.preUpdate = defaultFunctionForPreAndPostUpdate;
+	gameState.postUpdate = defaultFunctionForPreAndPostUpdate;
+
 	// this function is defined by the user
 	initGame(&gameState);
 
@@ -33,6 +39,16 @@ void gameStateUpdateTime(struct GameState* const game)
 	game->timeData.FPS = 1.0 / game->timeData.deltaTime;
 }
 
+void gameStateAttachPreUpdateFunction(struct GameState* game, int (*preUpdateFunction)(struct GameState*))
+{
+	game->preUpdate = preUpdateFunction;
+}
+void gameStateAttachPostUpdateFunction(struct GameState* game, int (*postUpdateFunction)(struct GameState*))
+{
+	game->postUpdate = postUpdateFunction;
+}
+
+// BINARY SEARCH FUNCTIONS FOR THE ARRAYS ====================================
 // return -1 if not found
 static int gameStateBinarySearchCanvasArray(const struct GameState* const game, const uint id, int* sliceIdxFinalValue)
 {
@@ -59,6 +75,34 @@ static int gameStateBinarySearchCanvasArray(const struct GameState* const game, 
 	if (sliceIdxFinalValue != NULL) *sliceIdxFinalValue = sliceIdx;
 	return -1;
 }
+static int gameStateBinarySearchObjectArray(const struct GameState* const game, const uint id, int* sliceIdxFinalValue)
+{
+	int sliceIdx = 0;
+	uint testID;
+
+	int startIdx = 0;
+	int endIdx = game->gameInfo.numObjects - 1;
+	while (startIdx <= endIdx)
+	{
+		sliceIdx = (startIdx + endIdx) / 2;
+		testID = game->objectArray[sliceIdx]->id;
+
+		if (testID < id) startIdx = sliceIdx + 1;
+		else if (testID > id) endIdx = sliceIdx - 1;
+		else 
+		{
+			// FOUND
+			if (sliceIdxFinalValue != NULL) *sliceIdxFinalValue = sliceIdx;
+			return sliceIdx;
+		}
+	}
+
+	if (sliceIdxFinalValue != NULL) *sliceIdxFinalValue = sliceIdx;
+	return -1;
+}
+
+// =========================================================================================
+// ARRAY ADDING, REMOVING, AND QUERYING FUNCTIONS
 
 struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, const uint id)
 {
@@ -67,9 +111,15 @@ struct CoordinateCanvas* gameStateGetCanvas(const struct GameState* const game, 
 
 	return game->canvasRenderingArray[idx];
 }
+struct GameObject* gameStateGetObject(const struct GameState* const game, const uint id)
+{
+	int idx = gameStateBinarySearchObjectArray(game, id, NULL);
+	if (idx == -1) return NULL;
 
-// this function will allocate the canvas in the heap and store it in the array
-// returns pointer to canvas in the array, NULL if canvas array full
+	// it is up to the user to know what child game object this is
+	return game->objectArray[idx];
+}
+
 struct CoordinateCanvas* gameStateAddCopyOfCanvas(struct GameState* const game, const struct CoordinateCanvas canvas)
 {
 	if (game->gameInfo.numCanvases == GRID_GAME_MAX_CANVAS_AMT) return NULL;
@@ -102,9 +152,40 @@ struct CoordinateCanvas* gameStateAddCopyOfCanvas(struct GameState* const game, 
 	game->gameInfo.numCanvases++;
 	return canvasOnHeap;
 }
+struct GameObject* gameStateAddCopyOfObject(struct GameState* const game, const struct GameObject* const object, const size_t sizeOfGameObject)
+{
+	if (game->gameInfo.numObjects == GRID_GAME_MAX_GAME_OBJECTS_AMT) return NULL;
 
-// this function will destroy the canvas, free the allocated memory for the canvas, and remove the pointer from the array
-// return 1 on success, 0 if canvas not found 
+	// this will copy over all the data of whatever derived game object the user has to the heap
+	struct GameObject* objectOnHeap = malloc(sizeOfGameObject);
+	memcpy(objectOnHeap, object, sizeOfGameObject);
+
+	// add object such that array stays sorted on ID
+	if (game->gameInfo.numObjects != 0)
+	{
+		int idxOfClosestIdFound;
+		int idxToAddObjectTo;
+
+		gameStateBinarySearchObjectArray(game, objectOnHeap->id, &idxOfClosestIdFound);
+		if (game->objectArray[idxOfClosestIdFound]->id <= objectOnHeap->id) 
+			idxToAddObjectTo = idxOfClosestIdFound + 1;
+		else
+			idxToAddObjectTo = idxOfClosestIdFound; 
+
+		// all elements get shifted right so object can be inserted where it needs to be
+		for (int idx = game->gameInfo.numObjects - 1; idx >= idxToAddObjectTo; idx--)
+		{
+			game->objectArray[idx + 1]  = game->objectArray[idx];
+		}
+
+		game->objectArray[idxToAddObjectTo] = objectOnHeap;
+	}
+	else game->objectArray[0] = objectOnHeap;
+	
+	game->gameInfo.numObjects++;
+	return objectOnHeap;
+}
+
 int gameStateRemoveCanvas(struct GameState* const game, const uint id)
 {
 	int idxOfCanvasToRemove = gameStateBinarySearchCanvasArray(game, id, NULL);
@@ -123,8 +204,28 @@ int gameStateRemoveCanvas(struct GameState* const game, const uint id)
 
 	return 1;
 }
+int gameStateRemoveObject(struct GameState* const game, const uint id)
+{
+	int idxOfObjectToRemove = gameStateBinarySearchObjectArray(game, id, NULL);
+	if (idxOfObjectToRemove == -1) return 0;
 
-// called as the final drawing call in the game loop
+	struct GameObject* objectToRemove = game->objectArray[idxOfObjectToRemove];
+	objectToRemove->destroy(objectToRemove);  
+	free(objectToRemove);
+
+	for (int idx = idxOfObjectToRemove; idx < game->gameInfo.numObjects; idx++)
+	{
+		// shift all objects after removed canvas to the left
+		game->objectArray[idx] = game->objectArray[idx + 1];
+	}
+	game->gameInfo.numObjects--;
+
+	return 1;
+}
+
+// ARRAY ADDING, REMOVING, AND QUERYING FUNCTIONS
+// =========================================================================================
+
 void gameStateDraw(struct GameState* const game)
 {
 	for (int idx = 0; idx < game->gameInfo.numCanvases; idx++)
@@ -164,13 +265,18 @@ void gameStateUseProgram(struct GameState* const game, ShaderProgram program)
 	game->gameInfo.programs.currentlyActive = program;
 }
 
-void gameStateDestory(struct GameState* game)
+void gameStateDestroy(struct GameState* game)
 {
-	printf("Destorying Game State...\n");
+	printf("Destroying Game State...\n");
 	while (game->gameInfo.numCanvases > 0)
 	{
 		printf("Removed canvas with ID of %u, NumCanvases: %d\n", game->canvasRenderingArray[0]->id, game->gameInfo.numCanvases - 1);
 		gameStateRemoveCanvas(game, game->canvasRenderingArray[0]->id);
+	}
+	while (game->gameInfo.numObjects > 0)
+	{
+		printf("Removed game object with ID of %u, NumObjects: %d\n", game->objectArray[0]->id, game->gameInfo.numObjects - 1);
+		gameStateRemoveObject(game, game->objectArray[0]->id);
 	}
 
 	glDeleteProgram(game->gameInfo.programs.canvas);

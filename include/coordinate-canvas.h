@@ -37,7 +37,7 @@ void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoord
 void canvasDraw(struct CoordinateCanvas* const canvas, struct GameState* const game); 
 
 /* 
- * === DESTORYER FUNCTIONS ===
+ * === DESTROYER FUNCTIONS ===
 */
 void canvasDataFree(struct CoordinateCanvas* canvas);
 void canvasDestroy(struct CoordinateCanvas* canvas);

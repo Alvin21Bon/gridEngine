@@ -95,7 +95,7 @@ ShaderProgram gridEngineGenerateBorderProgram()
 
 void gridEngineTerminate(struct GameState* game)
 {
-	gameStateDestory(game);
+	gameStateDestroy(game);
 	glfwTerminate();
 }
 

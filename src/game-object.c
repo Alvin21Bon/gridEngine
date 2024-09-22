@@ -2,7 +2,7 @@
 
 int defaultObjectUpdateFunction(struct GameObject* const object, struct GameState* const game) {return GRID_ENGINE_SUCCESS;}
 void defaultObjectDrawFunction(const struct GameObject* const object) {return;}
-void defaultObjectDestoryFunction(struct GameObject* object) {return;}
+void defaultObjectDestroyFunction(struct GameObject* object) {return;}
 
 struct GameObject gameObject(const uint id, const uint canvasId)
 {
@@ -11,7 +11,7 @@ struct GameObject gameObject(const uint id, const uint canvasId)
 	gameObject.canvasId = canvasId;
 	gameObject.update = defaultObjectUpdateFunction;
 	gameObject.draw = defaultObjectDrawFunction;
-	gameObject.destory = defaultObjectDestoryFunction;
+	gameObject.destroy = defaultObjectDestroyFunction;
 
 	return gameObject;
 }
@@ -23,7 +23,7 @@ void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFu
 {
 	object->draw = drawFunction;
 }
-void gameObjectAttachDestoryFunction(struct GameObject* const object, void (*destoryFunction)(struct GameObject*))
+void gameObjectAttachDestroyFunction(struct GameObject* const object, void (*destroyFunction)(struct GameObject*))
 {
-	object->destory = destoryFunction;
+	object->destroy = destroyFunction;
 }
