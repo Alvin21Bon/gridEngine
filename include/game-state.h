@@ -57,7 +57,7 @@ struct GameState {
 
 struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border);
 
-void initGameState(struct GameState* const game); // user defined function
+void initGame(struct GameState* const game); // user defined function
 
 void gameStateUpdateTime(struct GameState* const game);
 
