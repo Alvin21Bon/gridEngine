@@ -228,6 +228,10 @@ void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoord
 	// TODO: DAMN, FORGOT THAT VEC2 IS ONLY FLOATS. MIGHT NEED TO MAKE AN INT VERSION
 	canvas->canvasData[(int)pixelCoords.x][(int)pixelCoords.y] = pixel;
 }
+void canvasClear(struct CoordinateCanvas* const canvas)
+{
+	memset(canvas->canvasDataMemoryLocation, 0, canvas->sizeOfCanvasData);
+}
 
 // CANVAS DRAWING FUNCTIONS
 		// openGL window context already set by engine

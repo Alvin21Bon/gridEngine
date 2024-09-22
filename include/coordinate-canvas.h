@@ -32,6 +32,7 @@ void canvasScale(struct CoordinateCanvas* const canvas, const float scalar);
 void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color);
 void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum, const Vec3 color);
 void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel);
+void canvasClear(struct CoordinateCanvas* const canvas);
 
 // CANVAS DRAWING FUNCTIONS
 void canvasDraw(struct CoordinateCanvas* const canvas, struct GameState* const game); 
