@@ -10,7 +10,7 @@ struct GameState;
  *
  * GameObject will be "inhereted" by users to create their own extended game objects. These will be stored in the 
  * GameState by casting the pointer to one of GameObject. This will allow for the engine to call the update() and
- * draw() functions within the game loop's update and draw functions.
+ * draw() functions within the game loop's update function.
  *
  * NOTE: typically, the update function will make any changes to the user defined game object data and ensure that the
  * 	 game object is in a valid state. Any call to the GameObject draw call assumes the game object is in a valid
