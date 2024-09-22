@@ -109,7 +109,24 @@ static void gridEngineRender(struct GameState* game)
 static int gridEngineUpdateGameState(struct GameState* game)
 {
 	glfwPollEvents();
-	return game->update(game);
+
+	// PRE UPDATE
+	if (game->preUpdate(game) == GRID_ENGINE_ERROR) return GRID_ENGINE_ERROR;
+
+	// PERFORM ALL GAME OBJECT UPDATE AND DRAW FUNCTIONS
+	struct GameObject* object;
+	for (int idx = 0; idx < game->gameInfo.numObjects; idx++)
+	{
+		object = game->objectArray[idx];
+
+		if (object->update(object, game) == GRID_ENGINE_ERROR) return GRID_ENGINE_ERROR;
+		object->draw(object);
+	}
+
+	// POST UPDATE
+	if (game->postUpdate(game) == GRID_ENGINE_ERROR) return GRID_ENGINE_ERROR;
+	
+	return GRID_ENGINE_SUCCESS;
 }
 static void waitOnMaxFPS(struct GameState* game)
 {
