@@ -59,6 +59,7 @@ struct GameState {
 	} timeData;
 
 	struct InputData inputData;
+	struct InputData previousInputData;
 };
 
 struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border);

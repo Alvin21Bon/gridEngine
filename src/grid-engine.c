@@ -108,6 +108,7 @@ static void gridEngineRender(struct GameState* game)
 }
 static int gridEngineUpdateGameState(struct GameState* game)
 {
+	game->previousInputData = game->inputData;
 	glfwPollEvents();
 
 	// PRE UPDATE

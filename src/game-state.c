@@ -21,6 +21,7 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	gameState.timeData.FPS = GRID_GAME_MAX_FPS;
 
 	gameState.inputData = inputData();
+	gameState.previousInputData = inputData();
 
 	gameState.preUpdate = defaultFunctionForPreAndPostUpdate;
 	gameState.postUpdate = defaultFunctionForPreAndPostUpdate;
