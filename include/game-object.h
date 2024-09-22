@@ -17,6 +17,8 @@ struct GameState;
  * 	 state. the draw function will modify the canvas accordingly.
  *
  * NOTE: the destroyer function is called when the game object is removed from the game state so necessary cleanup for the user defined object can be done
+ *
+ * NOTE: in the draw calls, it is GUARANTEED the target canvas exists since the engine checks this before the draw function is called
 */
 struct GameObject {
 	uint id;
