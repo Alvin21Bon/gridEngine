@@ -53,6 +53,7 @@ struct GameState {
 			GLFWcursor* crosshair;
 			GLFWcursor* hResize;
 			GLFWcursor* vResize;
+			GLFWcursor* currentlyActive;
 		} cursors;
 		
 	} gameInfo;
@@ -114,6 +115,9 @@ void gameStateSetCanvasBottomLeftCoordsUniform(struct GameState* const game, con
 
 // WARN: USE THIS FUNCTION INSTEAD TO UPDATE THE CURRENTLY ACTIVE PROGRAM
 void gameStateUseProgram(struct GameState* const game, ShaderProgram program);
+
+// WARN: SAME AS ABOVE, USE THIS FUNCTION TO UPDATE CURRENTLY ACTIVE CURSOR
+void gameStateSetCursor(struct GameState* const game, GLFWcursor* cursor);
 
 // removes every canvas and object in the rendering array, destroys every shader program, and destroys every cursor
 // NOTE: a complete destroying of the engine is done in a seperate encapsulating functions which also calls gameStateDestroy 

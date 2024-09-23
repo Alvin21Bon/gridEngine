@@ -273,6 +273,11 @@ void gameStateUseProgram(struct GameState* const game, ShaderProgram program)
 	glUseProgram(program);
 	game->gameInfo.programs.currentlyActive = program;
 }
+void gameStateSetCursor(struct GameState* const game, GLFWcursor* cursor)
+{
+	glfwSetCursor(game->gameInfo.window, cursor);
+	game->gameInfo.cursors.currentlyActive = cursor;
+}
 
 void gameStateDestroy(struct GameState* game)
 {
@@ -291,6 +296,7 @@ void gameStateDestroy(struct GameState* game)
 	glfwDestroyCursor(game->gameInfo.cursors.crosshair);
 	glfwDestroyCursor(game->gameInfo.cursors.hResize);
 	glfwDestroyCursor(game->gameInfo.cursors.vResize);
+	game->gameInfo.cursors.currentlyActive = NULL;
 
 	glDeleteProgram(game->gameInfo.programs.canvas);
 	glDeleteProgram(game->gameInfo.programs.border);
