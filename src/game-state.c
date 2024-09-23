@@ -18,6 +18,7 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	gameState.gameInfo.cursors.crosshair = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	gameState.gameInfo.cursors.hResize = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
 	gameState.gameInfo.cursors.vResize = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+	gameStateSetCursorState(&gameState, GRID_CURSOR_DEFAULT);
 
 	gameState.timeData.currentTime = glfwGetTime();
 	gameState.timeData.previousTime = gameState.timeData.currentTime;
@@ -273,12 +274,30 @@ void gameStateUseProgram(struct GameState* const game, ShaderProgram program)
 	glUseProgram(program);
 	game->gameInfo.programs.currentlyActive = program;
 }
-void gameStateSetCursor(struct GameState* const game, GLFWcursor* cursor)
+void gameStateSetCursorState(struct GameState* const game, int cursorState)
 {
-	if (game->gameInfo.cursors.currentlyActive == cursor) return; // idk if it is bad to keep setting the same cursor
+	if (game->gameInfo.cursorState == cursorState) return;
 
-	glfwSetCursor(game->gameInfo.window, cursor);
-	game->gameInfo.cursors.currentlyActive = cursor;
+	game->gameInfo.cursorState = cursorState;
+	switch (game->gameInfo.cursorState)
+	{
+		case GRID_CURSOR_DEFAULT:
+			glfwSetCursor(game->gameInfo.window, NULL);
+			break;
+		case GRID_CURSOR_MOVING:
+			glfwSetCursor(game->gameInfo.window, game->gameInfo.cursors.crosshair);
+			break;
+		case GRID_CURSOR_RESIZING_LEFT:
+		case GRID_CURSOR_RESIZING_RIGHT:
+			glfwSetCursor(game->gameInfo.window, game->gameInfo.cursors.hResize);
+			break;
+		case GRID_CURSOR_RESIZING_BELOW:
+		case GRID_CURSOR_RESIZING_ABOVE:
+			glfwSetCursor(game->gameInfo.window, game->gameInfo.cursors.vResize);
+			break;
+		default:
+			break;
+        }
 }
 
 void gameStateDestroy(struct GameState* game)
@@ -298,7 +317,6 @@ void gameStateDestroy(struct GameState* game)
 	glfwDestroyCursor(game->gameInfo.cursors.crosshair);
 	glfwDestroyCursor(game->gameInfo.cursors.hResize);
 	glfwDestroyCursor(game->gameInfo.cursors.vResize);
-	game->gameInfo.cursors.currentlyActive = NULL;
 
 	glDeleteProgram(game->gameInfo.programs.canvas);
 	glDeleteProgram(game->gameInfo.programs.border);

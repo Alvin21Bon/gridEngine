@@ -53,8 +53,17 @@ struct GameState {
 			GLFWcursor* crosshair;
 			GLFWcursor* hResize;
 			GLFWcursor* vResize;
-			GLFWcursor* currentlyActive;
 		} cursors;
+
+		// TODO: this struct getting way too bulky. this definitely needs to be seperated into seperate structs at some point and better design, anonymous enum :/
+		enum {
+			GRID_CURSOR_DEFAULT,
+			GRID_CURSOR_MOVING,
+			GRID_CURSOR_RESIZING_LEFT,
+			GRID_CURSOR_RESIZING_RIGHT,
+			GRID_CURSOR_RESIZING_BELOW,
+			GRID_CURSOR_RESIZING_ABOVE
+		} cursorState;
 		
 	} gameInfo;
 
@@ -116,8 +125,8 @@ void gameStateSetCanvasBottomLeftCoordsUniform(struct GameState* const game, con
 // WARN: USE THIS FUNCTION INSTEAD TO UPDATE THE CURRENTLY ACTIVE PROGRAM
 void gameStateUseProgram(struct GameState* const game, ShaderProgram program);
 
-// WARN: SAME AS ABOVE, USE THIS FUNCTION TO UPDATE CURRENTLY ACTIVE CURSOR
-void gameStateSetCursor(struct GameState* const game, GLFWcursor* cursor);
+// WARN: SAME AS ABOVE, USE THIS FUNCTION TO UPDATE THE SET CURSOR ACCORDINGLY
+void gameStateSetCursorState(struct GameState* const game, int cursorState); // hacky..
 
 // removes every canvas and object in the rendering array, destroys every shader program, and destroys every cursor
 // NOTE: a complete destroying of the engine is done in a seperate encapsulating functions which also calls gameStateDestroy 
