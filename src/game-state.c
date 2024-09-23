@@ -275,6 +275,8 @@ void gameStateUseProgram(struct GameState* const game, ShaderProgram program)
 }
 void gameStateSetCursor(struct GameState* const game, GLFWcursor* cursor)
 {
+	if (game->gameInfo.cursors.currentlyActive == cursor) return; // idk if it is bad to keep setting the same cursor
+
 	glfwSetCursor(game->gameInfo.window, cursor);
 	game->gameInfo.cursors.currentlyActive = cursor;
 }
