@@ -18,6 +18,7 @@ struct CoordinateCanvas canvas(const uint id, const Vec2 origin, const Vec2 size
 
 // TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
 void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt);
+void canvasSetSize(struct CoordinateCanvas* const canvas, const Vec2 newSize);
 
 void canvasToggleBorder(struct CoordinateCanvas* const canvas);
 void canvasMakeBorderVisible(struct CoordinateCanvas* const canvas);

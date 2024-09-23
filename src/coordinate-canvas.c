@@ -109,7 +109,7 @@ struct CoordinateCanvas canvas(const uint id, const Vec2 origin, const Vec2 size
 	struct CoordinateCanvas canvas;
 	canvas.id = id;
 	canvas.origin = origin;
-	canvas.size = size;
+	canvasSetSize(&canvas, size);
 	canvas.gridUnitCnt.x = xUnitCnt;
 	canvas.gridUnitCnt.y = yUnitCnt;
 
@@ -170,6 +170,11 @@ void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUn
 	canvasAllocateAndFillVBO(canvas);
 	canvasSetVAOVertexSpecification(canvas); // needs to be respecified since model data is now at a different offset. NOTE: Might be able to avoid this by making model data first in array buffer?
 }
+void canvasSetSize(struct CoordinateCanvas* const canvas, const Vec2 newSize)
+{
+	uint MIN_CANVAS_DIMENSION = 10;
+	canvas->size = vec2(MAX(MIN_CANVAS_DIMENSION, newSize.width), MAX(MIN_CANVAS_DIMENSION, newSize.height));
+}
 
 void canvasToggleBorder(struct CoordinateCanvas* const canvas)
 {
@@ -190,7 +195,7 @@ void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate
 }
 void canvasScale(struct CoordinateCanvas* const canvas, const float scalar)
 {
-	canvas->size = vec2Scaled(canvas->size, scalar);
+	canvasSetSize(canvas, vec2Scaled(canvas->size, scalar));
 }
 
 // CANVAS DATA MANIPULATING FUNCTIONS
