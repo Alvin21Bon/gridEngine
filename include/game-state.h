@@ -60,6 +60,11 @@ struct GameState {
 
 	struct InputData inputData;
 	struct InputData previousInputData;
+
+	// used for mouse interactions with canvases. Is set to the canvas currently being interacted with, NULL otherwise
+	// WARN: this must be set to NULL if the canvas is removed from the array so no dangling pointers exist
+	// WARN: any use of this pointer must check for a NULL value
+	struct CoordinateCanvas* targetCanvasForMouseInteractions;
 };
 
 struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const ShaderProgram border);

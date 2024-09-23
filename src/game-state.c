@@ -22,6 +22,7 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 
 	gameState.inputData = inputData();
 	gameState.previousInputData = inputData();
+	gameState.targetCanvasForMouseInteractions = NULL;
 
 	gameState.preUpdate = defaultFunctionForPreAndPostUpdate;
 	gameState.postUpdate = defaultFunctionForPreAndPostUpdate;
@@ -195,6 +196,9 @@ int gameStateRemoveCanvas(struct GameState* const game, const uint id)
 	struct CoordinateCanvas* canvasToRemove = game->canvasRenderingArray[idxOfCanvasToRemove];
 	canvasDestroy(canvasToRemove);
 	free(canvasToRemove);
+
+	// avoid dangling pointer
+	if (canvasToRemove == game->targetCanvasForMouseInteractions) game->targetCanvasForMouseInteractions = NULL;
 	
 	for (int idx = idxOfCanvasToRemove; idx < game->gameInfo.numCanvases - 1; idx++)
 	{
