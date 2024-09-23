@@ -9,9 +9,13 @@
 
 typedef int Uniform;
 
-static inline int MIN(int a, int b)
+static inline float MIN(float a, float b)
 {
 	return (a < b ? a : b);
+}
+static inline float MAX(float a, float b)
+{
+	return (a > b ? a: b);
 }
 
 // map a number from one range of numbers to another range of numbers
