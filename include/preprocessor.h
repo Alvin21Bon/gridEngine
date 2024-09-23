@@ -20,4 +20,9 @@ static inline float MAP_RANGE(float input, Vec2 originalRange, Vec2 newRange)
 	return (input - originalRange.elements[0]) * ((newRange.elements[1] - newRange.elements[0]) / (originalRange.elements[1] - originalRange.elements[0])) + newRange.elements[0];
 }
 
+static inline bool IS_IN_RANGE(float input, Vec2 range)
+{
+	return range.elements[0] <= input && input <= range.elements[1];
+}
+
 #endif // GRID_PREPROCESSOR_H
