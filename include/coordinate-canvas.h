@@ -23,8 +23,6 @@ void canvasToggleBorder(struct CoordinateCanvas* const canvas);
 void canvasMakeBorderVisible(struct CoordinateCanvas* const canvas);
 void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas);
 
-void canvasToggleMovable(struct CoordinateCanvas* const canvas);
-
 void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate);
 void canvasScale(struct CoordinateCanvas* const canvas, const float scalar);
 

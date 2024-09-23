@@ -39,8 +39,10 @@ struct CoordinateCanvas {
 	struct CanvasPixel* canvasDataMemoryLocation;
 
 	struct CanvasBorder border;
-	GLboolean isMovable;
 	GLboolean isVisible;
+
+	GLboolean isMovableWithMouse;
+	GLboolean isScalableWithMouse;
 
 	/* ALLOCATED OPENGL BUFFERS SAVED FOR DELETION. DO NOT MODIFY */
 	struct {

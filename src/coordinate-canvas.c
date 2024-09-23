@@ -114,8 +114,9 @@ struct CoordinateCanvas canvas(const uint id, const Vec2 origin, const Vec2 size
 	canvas.gridUnitCnt.y = yUnitCnt;
 
 	canvas.border = border(vec3(255,255,255), 1);
-	canvas.isMovable = GL_TRUE;
 	canvas.isVisible = GL_TRUE;
+	canvas.isMovableWithMouse = GL_TRUE;
+	canvas.isScalableWithMouse = GL_TRUE;
 
 	// dynamically allocate 2D array of CanvasPixels for canvasData
 	canvas.canvasData = allocate2DPixelArray(xUnitCnt, yUnitCnt);
@@ -183,14 +184,8 @@ void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas)
 	canvas->border.isVisible = GL_FALSE;
 }
 
-void canvasToggleMovable(struct CoordinateCanvas* const canvas)
-{
-	canvas->isMovable = !canvas->isMovable;
-}
-
 void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate)
 {
-	if (!canvas->isMovable) return;
 	canvas->origin = vec2Add(canvas->origin, translate);
 }
 void canvasScale(struct CoordinateCanvas* const canvas, const float scalar)
