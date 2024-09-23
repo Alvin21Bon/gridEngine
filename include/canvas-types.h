@@ -26,6 +26,7 @@ struct CoordinateCanvas {
 	uint id; // user may make enum of canvas IDs 
 	Vec2 origin;
 	Vec2 size;
+	float aspectRatio; 
 
 	struct {
 		unsigned int x, y;
@@ -43,6 +44,7 @@ struct CoordinateCanvas {
 
 	GLboolean isMovableWithMouse;
 	GLboolean isScalableWithMouse;
+	GLboolean shouldMaintainAspectRatio;
 
 	/* ALLOCATED OPENGL BUFFERS SAVED FOR DELETION. DO NOT MODIFY */
 	struct {

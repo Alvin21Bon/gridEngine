@@ -112,11 +112,13 @@ struct CoordinateCanvas canvas(const uint id, const Vec2 origin, const Vec2 size
 	canvasSetSize(&canvas, size);
 	canvas.gridUnitCnt.x = xUnitCnt;
 	canvas.gridUnitCnt.y = yUnitCnt;
+	canvas.aspectRatio = canvas.size.width / canvas.size.height;
 
 	canvas.border = border(vec3(255,255,255), 1);
 	canvas.isVisible = GL_TRUE;
 	canvas.isMovableWithMouse = GL_TRUE;
 	canvas.isScalableWithMouse = GL_TRUE;
+	canvas.shouldMaintainAspectRatio = GL_FALSE;
 
 	// dynamically allocate 2D array of CanvasPixels for canvasData
 	canvas.canvasData = allocate2DPixelArray(xUnitCnt, yUnitCnt);
@@ -172,8 +174,24 @@ void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUn
 }
 void canvasSetSize(struct CoordinateCanvas* const canvas, const Vec2 newSize)
 {
-	uint MIN_CANVAS_DIMENSION = 10;
-	canvas->size = vec2(MAX(MIN_CANVAS_DIMENSION, newSize.width), MAX(MIN_CANVAS_DIMENSION, newSize.height));
+	const uint MIN_CANVAS_DIMENSION = 10;
+	if (!canvas->shouldMaintainAspectRatio)
+	{
+		canvas->size = vec2(MAX(MIN_CANVAS_DIMENSION, newSize.width), MAX(MIN_CANVAS_DIMENSION, newSize.height));
+		return;
+	}
+
+	Vec2 deltaSize = vec2Sub(newSize, canvas->size);
+	Vec2 newSizeWithAspectRatio;
+	if (fabsf(deltaSize.width) > fabsf(deltaSize.height)) // the one that changed the most should take precedent in how maintaining aspect ratio is handled
+		newSizeWithAspectRatio = vec2(newSize.width, newSize.width / canvas->aspectRatio);
+	else 
+		newSizeWithAspectRatio = vec2(newSize.height * canvas->aspectRatio, newSize.height);
+
+	if (newSizeWithAspectRatio.width < MIN_CANVAS_DIMENSION || newSizeWithAspectRatio.height < MIN_CANVAS_DIMENSION)
+		newSizeWithAspectRatio = canvas->aspectRatio > 1 ? vec2(MIN_CANVAS_DIMENSION * canvas->aspectRatio, MIN_CANVAS_DIMENSION) : vec2(MIN_CANVAS_DIMENSION, MIN_CANVAS_DIMENSION / canvas->aspectRatio);
+
+	canvas->size = newSizeWithAspectRatio;
 }
 
 void canvasToggleBorder(struct CoordinateCanvas* const canvas)
