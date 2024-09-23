@@ -23,5 +23,9 @@ void cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 {
 	struct GameState* game = glfwGetWindowUserPointer(window);
 	game->inputData.cursorPos.x = xPos;
-	game->inputData.cursorPos.y = yPos;
+
+	// invert the y because by default, the coordinates are relative to the top left corner (so dumb)
+	int height;
+	glfwGetWindowSize(window, NULL, &height);
+	game->inputData.cursorPos.y = height - yPos;
 }
