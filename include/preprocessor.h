@@ -29,4 +29,10 @@ static inline bool IS_IN_RANGE(float input, Vec2 range)
 	return range.elements[0] <= input && input <= range.elements[1];
 }
 
+// bottom left and top right vecs create a box, and checks whether this box captures the input vec
+static inline bool IS_IN_BOXED_RANGE(Vec2 input, Vec2 bottomLeft, Vec2 topRight)
+{
+	return (IS_IN_RANGE(input.x, vec2(bottomLeft.x, topRight.x)) && IS_IN_RANGE(input.y, vec2(bottomLeft.y, topRight.y)));
+}
+
 #endif // GRID_PREPROCESSOR_H
