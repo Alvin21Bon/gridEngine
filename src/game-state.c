@@ -15,7 +15,7 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	gameState.gameInfo.uniforms.borderColor = glGetUniformLocation(border, "borderColor");
 	gameState.gameInfo.uniforms.canvasBottomLeftCoordsInNDC = glGetUniformLocation(border, "aCanvasBottomLeftCoordsInNDC");
 
-	gameState.gameInfo.cursors.hand = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+	gameState.gameInfo.cursors.crosshair = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	gameState.gameInfo.cursors.hResize = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
 	gameState.gameInfo.cursors.vResize = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
 
@@ -288,7 +288,7 @@ void gameStateDestroy(struct GameState* game)
 		gameStateRemoveObject(game, game->objectArray[0]->id);
 	}
 
-	glfwDestroyCursor(game->gameInfo.cursors.hand);
+	glfwDestroyCursor(game->gameInfo.cursors.crosshair);
 	glfwDestroyCursor(game->gameInfo.cursors.hResize);
 	glfwDestroyCursor(game->gameInfo.cursors.vResize);
 

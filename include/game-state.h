@@ -50,7 +50,7 @@ struct GameState {
 
 		struct {
 			// these are all the standard cursors the engine will use
-			GLFWcursor* hand;
+			GLFWcursor* crosshair;
 			GLFWcursor* hResize;
 			GLFWcursor* vResize;
 		} cursors;
