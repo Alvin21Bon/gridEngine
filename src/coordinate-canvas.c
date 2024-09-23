@@ -251,7 +251,26 @@ void canvasClear(struct CoordinateCanvas* const canvas)
 	memset(canvas->canvasDataMemoryLocation, 0, canvas->sizeOfCanvasData);
 }
 
-// CANVAS DRAWING FUNCTIONS
+/*
+ * === GETTING FUNCTIONS ===
+*/
+static int canvasGetBorderPixelThickness(const struct CoordinateCanvas* const canvas)
+{
+	const int THICKNESS_MULTIPLIER = 1;
+	return THICKNESS_MULTIPLIER * canvas->border.thickness;
+}
+Vec2 canvasGetBorderOrigin(const struct CoordinateCanvas* const canvas)
+{
+	return vec2(canvas->origin.x - canvasGetBorderPixelThickness(canvas), canvas->origin.y - canvasGetBorderPixelThickness(canvas));
+}
+Vec2 canvasGetBorderSize(const struct CoordinateCanvas* const canvas)
+{
+	return vec2(canvas->size.width + (2 * canvasGetBorderPixelThickness(canvas)), canvas->size.height + (2 * canvasGetBorderPixelThickness(canvas)));
+}
+
+/*
+ * === CANVAS DRAWING FUNCTION ===
+*/
 		// openGL window context already set by engine
 void canvasDraw(struct CoordinateCanvas *const canvas, struct GameState* const game)
 {
@@ -266,10 +285,8 @@ void canvasDraw(struct CoordinateCanvas *const canvas, struct GameState* const g
 			gameStateSetBorderColorUniform(game, canvas->border.color);
 
 			// viewport encloses the canvas viewport
-			int thicknessMultiplier = 1; // pixels per unit thickness the border should be
-			int pixelThickness = thicknessMultiplier * canvas->border.thickness;
-			Vec2 borderOrigin = vec2(canvas->origin.x - pixelThickness, canvas->origin.y - pixelThickness);
-			Vec2 borderSize = vec2(canvas->size.width + (2 * pixelThickness), canvas->size.height + (2 * pixelThickness));
+			Vec2 borderOrigin = canvasGetBorderOrigin(canvas);
+			Vec2 borderSize = canvasGetBorderSize(canvas);
 			
 			glViewport(borderOrigin.x, borderOrigin.y, borderSize.width, borderSize.height);
 

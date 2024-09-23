@@ -33,7 +33,15 @@ void canvasRowFillColor(struct CoordinateCanvas* const canvas, const int rowNum,
 void canvasSetPixel(struct CoordinateCanvas* const canvas, const Vec2 pixelCoords, const struct CanvasPixel pixel);
 void canvasClear(struct CoordinateCanvas* const canvas);
 
-// CANVAS DRAWING FUNCTIONS
+/*
+ * === GETTING FUNCTIONS ===
+*/
+Vec2 canvasGetBorderOrigin(const struct CoordinateCanvas* const canvas);
+Vec2 canvasGetBorderSize(const struct CoordinateCanvas* const canvas);
+
+/*
+ * === CANVAS DRAWING FUNCTION ===
+*/
 void canvasDraw(struct CoordinateCanvas* const canvas, struct GameState* const game); 
 
 /* 
