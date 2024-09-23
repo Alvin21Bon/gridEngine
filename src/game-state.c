@@ -15,6 +15,10 @@ struct GameState gameState(GLFWwindow* window, const ShaderProgram canvas, const
 	gameState.gameInfo.uniforms.borderColor = glGetUniformLocation(border, "borderColor");
 	gameState.gameInfo.uniforms.canvasBottomLeftCoordsInNDC = glGetUniformLocation(border, "aCanvasBottomLeftCoordsInNDC");
 
+	gameState.gameInfo.cursors.hand = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+	gameState.gameInfo.cursors.hResize = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+	gameState.gameInfo.cursors.vResize = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+
 	gameState.timeData.currentTime = glfwGetTime();
 	gameState.timeData.previousTime = gameState.timeData.currentTime;
 	gameState.timeData.deltaTime = 0;
@@ -283,6 +287,10 @@ void gameStateDestroy(struct GameState* game)
 		printf("Removed game object with ID of %u, NumObjects: %d\n", game->objectArray[0]->id, game->gameInfo.numObjects - 1);
 		gameStateRemoveObject(game, game->objectArray[0]->id);
 	}
+
+	glfwDestroyCursor(game->gameInfo.cursors.hand);
+	glfwDestroyCursor(game->gameInfo.cursors.hResize);
+	glfwDestroyCursor(game->gameInfo.cursors.vResize);
 
 	glDeleteProgram(game->gameInfo.programs.canvas);
 	glDeleteProgram(game->gameInfo.programs.border);

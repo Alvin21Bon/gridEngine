@@ -47,6 +47,13 @@ struct GameState {
 			Uniform borderColor;
 			Uniform canvasBottomLeftCoordsInNDC;
 		} uniforms;
+
+		struct {
+			// these are all the standard cursors the engine will use
+			GLFWcursor* hand;
+			GLFWcursor* hResize;
+			GLFWcursor* vResize;
+		} cursors;
 		
 	} gameInfo;
 
@@ -108,7 +115,7 @@ void gameStateSetCanvasBottomLeftCoordsUniform(struct GameState* const game, con
 // WARN: USE THIS FUNCTION INSTEAD TO UPDATE THE CURRENTLY ACTIVE PROGRAM
 void gameStateUseProgram(struct GameState* const game, ShaderProgram program);
 
-// removes every canvas and object in the rendering array and destroys every shader program
+// removes every canvas and object in the rendering array, destroys every shader program, and destroys every cursor
 // NOTE: a complete destroying of the engine is done in a seperate encapsulating functions which also calls gameStateDestroy 
 void gameStateDestroy(struct GameState* game);
 
