@@ -296,6 +296,7 @@ void gameStateSetCursorState(struct GameState* const game, int cursorState)
 			glfwSetCursor(game->gameInfo.window, game->gameInfo.cursors.vResize);
 			break;
 		default:
+			printf("GAME_STATE_SET_CURSOR_STATE ERROR: loose int values somehow entered this function. FIX.\n");
 			break;
         }
 }
