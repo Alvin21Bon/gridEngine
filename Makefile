@@ -2,7 +2,7 @@
 # COMPILER
 CC := gcc
 CFLAGS := -Wall -Wextra -c
-DEBUG_FLAGS = -g
+DEBUG_FLAGS = -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 
 # DIRECTORIES
 RELEASE_DIR := build/release
