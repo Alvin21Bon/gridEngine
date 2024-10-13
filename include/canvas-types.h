@@ -1,5 +1,4 @@
-#ifndef GRID_CANVAS_TYPES_H
-#define GRID_CANVAS_TYPES_H
+#pragma once
 
 #include "shared.h"
 
@@ -52,4 +51,3 @@ struct CoordinateCanvas {
 	} glBuffers;
 };
 
-#endif // GRID_CANVAS_TYPES_H

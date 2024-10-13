@@ -1,5 +1,4 @@
-#ifndef GRID_GRID_ENGINE_H
-#define GRID_GRID_ENGINE_H
+#pragma once
 
 #include "canvas-types.h"
 #include "canvas-border.h"
@@ -25,4 +24,3 @@ void gridEngineTerminate(struct GameState* game);
 // called in the engine entrypoint, returns GRID_ENGINE_ERROR if an error occured
 int gridEngineGameLoop(struct GameState* game);
 
-#endif // GRID_GRID_ENGINE_H

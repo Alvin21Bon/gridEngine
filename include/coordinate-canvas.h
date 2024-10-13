@@ -1,5 +1,4 @@
-#ifndef GRID_COORDINATE_CANVAS_H
-#define GRID_COORDINATE_CANVAS_H
+#pragma once
 
 #include "shared.h"
 #include "canvas-types.h"
@@ -50,5 +49,3 @@ void canvasDraw(struct CoordinateCanvas* const canvas, struct GameState* const g
 void canvasDataFree(struct CoordinateCanvas* canvas);
 void canvasDestroy(struct CoordinateCanvas* canvas);
 
-#endif // GRID_COORDINATE_CANVAS_H
-//

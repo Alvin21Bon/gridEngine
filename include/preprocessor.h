@@ -1,5 +1,4 @@
-#ifndef GRID_PREPROCESSOR_H
-#define GRID_PREPROCESSOR_H
+#pragma once
 
 #include <lina/lina.h>
 
@@ -35,4 +34,3 @@ static inline bool IS_IN_BOXED_RANGE(Vec2 input, Vec2 bottomLeft, Vec2 topRight)
 	return (IS_IN_RANGE(input.x, vec2(bottomLeft.x, topRight.x)) && IS_IN_RANGE(input.y, vec2(bottomLeft.y, topRight.y)));
 }
 
-#endif // GRID_PREPROCESSOR_H

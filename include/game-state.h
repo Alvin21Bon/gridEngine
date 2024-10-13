@@ -1,5 +1,4 @@
-#ifndef GRID_GAME_STATE_H
-#define GRID_GAME_STATE_H
+#pragma once
 
 #include "shared.h"
 #include "input-data.h"
@@ -132,4 +131,3 @@ void gameStateSetCursorState(struct GameState* const game, int cursorState); // 
 // NOTE: a complete destroying of the engine is done in a seperate encapsulating functions which also calls gameStateDestroy 
 void gameStateDestroy(struct GameState* game);
 
-#endif // GRID_GAME_STATE_H

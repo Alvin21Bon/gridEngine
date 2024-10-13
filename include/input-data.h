@@ -1,5 +1,4 @@
-#ifndef GRID_INPUT_DATA_H
-#define GRID_INPUT_DATA_H
+#pragma once
 
 #include "shared.h"
 
@@ -22,4 +21,3 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void cursorPosCallback(GLFWwindow* window, double xPos, double yPos);
 
-#endif // GRID_INPUT_DATA_H

@@ -1,5 +1,4 @@
-#ifndef GRID_GAME_OBJECT_H
-#define GRID_GAME_OBJECT_H
+#pragma once
 
 #include "canvas-types.h"
 
@@ -37,4 +36,3 @@ int defaultObjectUpdateFunction(struct GameObject* const object, struct GameStat
 void defaultObjectDrawFunction(const struct GameObject* const object, struct CoordinateCanvas* const canvas);
 void defaultObjectDestroyFunction(struct GameObject* object);
 
-#endif // GRID_GAME_OBJECT_H

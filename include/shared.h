@@ -1,5 +1,4 @@
-#ifndef GRID_SHARED_H
-#define GRID_SHARED_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,4 +9,3 @@
 #include "shaders.h"
 #include "preprocessor.h"
 
-#endif // GRID_SHARED_H
