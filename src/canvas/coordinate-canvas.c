@@ -1,4 +1,4 @@
-#include "../include/grid-engine.h"
+#include "../../include/engine/grid-engine.h"
 
 /* 
  * === ALLOCATE CANVAS DATA MEMORY AND INITIALIZE/ALLOCATE/FILL OPENGL BUFFERS FOR RENDERING ===

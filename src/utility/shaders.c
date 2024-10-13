@@ -1,4 +1,4 @@
-#include "../include/grid-engine.h"
+#include "../../include/engine/grid-engine.h"
 
 static char* loadFileIntoString(const char* fileName)
 {

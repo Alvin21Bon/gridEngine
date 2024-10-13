@@ -1,14 +1,14 @@
 #pragma once
 
-#include "canvas-types.h"
-#include "canvas-border.h"
-#include "canvas-pixel.h"
-#include "coordinate-canvas.h"
+#include "../canvas/canvas-types.h"
+#include "../canvas/canvas-border.h"
+#include "../canvas/canvas-pixel.h"
+#include "../canvas/coordinate-canvas.h"
 #include "input-data.h"
-#include "game-object.h"
-#include "game-state.h"
 #include "grid-engine-states.h"
-#include "shared.h"
+#include "../game/game-object.h"
+#include "../game/game-state.h"
+#include "../utility/shared.h"
 
 // TODO: ADD CONFIG SUPPORT WITH TOML
 // NOTE: This function automatically does a lot of needed setup for the window, such as 

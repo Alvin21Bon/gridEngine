@@ -1,8 +1,8 @@
 #pragma once
 
-#include "shared.h"
+#include "../utility/shared.h"
 #include "canvas-types.h"
-#include "game-state.h"
+#include "../game/game-state.h"
 
 /* 
  * === CONSTRUCTOR FUNCTIONS === 

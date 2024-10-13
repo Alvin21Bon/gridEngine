@@ -1,8 +1,8 @@
 #pragma once
 
-#include "shared.h"
-#include "input-data.h"
-#include "canvas-types.h"
+#include "../utility/shared.h"
+#include "../engine/input-data.h"
+#include "../canvas/canvas-types.h"
 #include "game-object.h"
 
 /* 

@@ -1,4 +1,4 @@
-#include "../include/grid-engine.h"
+#include "../../include/engine/grid-engine.h"
 
 int defaultObjectUpdateFunction(struct GameObject* const object, struct GameState* const game) {return GRID_ENGINE_SUCCESS;}
 void defaultObjectDrawFunction(const struct GameObject* const object, struct CoordinateCanvas* const canvas) {return;}

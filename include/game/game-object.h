@@ -1,6 +1,6 @@
 #pragma once
 
-#include "canvas-types.h"
+#include "../canvas/canvas-types.h"
 
 
 struct GameState;
