@@ -1,2 +1,5 @@
 Diagnostics:
   UnusedIncludes: None
+CompileFlags:
+  Add: [-xc, -std=c23, -Wall, -Wextra]
+  Compiler: gcc
