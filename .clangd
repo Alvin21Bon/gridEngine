@@ -1,5 +1,6 @@
 Diagnostics:
   UnusedIncludes: None
+  Suppress: [-Wunused-function, -Wsign-compare, -Wunused-parameter, -Wmissing-field-initializers]
 CompileFlags:
   Add: [-xc, -std=c23, -Wall, -Wextra]
   Compiler: gcc
