@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utility/shared.h"
+#include "../shared.h"
 
 struct InputData {
 	// NOTE: keeps arrays first field so constructor initializes all fields to zero correctly

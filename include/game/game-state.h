@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../utility/shared.h"
-#include "../engine/input-data.h"
+#include "../utility/glfw-handling/input-data.h"
 #include "../canvas/canvas-types.h"
 #include "game-object.h"
 
