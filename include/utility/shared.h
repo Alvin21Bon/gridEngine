@@ -6,6 +6,6 @@
 #include "opengl/glad.h"
 #include <GLFW/glfw3.h>
 #include <lina/lina.h>
-#include "opengl/shaders.h"
+#include "opengl/shader-programs.h"
 #include "preprocessor.h"
 
