@@ -36,7 +36,7 @@ void cursorSetState(struct CursorStateHandler* const cursor, GLFWwindow* const w
 			break;
 	}
 }
-void cursorStateHandlerDestory(struct CursorStateHandler* cursor)
+void cursorStateHandlerDestroy(struct CursorStateHandler* cursor)
 {
 	printf("Destroying CursorStatehandler...\n");
 	glfwDestroyCursor(cursor->shapes.crosshair);

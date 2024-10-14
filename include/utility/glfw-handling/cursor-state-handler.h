@@ -15,7 +15,7 @@ enum CursorStates {
  * Manages all functionality pertaining to: 
  * 	- Managing state of the cursor, including switching cursors 
  * 	- Storing different cursors
- * 	- Destorying the GLFW cursors
+ * 	- Destroying the GLFW cursors
 */
 struct CursorStateHandler {
 	struct {
@@ -27,4 +27,4 @@ struct CursorStateHandler {
 
 struct CursorStateHandler cursorStateHandler(GLFWwindow* const window);
 void cursorSetState(struct CursorStateHandler* const cursor, GLFWwindow* const window, enum CursorStates stateToSet);
-void cursorStateHandlerDestory(struct CursorStateHandler* cursor);
+void cursorStateHandlerDestroy(struct CursorStateHandler* cursor);
