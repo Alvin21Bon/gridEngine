@@ -5,6 +5,7 @@
 #include "../canvas/canvas-pixel.h"
 #include "../canvas/coordinate-canvas.h"
 #include "../utility/glfw-handling/input-data.h"
+#include "../utility/glfw-handling/cursor-state-handler.h"
 #include "grid-engine-states.h"
 #include "../game/game-object.h"
 #include "../game/game-state.h"
