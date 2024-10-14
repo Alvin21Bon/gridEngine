@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../../../include/engine/grid-engine.h"
 
 struct CursorStateHandler cursorStateHandler(GLFWwindow* const window)
