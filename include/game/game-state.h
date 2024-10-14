@@ -2,6 +2,7 @@
 
 #include "../utility/shared.h"
 #include "../utility/glfw-handling/input-data.h"
+#include "../utility/glfw-handling/cursor-state-handler.h"
 #include "../canvas/canvas-types.h"
 #include "game-object.h"
 
@@ -55,14 +56,7 @@ struct GameState {
 		} cursors;
 
 		// TODO: this struct getting way too bulky. this definitely needs to be seperated into seperate structs at some point and better design, anonymous enum :/
-		enum {
-			GRID_CURSOR_DEFAULT,
-			GRID_CURSOR_MOVING,
-			GRID_CURSOR_RESIZING_LEFT,
-			GRID_CURSOR_RESIZING_RIGHT,
-			GRID_CURSOR_RESIZING_BELOW,
-			GRID_CURSOR_RESIZING_ABOVE
-		} cursorState;
+		enum CursorStates cursorState;
 		
 	} gameInfo;
 
