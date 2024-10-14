@@ -6,8 +6,6 @@
 #define GRID_GAME_MAX_GAME_OBJECTS_AMT 512
 #define GRID_GAME_MAX_FPS 60
 
-typedef int Uniform;
-
 static inline float MIN(float a, float b)
 {
 	return (a < b ? a : b);
