@@ -8,4 +8,5 @@
 #include <lina/lina.h>
 #include "opengl/shader-programs.h"
 #include "preprocessor.h"
+#include "math-util.h"
 
