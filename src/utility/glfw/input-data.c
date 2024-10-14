@@ -3,7 +3,7 @@
 struct InputData inputData()
 {
 	// zeroes out entire struct
-	struct InputData inputData = { {0} };
+	struct InputData inputData = {}; // c23 zero initialization
 	return inputData;
 }
 
