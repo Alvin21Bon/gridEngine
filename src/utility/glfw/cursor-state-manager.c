@@ -1,16 +1,16 @@
 #include "../../../include/engine/grid-engine.h"
 
-struct CursorStateHandler cursorStateHandler(GLFWwindow* const window)
+struct CursorStateManager cursorStateManager(GLFWwindow* const window)
 {
-	struct CursorStateHandler cursorStateHandler;
-	cursorStateHandler.shapes.crosshair = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
-	cursorStateHandler.shapes.hResize = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-	cursorStateHandler.shapes.vResize = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+	struct CursorStateManager cursorStateManager;
+	cursorStateManager.shapes.crosshair = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
+	cursorStateManager.shapes.hResize = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+	cursorStateManager.shapes.vResize = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
 
-	cursorSetState(&cursorStateHandler, window, GRID_CURSOR_DEFAULT);
-	return cursorStateHandler;
+	cursorSetState(&cursorStateManager, window, GRID_CURSOR_DEFAULT);
+	return cursorStateManager;
 }
-void cursorSetState(struct CursorStateHandler* const cursor, GLFWwindow* const window, enum CursorStates stateToSet)
+void cursorSetState(struct CursorStateManager* const cursor, GLFWwindow* const window, enum CursorStates stateToSet)
 {
 	if (cursor->state == stateToSet) return;
 
@@ -36,9 +36,9 @@ void cursorSetState(struct CursorStateHandler* const cursor, GLFWwindow* const w
 			break;
 	}
 }
-void cursorStateHandlerDestroy(struct CursorStateHandler* cursor)
+void cursorStateManagerDestroy(struct CursorStateManager* cursor)
 {
-	printf("Destroying CursorStatehandler...\n");
+	printf("Destroying CursorStateManager...\n");
 	glfwDestroyCursor(cursor->shapes.crosshair);
 	glfwDestroyCursor(cursor->shapes.hResize);
 	glfwDestroyCursor(cursor->shapes.vResize);

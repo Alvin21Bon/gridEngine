@@ -17,7 +17,7 @@ enum CursorStates {
  * 	- Storing different cursors
  * 	- Destroying the GLFW cursors
 */
-struct CursorStateHandler {
+struct CursorStateManager {
 	struct {
 		typeof(GLFWcursor*) crosshair, hResize, vResize;
 	} shapes;
@@ -25,6 +25,6 @@ struct CursorStateHandler {
 	enum CursorStates state;
 };
 
-struct CursorStateHandler cursorStateHandler(GLFWwindow* const window);
-void cursorSetState(struct CursorStateHandler* const cursor, GLFWwindow* const window, enum CursorStates stateToSet);
-void cursorStateHandlerDestroy(struct CursorStateHandler* cursor);
+struct CursorStateManager cursorStateManager(GLFWwindow* const window);
+void cursorSetState(struct CursorStateManager* const cursor, GLFWwindow* const window, enum CursorStates stateToSet);
+void cursorStateManagerDestroy(struct CursorStateManager* cursor);
