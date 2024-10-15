@@ -4,7 +4,7 @@ int defaultObjectUpdateFunction(struct GameObject* const object, struct GameStat
 void defaultObjectDrawFunction(const struct GameObject* const object, struct CoordinateCanvas* const canvas) {return;}
 void defaultObjectDestroyFunction(struct GameObject* object) {return;}
 
-struct GameObject gameObject(const uint id, const uint canvasId)
+struct GameObject gameObject(const char* id, const uint canvasId)
 {
 	struct GameObject gameObject;
 	gameObject.id = id;

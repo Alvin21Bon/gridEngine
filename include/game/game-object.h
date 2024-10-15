@@ -20,14 +20,14 @@ struct GameState;
  * NOTE: in the draw calls, it is GUARANTEED the target canvas exists since the engine checks this before the draw function is called
 */
 struct GameObject {
-	uint id;
+	char* id;
 	uint canvasId; // stores ID since storing a pointer to the canvas could be dangerous if canvas is already removed from the renderingArray
 	int (*update)(struct GameObject* const, struct GameState* const);
 	void (*draw)(const struct GameObject* const, struct CoordinateCanvas* const);
 	void (*destroy)(struct GameObject*);
 };
 
-struct GameObject gameObject(const uint id, const uint canvasId);
+struct GameObject gameObject(const char* id, const uint canvasId);
 void gameObjectAttachUpdateFunction(struct GameObject* const object, int (*updateFunction)(struct GameObject* const, struct GameState* const));
 void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const, struct CoordinateCanvas* const));
 void gameObjectAttachDestroyFunction(struct GameObject* const object, void (*destroyFunction)(struct GameObject*));
