@@ -9,4 +9,5 @@
 #include "opengl/shader-programs.h"
 #include "preprocessor.h"
 #include "math-util.h"
+#include "memory-util.h"
 
