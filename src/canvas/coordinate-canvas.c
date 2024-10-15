@@ -103,7 +103,7 @@ static void canvasUpdateVBOCanvasData(struct CoordinateCanvas* const canvas)
 */
 	// space is allocated for the canvasData, MEMORY MUST BE FREED (see above allocate function)
 	// allocted buffers for openGL must also be destroyed
-struct CoordinateCanvas canvas(const uint id, const Vec2 origin, const Vec2 size, 
+struct CoordinateCanvas canvas(const char* id, const Vec2 origin, const Vec2 size, 
 			       const unsigned int xUnitCnt, const unsigned int yUnitCnt)
 {
 	struct CoordinateCanvas canvas;

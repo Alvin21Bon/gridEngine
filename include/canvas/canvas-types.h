@@ -22,7 +22,7 @@ struct CanvasPixel {
 };
 
 struct CoordinateCanvas {
-	uint id; // user may make enum of canvas IDs 
+	char* id; 
 	Vec2 origin;
 	Vec2 size;
 	float aspectRatio; 

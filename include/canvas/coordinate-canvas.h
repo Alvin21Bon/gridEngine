@@ -8,7 +8,7 @@
  * === CONSTRUCTOR FUNCTIONS === 
 */
 	// space is allocated for the canvasData, MEMORY MUST BE FREED
-struct CoordinateCanvas canvas(const uint id, const Vec2 origin, const Vec2 size, 
+struct CoordinateCanvas canvas(const char* id, const Vec2 origin, const Vec2 size, 
 			       const unsigned int xUnitCnt, const unsigned int yUnitCnt);
 
 /* 
