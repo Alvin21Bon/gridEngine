@@ -21,6 +21,7 @@
  * ===
 */
 struct GameState {
+	struct InputData inputData;
 	// NOTE: arrays will always stay sorted by their IDs
 	struct CoordinateCanvas* canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
 	struct GameObject* objectArray[GRID_GAME_MAX_GAME_OBJECTS_AMT];
@@ -68,7 +69,6 @@ struct GameState {
 		double FPS;
 	} timeData;
 
-	struct InputData inputData;
 	struct InputData previousInputData;
 
 	// used for mouse interactions with canvases. Is set to the canvas currently being interacted with, NULL otherwise
