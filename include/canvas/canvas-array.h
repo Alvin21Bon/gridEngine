@@ -19,8 +19,8 @@ struct CanvasArray canvasArray();
 bool canvasArrayAddHeapCopy(struct CanvasArray* const canvasArray, const struct CoordinateCanvas canvas);
 
 // @returns {bool} GRID_ENGINE_ERROR if id not found
-// NOTE: this destroys the removed canvas
-bool canvasArrayRemove(struct CanvasArray* const canvasArray, const char* id);
+// NOTE: this destroys the removed canvases
+bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* id);
 
 // @returns array of canvases that match the ID
 // WARN: the returned CanvasArray must not be destroyed, or the canvases inside be removed, or else the original CanvasArray will be affected
