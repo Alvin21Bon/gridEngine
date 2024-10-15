@@ -9,7 +9,7 @@ struct CanvasArray canvasArray()
 
 // @returns {bool} GRID_ENGINE_ERROR if canvas array full
 // NOTE: limited to this file scope since CanvasArray elements must typically always be on heap
-static bool canvasArrayAdd(struct CanvasArray* const canvasArray, struct CoordinateCanvas* canvas)
+static bool canvasArrayAdd(struct CanvasArray* const canvasArray, struct CoordinateCanvas* const canvas)
 {
 	if (canvasArray->num == GRID_MAX_CANVAS_AMT) return GRID_ENGINE_ERROR;
 
