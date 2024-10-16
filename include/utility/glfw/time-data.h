@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../shared.h"
-
 struct TimeData {
 	double currentTime;
 	double previousTime;

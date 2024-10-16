@@ -1,7 +1,8 @@
 #pragma once
 
+#include "../utility/utility-header.h"
+
 #include "game-object.h"
-#include "../utility/shared.h"
 
 struct GameObjectArray {
 	union {

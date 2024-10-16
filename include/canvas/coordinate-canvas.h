@@ -1,8 +1,10 @@
 #pragma once
 
-#include "../utility/shared.h"
+#include "../utility/utility-header.h"
+
 #include "canvas-types.h"
-#include "../game/game-state.h"
+
+#include "../game/game-state.h" // FIX: drawing will be seperated from canvas functionality
 
 /* 
  * === CONSTRUCTOR FUNCTIONS === 

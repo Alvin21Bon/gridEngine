@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../shared.h"
+#include "GLFW/glfw3.h"
 
 enum CursorStates {
 	GRID_CURSOR_DEFAULT,

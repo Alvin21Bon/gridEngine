@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../shared.h"
+#include <lina/lina.h>
 
 // ======================== MAKING SHADER PROGRAMS
 typedef unsigned int ShaderProgram;

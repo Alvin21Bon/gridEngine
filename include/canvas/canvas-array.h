@@ -1,7 +1,8 @@
 #pragma once
 
+#include "../utility/utility-header.h"
+
 #include "canvas-types.h"
-#include "../utility/shared.h"
 
 struct CanvasArray {
 	union {

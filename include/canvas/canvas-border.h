@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../utility/shared.h"
+#include "../utility/utility-header.h"
+
 #include "canvas-types.h"
 
 /* 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shared.h"
+#include <string.h>
 
 // Takes a splice of memory on range [start, end) and copies it to another address
 // @exception {SegmentationFault}

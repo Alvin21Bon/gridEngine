@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../utility/shared.h"
-#include "../utility/glfw/input-data.h"
-#include "../utility/glfw/cursor-state-manager.h"
-#include "../canvas/canvas-types.h"
+#include "../utility/utility-header.h"
+#include "../canvas/canvas-header.h"
+
 #include "game-object.h"
 
 /* 

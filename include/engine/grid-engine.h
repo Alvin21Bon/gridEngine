@@ -1,17 +1,7 @@
 #pragma once
 
-#include "../canvas/canvas-types.h"
-#include "../canvas/canvas-border.h"
-#include "../canvas/canvas-pixel.h"
-#include "../canvas/coordinate-canvas.h"
-#include "../canvas/canvas-array.h"
-#include "../game/game-object-array.h"
-#include "../utility/glfw/input-data.h"
-#include "../utility/glfw/cursor-state-manager.h"
-#include "grid-engine-states.h"
-#include "../game/game-object.h"
-#include "../game/game-state.h"
-#include "../utility/shared.h"
+#include "../utility/utility-header.h"
+#include "../game/game-header.h"
 
 // TODO: ADD CONFIG SUPPORT WITH TOML
 // NOTE: This function automatically does a lot of needed setup for the window, such as 

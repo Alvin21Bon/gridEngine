@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../canvas/canvas-types.h"
+#include "../canvas/canvas-header.h"
 
-
-struct GameState;
+#include "game-state.h"
 
 /* 
  *
