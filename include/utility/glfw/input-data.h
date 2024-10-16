@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../shared.h"
+#include "GLFW/glfw3.h"
+#include "lina/lina.h"
 
 struct InputData {
 	// NOTE: keeps arrays first field so constructor initializes all fields to zero correctly
 	bool keyFlags[GLFW_KEY_LAST + 1];
 	bool mouseFlags[GLFW_MOUSE_BUTTON_LAST + 1];
-	struct {
-		double x, y;
-	} cursorPos;
+	dVec2 cursorPos;
 };
 
 struct InputData inputData();
