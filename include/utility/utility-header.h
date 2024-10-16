@@ -4,6 +4,7 @@
 
 #include "memory-util.h"
 #include "math-util.h"
+#include "constants.h"
 
 #include "glfw/cursor-state-manager.h"
 #include "glfw/input-data.h"
