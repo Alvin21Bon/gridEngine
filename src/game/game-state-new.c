@@ -1,6 +1,8 @@
 #include "../../include/engine/grid-engine.h"
 #include "../../include/game/game-state-new.h"
 
+static bool defaultPreAndPostUpdateFunction(struct GameState1* gameState) {return GRID_ENGINE_SUCCESS;}
+
 struct GameState1 gameState1()
 {
 	struct GameState1 gameState;
@@ -9,8 +11,16 @@ struct GameState1 gameState1()
 	gameState.time = timeData();
 	gameState.input = inputData();
 
+	gameState.preUpdate = defaultPreAndPostUpdateFunction;
+	gameState.postUpdate = defaultPreAndPostUpdateFunction;
+
 	return gameState;
 }
+
+void gameState1AttachPreUpdateFunction(struct GameState1* gameState, bool (*preUpdateFunction)(struct GameState1*))
+	{gameState->preUpdate = preUpdateFunction;}
+void gameState1AttachPostUpdateFunction(struct GameState1* gameState, bool (*postUpdateFunction)(struct GameState1*))
+	{gameState->postUpdate = postUpdateFunction;}
 
 void gameState1Destroy(struct GameState1* const gameState)
 {

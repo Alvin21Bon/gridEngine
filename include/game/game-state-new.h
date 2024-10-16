@@ -1,3 +1,5 @@
+#pragma once
+
 #include "game-object-array.h"
 #include "../canvas/canvas-array.h"
 #include "../utility/glfw/input-data.h"
@@ -18,8 +20,14 @@ struct GameState1 {
 	struct GameObjectArray gameObjectArray;
 	struct InputData input;
 	struct TimeData time;
+
+	bool (*preUpdate)(struct GameState1*);
+	bool (*postUpdate)(struct GameState1*);
 };
 
 struct GameState1 gameState1();
+
+void gameState1AttachPreUpdateFunction(struct GameState1* gameState, bool (*preUpdateFunction)(struct GameState1*));
+void gameState1AttachPostUpdateFunction(struct GameState1* gameState, bool (*postUpdateFunction)(struct GameState1*));
 
 void gameState1Destroy(struct GameState1* const gameState);
