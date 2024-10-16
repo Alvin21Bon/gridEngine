@@ -11,4 +11,5 @@
 #include "math-util.h"
 #include "memory-util.h"
 #include "glfw/time-data.h"
+#include "glfw/cursor-state-manager.h"
 
