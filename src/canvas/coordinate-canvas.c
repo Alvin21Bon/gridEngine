@@ -323,6 +323,7 @@ void canvasDataFree(struct CoordinateCanvas* canvas)
 void canvasDestroy(struct CoordinateCanvas* canvas)
 {
 	// free the canvas data
+	// TODO: USE NEW MEMORY UTIL FOR 2D ARRAYS
 	canvasDataFree(canvas);
 
 	// destroy the allocated buffers
