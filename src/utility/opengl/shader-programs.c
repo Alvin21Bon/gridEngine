@@ -149,7 +149,7 @@ void shaderProgramManagerUseProgram(struct ShaderProgramManager* const shaderPro
 	glUseProgram(programToUse);
 	shaderProgramManager->programs.currentlyActive = programToUse;
 }
-void shaderProgramManagerSetGridUnitCntUniform(struct ShaderProgramManager* const shaderProgramManager, uVec2 gridUnitCnt)
+void shaderProgramManagerSetGridUnitCntUniform(struct ShaderProgramManager* const shaderProgramManager, const uVec2 gridUnitCnt)
 {
 	// dont use wrapper so currentlyActive is not set
 	glUseProgram(shaderProgramManager->programs.canvas);
