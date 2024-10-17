@@ -19,7 +19,7 @@ enum CursorStates {
 */
 struct CursorStateManager {
 	struct {
-		typeof(GLFWcursor*) crosshair, hResize, vResize;
+		GLFWcursor *crosshair, *hResize, *vResize;
 	} shapes;
 
 	enum CursorStates state;
