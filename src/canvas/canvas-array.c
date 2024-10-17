@@ -80,6 +80,7 @@ void canvasArrayDestroy(struct CanvasArray* const canvasArray)
 		struct CoordinateCanvas* canvas = canvasArray->elements[idx];
 		canvasDestroy(canvas);
 		free(canvas);
+		canvas = nullptr;
 	}
 
 	canvasArray->num = 0;

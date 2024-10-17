@@ -77,7 +77,9 @@ void gameObjectArrayDestroy(struct GameObjectArray* const gameObjectArray)
 	{
 		struct GameObject* gameObject = gameObjectArray->elements[idx];
 		gameObject->destroy(gameObject);
+
 		free(gameObject);
+		gameObject = nullptr;
 	}
 
 	gameObjectArray->num = 0;

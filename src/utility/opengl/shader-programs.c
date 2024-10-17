@@ -86,7 +86,7 @@ ShaderProgram constructShaderProgramFromString(const char* vertexSource, const c
 }
 ShaderProgram constructShaderProgramFromFile(const char* vertexPath, const char* fragmentPath)
 {
-	const char* vertexSource, *fragmentSource;
+	const char *vertexSource, *fragmentSource;
 	ShaderProgram shaderProgram;
 
 	vertexSource = loadFileIntoString(vertexPath);
@@ -99,8 +99,10 @@ ShaderProgram constructShaderProgramFromFile(const char* vertexPath, const char*
 
 	shaderProgram = constructShaderProgramFromString(vertexSource, fragmentSource);
 
-	free((void*)vertexSource);
-	free((void*)fragmentSource);
+	free(vertexSource);
+	vertexSource = nullptr;
+	free(fragmentSource);
+	fragmentSource = nullptr;
 
 	return shaderProgram;
 }
