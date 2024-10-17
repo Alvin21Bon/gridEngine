@@ -12,38 +12,40 @@
 struct CanvasBorder {
 	Vec3 color;
 	float thickness;
-	GLboolean isVisible;
+	bool isVisible;
 };
 
 // RGB values for color go up to 255
 struct CanvasPixel {
 	Vec3 color;
-	GLboolean isVisible;
+	bool isVisible;
 };
 
 struct CoordinateCanvas {
 	char* id; 
 	Vec2 origin;
 	Vec2 size;
+	uVec2 gridUnitCnt;
 	float aspectRatio; 
 
 	struct {
-		unsigned int x, y;
-	} gridUnitCnt;
-	// dynamically allocated 2D array based on the gridUnitCnt values
-	// coordinate for the grid start at (0, 0)
-	struct CanvasPixel** canvasData; 
+		bool isMoveableWithMouse;
+		bool isMoveable; // if false, overrides mouse movement
+		bool isScalableWithMouse;
+		bool isScalable; // if false, overrides mouse scaling
+		bool shouldMaintainAspectRatio;
+	} options;
+
+	// coordinates for the grid start at (0, 0)
+	struct CanvasPixel** pixels; 
+	// points to the actual location of contigous memory of pixels
+	struct CanvasPixel* addressOfPixelArray;
+
 	unsigned long numPixels;
 	unsigned long sizeOfCanvasData;
-	// points to the actual location of contigous memory of canvas data
-	struct CanvasPixel* canvasDataMemoryLocation;
 
 	struct CanvasBorder border;
 	GLboolean isVisible;
-
-	GLboolean isMovableWithMouse;
-	GLboolean isScalableWithMouse;
-	GLboolean shouldMaintainAspectRatio;
 
 	/* ALLOCATED OPENGL BUFFERS SAVED FOR DELETION. DO NOT MODIFY */
 	struct {
