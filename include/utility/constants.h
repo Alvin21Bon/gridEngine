@@ -3,4 +3,5 @@
 #define GRID_MAX_CANVAS_AMT 64
 #define GRID_MAX_GAME_OBJECTS_AMT 512
 #define GRID_MAX_FPS 60
+#define GRID_BORDER_THICKNESS_MULTIPLIER 1 // how many pixels thick per border thickness value
 
