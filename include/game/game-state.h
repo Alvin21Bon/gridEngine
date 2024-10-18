@@ -22,8 +22,8 @@
 struct GameState {
 	struct InputData inputData;
 	// NOTE: arrays will always stay sorted by their IDs
-	struct CoordinateCanvas* canvasRenderingArray[GRID_GAME_MAX_CANVAS_AMT];
-	struct GameObject* objectArray[GRID_GAME_MAX_GAME_OBJECTS_AMT];
+	struct CoordinateCanvas* canvasRenderingArray[GRID_MAX_CANVAS_AMT];
+	struct GameObject* objectArray[GRID_MAX_GAME_OBJECTS_AMT];
 
 	// these will *optionally* be defined by the user for functions that will return before and after the game state updates via the game objects
 	int (*preUpdate)(struct GameState*);
