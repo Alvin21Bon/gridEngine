@@ -1,7 +1,7 @@
 # === BEGIN DECLARING VARIABLES FOR USE IN MAKEFILE
 # COMPILER
 CC := gcc
-CFLAGS := -Wall -Wextra -Iinclude -std=c23 -std=gnu23 -Wno-unused-parameter -Wno-missing-field-initializers -Wno-sign-compare -c
+CFLAGS := -Wall -Wextra -Iinclude -Iinclude/utility/glfw -std=c23 -std=gnu23 -Wno-unused-parameter -Wno-missing-field-initializers -Wno-sign-compare -c
 DEBUG_FLAGS = -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 
 # DIRECTORIES
