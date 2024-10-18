@@ -1,4 +1,4 @@
-#include "../../include/master-header.h"
+#include "../../../include/master-header.h"
 
 struct CursorStateManager cursorStateManager(GLFWwindow* const window)
 {
