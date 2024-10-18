@@ -1,4 +1,7 @@
-#include "../../../include/master-header.h"
+#include "utility/glfw/cursor-state-manager.h"
+
+#include "glfw.h"
+#include <stdio.h>
 
 struct CursorStateManager cursorStateManager(GLFWwindow* const window)
 {

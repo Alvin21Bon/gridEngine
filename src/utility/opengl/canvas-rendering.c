@@ -1,4 +1,4 @@
-#include "../../../include/master-header.h"
+#include "utility/opengl/canvas-rendering.h"
 
 struct CanvasRenderer canvasRenderer(const struct CoordinateCanvas* const canvas);
 void canvasRendererDestory(struct CanvasRenderer* const canvasRenderer);

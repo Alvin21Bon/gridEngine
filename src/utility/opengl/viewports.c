@@ -1,4 +1,6 @@
-#include "../../../include/master-header.h"
+#include "utility/opengl/viewports.h"
+
+#include "utility/opengl/glad.h"
 
 void viewportUse(const struct Viewport* const viewport)
 {

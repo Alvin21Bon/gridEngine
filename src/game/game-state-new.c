@@ -1,4 +1,6 @@
-#include "../../include/master-header.h"
+#include "game/game-state-new.h"
+
+#include "engine/grid-engine-states.h"
 
 static bool defaultPreAndPostUpdateFunction(struct GameState1* gameState) {return GRID_ENGINE_SUCCESS;}
 

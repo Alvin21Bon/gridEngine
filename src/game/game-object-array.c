@@ -1,4 +1,10 @@
-#include "../../include/master-header.h"
+#include "game/game-object-array.h"
+
+#include "engine/grid-engine-states.h"
+#include "game/game-object.h"
+#include "utility/memory-util.h"
+#include <stdlib.h>
+#include <string.h>
 
 struct GameObjectArray gameObjectArray()
 {

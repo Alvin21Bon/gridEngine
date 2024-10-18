@@ -1,4 +1,6 @@
-#include "../../include/master-header.h"
+#include "canvas/canvas-border.h"
+
+#include "utility/math-util.h"
 
 /* 
  * === CONSTRUCTOR FUNCTIONS ===
@@ -8,7 +10,7 @@ struct CanvasBorder border(const Vec3 color, const float thickness)
 	struct CanvasBorder border;
 	borderSetColor(&border, color);
 	border.thickness = thickness;
-	border.isVisible = GL_TRUE;
+	border.isVisible = true;
 	return border;
 }
 

@@ -1,4 +1,4 @@
-#include "../../../include/master-header.h"
+#include "utility/glfw/input-data.h"
 
 struct InputData inputData()
 {

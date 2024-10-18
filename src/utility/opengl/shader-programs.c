@@ -1,4 +1,10 @@
-#include "../../../include/master-header.h"
+#include "utility/opengl/shader-programs.h"
+
+#include "utility/constants.h"
+#include "utility/opengl/glad.h"
+#include "utility/math-util.h"
+#include "canvas/coordinate-canvas.h"
+#include <stdlib.h>
 
 static char* loadFileIntoString(const char* fileName)
 {

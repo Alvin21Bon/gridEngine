@@ -1,4 +1,6 @@
-#include "../../include/master-header.h"
+#include "canvas/canvas-pixel.h"
+
+#include "utility/math-util.h"
 
 /* 
  * === CONSTRUCTOR FUNCTIONS ===
@@ -7,7 +9,7 @@ struct CanvasPixel pixel(const Vec3 color)
 {
 	struct CanvasPixel pixel;
 	pixelSetColor(&pixel, color);
-	pixel.isVisible = GL_TRUE;
+	pixel.isVisible = true;
 	return pixel;
 }
 

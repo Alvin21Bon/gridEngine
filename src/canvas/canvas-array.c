@@ -1,4 +1,10 @@
-#include "../../include/master-header.h"
+#include "canvas/canvas-array.h"
+
+#include "canvas/coordinate-canvas.h"
+#include "engine/grid-engine-states.h"
+#include "utility/memory-util.h"
+#include <stdlib.h>
+#include <string.h>
 
 struct CanvasArray canvasArray()
 {

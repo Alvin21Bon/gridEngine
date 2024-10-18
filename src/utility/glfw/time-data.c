@@ -1,4 +1,7 @@
-#include "../../../include/master-header.h"
+#include "utility/glfw/time-data.h"
+
+#include "glfw.h"
+#include "utility/constants.h"
 
 struct TimeData timeData()
 {
