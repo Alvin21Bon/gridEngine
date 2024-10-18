@@ -12,3 +12,4 @@
 
 #include "opengl/shader-programs.h"
 #include "opengl/viewports.h"
+#include "opengl/canvas-rendering.h"

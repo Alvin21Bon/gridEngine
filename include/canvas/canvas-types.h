@@ -44,5 +44,8 @@ struct CoordinateCanvas {
 	struct CanvasPixel* addressOfPixelArray;
 	size_t sizeOfPixelArray;
 	size_t numPixels;
+
+	/* TYPICALLY SHOULD NOT BE MODIFIED DIRECTLY*/
+	struct CanvasRenderer renderer;
 };
 
