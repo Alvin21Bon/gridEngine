@@ -27,6 +27,7 @@ struct CoordinateCanvas {
 	Vec2 size;
 	uVec2 gridUnitCnt;
 	float aspectRatio; 
+	struct CanvasBorder border;
 
 	struct {
 		bool isMoveableWithMouse;
@@ -44,7 +45,6 @@ struct CoordinateCanvas {
 	unsigned long numPixels;
 	unsigned long sizeOfCanvasData;
 
-	struct CanvasBorder border;
 	GLboolean isVisible;
 
 	/* ALLOCATED OPENGL BUFFERS SAVED FOR DELETION. DO NOT MODIFY */
