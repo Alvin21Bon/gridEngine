@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../canvas/canvas-header.h"
-
-#include "game-state.h"
+struct CoordinateCanvas;
+struct GameState;
 
 /* 
  *

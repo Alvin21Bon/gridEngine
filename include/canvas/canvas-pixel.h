@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utility/utility-header.h"
+#include <lina/lina.h>
 
 struct CanvasPixel {
 	Vec3 color;

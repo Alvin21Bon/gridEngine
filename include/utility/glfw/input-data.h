@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GLFW/glfw3.h"
 #include "lina/lina.h"
+#include "glfw.h"
 
 struct InputData {
 	// NOTE: keeps arrays first field so constructor initializes all fields to zero correctly

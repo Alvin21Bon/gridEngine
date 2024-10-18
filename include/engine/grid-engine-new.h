@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../utility/utility-header.h"
-#include "../game/game-header.h"
+#include "game/game-state-new.h"
+#include "utility/opengl/shader-programs.h"
+#include "utility/glfw/cursor-state-manager.h"
 
 /*
  * A singleton instance of this struct is made on initialization of the engine. This struct basically embodies the entire

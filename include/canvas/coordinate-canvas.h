@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../utility/utility-header.h"
-
-#include "../game/game-state.h" // FIX: drawing will be seperated from canvas functionality
+#include <lina/lina.h>
+#include "canvas/canvas-border.h"
+#include "canvas/canvas-pixel.h"
+#include "utility/opengl/canvas-rendering.h"
 
 struct CoordinateCanvas {
 	char* id; 

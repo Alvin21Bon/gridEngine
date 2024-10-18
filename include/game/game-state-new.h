@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../utility/utility-header.h"
-#include "../canvas/canvas-header.h"
-
 #include "game-object-array.h"
+#include "canvas/canvas-array.h"
+#include "utility/glfw/input-data.h"
+#include "utility/glfw/time-data.h"
 
 /* 
  * ===

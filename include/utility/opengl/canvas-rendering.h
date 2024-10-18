@@ -1,10 +1,10 @@
 #pragma once
 
 #include <sys/types.h>
-#include "../../canvas/canvas-header.h"
-
 #include "viewports.h"
-#include "shader-programs.h"
+
+struct CoordinateCanvas;
+struct ShaderProgramManager;
 
 /*
  * This struct encapsulates any rendering or utilization of opengl from the canvas.

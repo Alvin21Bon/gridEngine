@@ -2,7 +2,7 @@
 
 #include <lina/lina.h>
 
-#include "../../canvas/canvas-header.h"
+struct CoordinateCanvas;
 
 // ======================== MAKING SHADER PROGRAMS
 typedef unsigned int ShaderProgram;

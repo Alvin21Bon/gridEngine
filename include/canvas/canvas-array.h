@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../utility/utility-header.h"
+#include "utility/constants.h"
+#include <stddef.h>
 
-#include "canvas-types.h"
+struct CoordinateCanvas;
 
 struct CanvasArray {
 	union {

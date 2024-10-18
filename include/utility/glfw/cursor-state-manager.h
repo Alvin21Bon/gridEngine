@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GLFW/glfw3.h"
+typedef struct GLFWcursor GLFWcursor;
+typedef struct GLFWwindow GLFWwindow;
 
 enum CursorStates {
 	GRID_CURSOR_DEFAULT,
