@@ -4,4 +4,4 @@
 -Wall
 -Wextra
 -Iinclude
--Iinclude/utility/glfw
+-Iinclude/utility/glfw/glfw-include
