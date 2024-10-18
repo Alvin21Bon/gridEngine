@@ -18,12 +18,19 @@ static bool canvasArrayAdd(struct CanvasArray* const canvasArray, struct Coordin
 	return GRID_ENGINE_SUCCESS;
 }
 
-bool canvasArrayAddHeapCopy(struct CanvasArray* const canvasArray, const struct CoordinateCanvas canvas)
+bool canvasArrayAddHeapCopy(struct CanvasArray* const canvasArray, const struct CoordinateCanvas* canvas)
 {
 	struct CoordinateCanvas* canvasOnHeap = malloc(sizeof(struct CoordinateCanvas));
-	*canvasOnHeap = canvas;
+	*canvasOnHeap = *canvas;
 
-	return canvasArrayAdd(canvasArray, canvasOnHeap);
+	if (canvasArrayAdd(canvasArray, canvasOnHeap) == GRID_ENGINE_ERROR)
+	{
+		free(canvasOnHeap);
+		return GRID_ENGINE_ERROR;
+	}
+
+	canvas = canvasOnHeap;
+	return GRID_ENGINE_SUCCESS;
 }
 
 bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* id)

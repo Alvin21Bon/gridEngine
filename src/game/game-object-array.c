@@ -18,13 +18,20 @@ static bool gameObjectArrayAdd(struct GameObjectArray* const gameObjectArray, st
 	return GRID_ENGINE_SUCCESS;
 }
 
-bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, const struct GameObject* const gameObject, const size_t sizeOfGameObject)
+bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, const struct GameObject* gameObject, const size_t sizeOfGameObject)
 {
 	// stores the user defined game objects on the heap and into the game object array
 	struct GameObject* gameObjectOnHeap = malloc(sizeOfGameObject);
 	memcpy(gameObjectOnHeap, gameObject, sizeOfGameObject);
 
-	return gameObjectArrayAdd(gameObjectArray, gameObjectOnHeap);
+	if (gameObjectArrayAdd(gameObjectArray, gameObjectOnHeap) == GRID_ENGINE_ERROR)
+	{
+		free(gameObjectOnHeap);
+		return GRID_ENGINE_ERROR;
+	}
+
+	gameObject = gameObjectOnHeap;
+	return GRID_ENGINE_SUCCESS;
 }
 
 bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, const char* id)

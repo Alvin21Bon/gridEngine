@@ -16,8 +16,9 @@ struct CanvasArray {
 struct CanvasArray canvasArray();
 
 // Allocates canvas to the heap and stores it in canvas array
+// @param {canvas} gets modified to point to new canvas on heap
 // @returns {bool} GRID_ENGINE_ERROR if canvas array full
-bool canvasArrayAddHeapCopy(struct CanvasArray* const canvasArray, const struct CoordinateCanvas canvas);
+bool canvasArrayAddHeapCopy(struct CanvasArray* const canvasArray, const struct CoordinateCanvas* canvas);
 
 // @returns {bool} GRID_ENGINE_ERROR if id not found
 // NOTE: this destroys the removed canvases
