@@ -35,21 +35,14 @@ struct CoordinateCanvas {
 		bool isScalableWithMouse;
 		bool isScalable; // if false, overrides mouse scaling
 		bool shouldMaintainAspectRatio;
+		bool isVisible;
 	} options;
 
 	// coordinates for the grid start at (0, 0)
 	struct CanvasPixel** pixels; 
 	// points to the actual location of contigous memory of pixels
 	struct CanvasPixel* addressOfPixelArray;
-
-	unsigned long numPixels;
-	unsigned long sizeOfCanvasData;
-
-	GLboolean isVisible;
-
-	/* ALLOCATED OPENGL BUFFERS SAVED FOR DELETION. DO NOT MODIFY */
-	struct {
-		unsigned int VBO, EBO, VAO;
-	} glBuffers;
+	size_t sizeOfPixelArray;
+	size_t numPixels;
 };
 
