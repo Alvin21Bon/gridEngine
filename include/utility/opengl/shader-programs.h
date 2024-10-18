@@ -2,6 +2,8 @@
 
 #include <lina/lina.h>
 
+#include "../../canvas/canvas-header.h"
+
 // ======================== MAKING SHADER PROGRAMS
 typedef unsigned int ShaderProgram;
 
@@ -22,7 +24,7 @@ struct ShaderProgramManager {
 	struct {
 		Uniform canvasGridUnitCnt;
 		Uniform borderColor;
-		Uniform canvasBottomLeftCoordsInNDC;
+		Uniform canvasOriginInBorderShaderNDC;
 	} uniforms;
 };
 
@@ -36,5 +38,7 @@ void shaderProgramManagerDestroy(struct ShaderProgramManager* shaderProgramManag
 void shaderProgramManagerUseProgram(struct ShaderProgramManager* const shaderProgramManager, ShaderProgram programToUse);
 void shaderProgramManagerSetGridUnitCntUniform(struct ShaderProgramManager* const shaderProgramManager, const uVec2 gridUnitCnt);
 void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec3 color);
-void shaderProgramManagerSetCanvasBottomLeftCoordsUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec2 coordsInNDC);
+void shaderProgramManagerSetCanvasOriginCoordsInBorderShaderUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec2 coordsInNDC);
+
+void shaderProgramManagerSetCanvasUniforms(struct ShaderProgramManager* const shaderProgramManager, const struct CoordinateCanvas* const canvas);
 // ======================== 
