@@ -2,7 +2,10 @@
 
 #include "../utility/utility-header.h"
 
-#include "canvas-types.h"
+struct CanvasPixel {
+	Vec3 color;
+	bool isVisible;
+};
 
 /* 
  * === CONSTRUCTOR FUNCTIONS ===

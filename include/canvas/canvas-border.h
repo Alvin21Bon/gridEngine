@@ -2,7 +2,11 @@
 
 #include "../utility/utility-header.h"
 
-#include "canvas-types.h"
+struct CanvasBorder {
+	Vec3 color;
+	float thickness;
+	bool isVisible;
+};
 
 /* 
  * === CONSTRUCTOR FUNCTIONS ===

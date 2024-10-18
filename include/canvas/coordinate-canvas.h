@@ -2,9 +2,35 @@
 
 #include "../utility/utility-header.h"
 
-#include "canvas-types.h"
-
 #include "../game/game-state.h" // FIX: drawing will be seperated from canvas functionality
+
+struct CoordinateCanvas {
+	char* id; 
+	Vec2 origin;
+	Vec2 size;
+	uVec2 gridUnitCnt;
+	float aspectRatio; 
+	struct CanvasBorder border;
+
+	struct {
+		bool isMoveableWithMouse;
+		bool isMoveable; // if false, overrides mouse movement
+		bool isScalableWithMouse;
+		bool isScalable; // if false, overrides mouse scaling
+		bool shouldMaintainAspectRatio;
+		bool isVisible;
+	} options;
+
+	// coordinates for the grid start at (0, 0)
+	struct CanvasPixel** pixels; 
+	// points to the actual location of contigous memory of pixels
+	struct CanvasPixel* addressOfPixelArray;
+	size_t sizeOfPixelArray;
+	size_t numPixels;
+
+	/* TYPICALLY SHOULD NOT BE MODIFIED DIRECTLY*/
+	struct CanvasRenderer renderer;
+};
 
 /* 
  * === CONSTRUCTOR FUNCTIONS === 
