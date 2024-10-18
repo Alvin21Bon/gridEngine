@@ -132,7 +132,7 @@ struct ShaderProgramManager shaderProgramManager()
 
 	shaderProgramManager.uniforms.canvasGridUnitCnt = glGetUniformLocation(shaderProgramManager.programs.canvas, "gridUnitCnt");
 	shaderProgramManager.uniforms.borderColor = glGetUniformLocation(shaderProgramManager.programs.border, "borderColor");
-	shaderProgramManager.uniforms.canvasBottomLeftCoordsInNDC = glGetUniformLocation(shaderProgramManager.programs.border, "aCanvasBottomLeftCoordsInNDC");
+	shaderProgramManager.uniforms.canvasOriginCoordsInBorderShaderNDC = glGetUniformLocation(shaderProgramManager.programs.border, "aCanvasBottomLeftCoordsInNDC");
 
 	return shaderProgramManager;
 }
@@ -165,11 +165,26 @@ void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* cons
 	glUniform3fv(shaderProgramManager->uniforms.borderColor, 1, color.elements);
 	glUseProgram(shaderProgramManager->programs.currentlyActive);
 }
-void shaderProgramManagerSetCanvasBottomLeftCoordsUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec2 coordsInNDC)
+void shaderProgramManagerSetCanvasOriginCoordsInBorderShaderUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec2 coordsInNDC)
 {
 	// dont use wrapper so currentlyActive is not set
 	glUseProgram(shaderProgramManager->programs.border);
 
-	glUniform2fv(shaderProgramManager->uniforms.canvasBottomLeftCoordsInNDC, 1, coordsInNDC.elements);
+	glUniform2fv(shaderProgramManager->uniforms.canvasOriginCoordsInBorderShaderNDC, 1, coordsInNDC.elements);
 	glUseProgram(shaderProgramManager->programs.currentlyActive);
+}
+
+void shaderProgramManagerSetCanvasUniforms(struct ShaderProgramManager* const shaderProgramManager, const struct CoordinateCanvas* const canvas)
+{
+	// this is all to get the canvas origin coords for the border shader (converted to NDC)
+	float borderThicknessInPixels = canvas->border.thickness * GRID_BORDER_THICKNESS_MULTIPLIER;
+	Vec2 borderOriginCoords = vec2Sub(canvas->origin, vec2Fill(borderThicknessInPixels));
+	Vec2 borderSize = vec2Add(canvas->size, vec2Fill(2 * borderThicknessInPixels));
+	Vec2 NDCrange = vec2(-1, 1);
+	Vec2 canvasOriginCoordsInBorderShaderNDC = vec2(MAP_RANGE(canvas->origin.x, vec2(borderOriginCoords.x, borderOriginCoords.x + borderSize.width), NDCrange), 
+							MAP_RANGE(canvas->origin.y, vec2(borderOriginCoords.y, borderOriginCoords.y + borderSize.height), NDCrange));
+
+	shaderProgramManagerSetBorderColorUniform(shaderProgramManager, canvas->border.color);
+	shaderProgramManagerSetGridUnitCntUniform(shaderProgramManager, canvas-.gridUnitCnt);
+	shaderProgramManagerSetCanvasOriginCoordsInBorderShaderUniform(shaderProgramManager, canvasOriginCoordsInBorderShaderNDC);
 }
