@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lina/lina.h"
+#include <lina/lina.h>
 #include "glfw.h"
 
 struct InputData {
