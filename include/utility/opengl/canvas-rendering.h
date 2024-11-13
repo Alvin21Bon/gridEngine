@@ -17,7 +17,7 @@ struct ShaderProgramManager;
  * entire canvas data to change. 
 */
 struct CanvasRenderer {
-	uint VBO, EBO, VAO;
+	uint VBO, VAO; // EBO is the same across all canvas renderers, thus does not need to be stored here
 	size_t sizeOfVertexData;
 
 	struct {
