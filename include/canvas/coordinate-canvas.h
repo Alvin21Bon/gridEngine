@@ -26,7 +26,6 @@ struct CoordinateCanvas {
 	struct CanvasPixel** pixels; 
 	// points to the actual location of contigous memory of pixels
 	struct CanvasPixel* addressOfPixelArray;
-	size_t sizeOfPixelArray;
 	size_t numPixels;
 
 	/* TYPICALLY SHOULD NOT BE MODIFIED DIRECTLY*/
