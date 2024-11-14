@@ -18,8 +18,8 @@ struct CanvasRenderer {
 	struct Viewport borderViewport;
 };
 
-struct CanvasRenderer canvasRenderer(struct CoordinateCanvas* const canvas);
+void canvasCreateRenderer(struct CoordinateCanvas* const canvas);
 void canvasUpdateRenderer(struct CoordinateCanvas* const canvas);
-void canvasRendererDestroy(struct CanvasRenderer* const canvasRenderer);
+void canvasDestroyRenderer(struct CoordinateCanvas* const canvas);
 
 void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManager* const shaderProgramManager);
