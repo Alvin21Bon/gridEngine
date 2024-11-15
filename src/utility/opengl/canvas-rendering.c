@@ -151,13 +151,10 @@ static void canvasUpdateRendererViewports(struct CoordinateCanvas* const canvas)
 	renderer->canvasViewport.origin = ivec2(canvas->origin.x, canvas->origin.y);
 	renderer->canvasViewport.size = ivec2(canvas->size.width, canvas->size.height);
 
-
-	float borderThicknessInPixels = canvas->border.thickness * GRID_BORDER_THICKNESS_MULTIPLIER;
-	iVec2 borderOrigin = ivec2Sub(ivec2(canvas->origin.x, canvas->origin.y), ivec2Fill(borderThicknessInPixels));
-	iVec2 borderSize = ivec2Add(ivec2(canvas->size.width, canvas->size.height), ivec2Fill(2 * borderThicknessInPixels));
-
-	renderer->borderViewport.origin = borderOrigin;
-	renderer->borderViewport.size = borderSize;
+	Vec2 borderOrigin = canvasGetBorderOrigin(canvas);
+	Vec2 borderSize = canvasGetBorderSize(canvas);
+	renderer->borderViewport.origin = ivec2(borderOrigin.x, borderOrigin.y);
+	renderer->borderViewport.size = ivec2(borderSize.width, borderSize.height);
 }
 static void canvasUpdateRendererVertexBuffer(struct CoordinateCanvas* const canvas)
 {

@@ -167,9 +167,8 @@ void shaderProgramManagerSetCanvasOriginInBorderShaderUniform(struct ShaderProgr
 void shaderProgramManagerSetCanvasUniforms(struct ShaderProgramManager* const shaderProgramManager, const struct CoordinateCanvas* const canvas)
 {
 	// this is all to get the canvas origin coords for the border shader (converted to NDC)
-	float borderThicknessInPixels = canvas->border.thickness * GRID_BORDER_THICKNESS_MULTIPLIER;
-	Vec2 borderOrigin= vec2Sub(canvas->origin, vec2Fill(borderThicknessInPixels));
-	Vec2 borderSize = vec2Add(canvas->size, vec2Fill(2 * borderThicknessInPixels));
+	Vec2 borderOrigin = canvasGetBorderOrigin(canvas);
+	Vec2 borderSize = canvasGetBorderSize(canvas);
 	Vec2 NDCrange = vec2(-1, 1);
 	Vec2 canvasOriginInBorderShaderNDC = vec2(MAP_RANGE(canvas->origin.x, vec2(borderOrigin.x, borderOrigin.x + borderSize.width), NDCrange), 
 						  MAP_RANGE(canvas->origin.y, vec2(borderOrigin.y, borderOrigin.y + borderSize.height), NDCrange));
