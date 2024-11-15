@@ -1,143 +1,40 @@
-#include "../../include/master-header.h"
+#include "canvas/coordinate-canvas.h"
 
-/* 
- * === ALLOCATE CANVAS DATA MEMORY AND INITIALIZE/ALLOCATE/FILL OPENGL BUFFERS FOR RENDERING ===
-*/
-static struct CanvasPixel** allocate2DPixelArray(unsigned int numColumns, unsigned int numRows)
-{
-	// 1. allocate array of POINTERS to pixels
-	// 2. allocate contiguous memory enough to store entire grid of pixels
-	// 3. increment through array of POINTERS to pixels, point them to the 
-	//    contigous memory in such a way that it takes the form of the 2D array
-	// 4. to FREE the 2D array, first free the contiguous memory (stored at arr[0]),
-	//    then free the array of POINTERS (stored at arr)
-	
-	struct CanvasPixel** canvas2DArray = malloc(numColumns * sizeof(struct CanvasPixel*)); // 1
-						// calloc so checks for isVisible turn to GL_FALSE :/
-	struct CanvasPixel* contiguousGridMemory = calloc(numColumns * numRows, sizeof(struct CanvasPixel)); // 2
-	
-	for (int i = 0; i < numColumns; i++) // 3
-	{
-		canvas2DArray[i] = contiguousGridMemory + (i * numRows);
-	}
+#include "canvas/canvas-pixel.h"
+#include "canvas/canvas-border.h"
+#include "utility/memory-util.h"
+#include <lina/lina.h>
 
-	return canvas2DArray;
-}
-
-// openGL stuff starts here
-static void canvasInitializeGLBuffers(struct CoordinateCanvas* const canvas)
-{
-	glGenBuffers(1, &(canvas->glBuffers.VBO));
-	glGenBuffers(1, &(canvas->glBuffers.EBO));
-	glGenVertexArrays(1, &(canvas->glBuffers.VAO));
-}
-static void canvasAllocateAndFillVBO(struct CoordinateCanvas* const canvas)
-{
-	// create grid square unit model data
-		// origin is bottom left for easy positioning in the grid during rendering
-	const float lengthOfNDCRange = 2; // NDC range in openGL is (-1, 1)
-	float canvasSquareUnitWidthNormalized = lengthOfNDCRange / canvas->gridUnitCnt.x;
-	float canvasSquareUnitHeightNormalized = lengthOfNDCRange / canvas->gridUnitCnt.y;
-	float canvasSquareUnitModel[4][2] = {
-		{0.0, 0.0}, // bottom left
-		{0.0, canvasSquareUnitHeightNormalized}, // top left
-		{canvasSquareUnitWidthNormalized, canvasSquareUnitHeightNormalized}, // top right
-		{canvasSquareUnitWidthNormalized, 0.0} // bottom right
-	};
-
-	// allocate memory (memory layout: canvas data first, square unit model second)
-	unsigned long sizeOfBuffer = canvas->sizeOfCanvasData + sizeof(canvasSquareUnitModel);
-
-	glBindBuffer(GL_ARRAY_BUFFER, canvas->glBuffers.VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeOfBuffer, NULL, GL_DYNAMIC_DRAW);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, canvas->sizeOfCanvasData, canvas->canvasDataMemoryLocation); // canvas data contigous first
-		glBufferSubData(GL_ARRAY_BUFFER, canvas->sizeOfCanvasData, sizeof(canvasSquareUnitModel), canvasSquareUnitModel); // square unit model second
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-// this function encompasses formatting vertex attributes, EBOS, and instanced arrays (anything VAO state)
-static void canvasSetVAOVertexSpecification(struct CoordinateCanvas* const canvas)
-{
-	unsigned int squareUnitIndices[2][3] = {
-		{0, 1, 2},
-		{0, 2, 3}
-	};
-
-	glBindVertexArray(canvas->glBuffers.VAO);
-		// index buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, canvas->glBuffers.EBO);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareUnitIndices), squareUnitIndices, GL_STATIC_DRAW);
-		
-		// vertex attribute pointers
-		glBindBuffer(GL_ARRAY_BUFFER, canvas->glBuffers.VBO);
-			// instanced array: color
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(struct CanvasPixel), (void*)0);
-			glVertexAttribDivisor(0, 1);
-
-			// instanced array: isVisible
-			glEnableVertexAttribArray(1);
-			glVertexAttribIPointer(1, 1, GL_UNSIGNED_BYTE, sizeof(struct CanvasPixel), (void*)sizeof(Vec3));
-			glVertexAttribDivisor(1, 1);
-			
-			// square unit model position attribute
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)canvas->sizeOfCanvasData);
-	glBindVertexArray(0);
-}
-static void canvasSetUpVAOState(struct CoordinateCanvas* const canvas)
-{
-	canvasInitializeGLBuffers(canvas);
-	canvasAllocateAndFillVBO(canvas);
-	canvasSetVAOVertexSpecification(canvas);
-}
-
-static void canvasUpdateVBOCanvasData(struct CoordinateCanvas* const canvas)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, canvas->glBuffers.VBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, canvas->sizeOfCanvasData, canvas->canvasDataMemoryLocation);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-/* 
- * === CONSTRUCTOR FUNCTIONS === 
-*/
-	// space is allocated for the canvasData, MEMORY MUST BE FREED (see above allocate function)
-	// allocted buffers for openGL must also be destroyed
-struct CoordinateCanvas canvas(const char* id, const Vec2 origin, const Vec2 size, 
-			       const unsigned int xUnitCnt, const unsigned int yUnitCnt)
+struct CoordinateCanvas canvas(const char* id, const Vec2 origin, const Vec2 size, const uVec2 gridUnitCnt)
 {
 	struct CoordinateCanvas canvas;
+
 	canvas.id = id;
 	canvas.origin = origin;
-	canvasSetSize(&canvas, size);
-	canvas.gridUnitCnt.x = xUnitCnt;
-	canvas.gridUnitCnt.y = yUnitCnt;
+	canvasSetSize(&canvas, size); // to abide by min canvas dimensions
+	canvas.gridUnitCnt = gridUnitCnt;
 	canvas.aspectRatio = canvas.size.width / canvas.size.height;
+	canvas.border = border(vec3(255, 255, 255), 1);
 
-	canvas.border = border(vec3(255,255,255), 1);
-	canvas.isVisible = GL_TRUE;
-	canvas.isMovableWithMouse = GL_TRUE;
-	canvas.isScalableWithMouse = GL_TRUE;
-	canvas.shouldMaintainAspectRatio = GL_FALSE;
+	canvas.options.isMoveableWithMouse = true;
+	canvas.options.isMoveable = true;
+	canvas.options.isScalableWithMouse = true;
+	canvas.options.isScalable = true;
+	canvas.options.shouldMaintainAspectRatio = false;
+	canvas.options.isVisible = true;
 
-	// dynamically allocate 2D array of CanvasPixels for canvasData
-	canvas.canvasData = allocate2DPixelArray(xUnitCnt, yUnitCnt);
-	canvas.canvasDataMemoryLocation = canvas.canvasData[0];
-	canvas.numPixels = xUnitCnt * yUnitCnt;
-	canvas.sizeOfCanvasData = canvas.numPixels * sizeof(struct CanvasPixel);
+	canvas.pixels = (struct CanvasPixel**)ALLOCATE_2D_ARRAY(gridUnitCnt.x, gridUnitCnt.y, sizeof(struct CanvasPixel));
+	canvas.addressOfPixelArray = canvas.pixels[0];
+	canvas.numPixels = gridUnitCnt.x * gridUnitCnt.y;
 
-	// set up canvas VAO to be drawable
-	canvasSetUpVAOState(&canvas);
+	canvasCreateRenderer(&canvas);
 
 	return canvas;
 }
 
-/* 
- * === SETTING FUNCTIONS ===
-*/
+// TODO: CONTINUE REFACTORING THIS SRC FILE. USE THE NEW 2D ARRAY REALOCCATION FUNCTION HERE
+void canvasSetGrid(struct CoordinateCanvas* const canvas, const uVec2 newGridUnitCnt);
 
-// TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
-// REALLOCATES THE VBO AND FILLS IN NEW DATA. VAO SHOULD NOT NEED TO BE RESPECIFIED SINCE VBO WILL HAVE THE SAME ID
 void canvasSetGrid(struct CoordinateCanvas* const canvas, const unsigned int xUnitCnt, const unsigned int yUnitCnt)
 {
 	// due to the structure of the canvas grid data, a call to realloc would not suffice
@@ -251,20 +148,15 @@ void canvasClear(struct CoordinateCanvas* const canvas)
 	memset(canvas->canvasDataMemoryLocation, 0, canvas->sizeOfCanvasData);
 }
 
-/*
- * === GETTING FUNCTIONS ===
-*/
-static int canvasGetBorderPixelThickness(const struct CoordinateCanvas* const canvas)
-{
-	const int THICKNESS_MULTIPLIER = 1;
-	return THICKNESS_MULTIPLIER * canvas->border.thickness;
-}
 Vec2 canvasGetBorderOrigin(const struct CoordinateCanvas* const canvas)
 {
-	return vec2(canvas->origin.x - canvasGetBorderPixelThickness(canvas), canvas->origin.y - canvasGetBorderPixelThickness(canvas));
+	float borderThicknessInPixels = canvas->border.thickness * GRID_BORDER_THICKNESS_MULTIPLIER;
+	return vec2Sub(canvas->origin, vec2Fill(borderThicknessInPixels));
 }
 Vec2 canvasGetBorderSize(const struct CoordinateCanvas* const canvas)
 {
+	float borderThicknessInPixels = canvas->border.thickness * GRID_BORDER_THICKNESS_MULTIPLIER;
+	Vec2 borderSize = vec2Add(canvas->size, vec2Fill(2 * borderThicknessInPixels));
 	return vec2(canvas->size.width + (2 * canvasGetBorderPixelThickness(canvas)), canvas->size.height + (2 * canvasGetBorderPixelThickness(canvas)));
 }
 
