@@ -1,7 +1,7 @@
 "#version 330 core\n"
 
-"// re-using square unit model data for the border\n"
-"layout (location = 2) in vec2 vertexPosition;\n"
+"// re-using unit square model data for the border\n"
+"layout (location = 2) in vec2 unitSquareVertexPosition;\n"
 
 "uniform vec3 borderColor;\n"
 "uniform vec2 aCanvasBottomLeftCoordsInNDC; // holds the location of the canvas within the perspective of the border viewport\n"
@@ -14,7 +14,7 @@
 "void main()\n"
 "{\n"
 "	// scale up to fill the entire viewport\n"
-"	vec2 translatedPosition = vertexPosition * 1000000;\n"
+"	vec2 translatedPosition = unitSquareVertexPosition * 100;\n"
 
 "	vec2 viewportBottomLeftCoords = vec2(-1, -1);\n"
 "	translatedPosition = translatedPosition + viewportBottomLeftCoords;\n"
