@@ -13,7 +13,7 @@ struct ShaderProgramManager;
 */
 struct CanvasRenderer {
 	uint VBO, VAO; // EBO is the same across all canvas renderers, thus does not need to be stored here
-	size_t sizeOfPixelArray;
+	size_t sizeOfVertexBuffer;
 	struct Viewport canvasViewport;
 	struct Viewport borderViewport;
 };
