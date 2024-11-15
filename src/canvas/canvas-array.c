@@ -1,6 +1,7 @@
 #include "canvas/canvas-array.h"
 
 #include "canvas/coordinate-canvas.h"
+#include "utility/opengl/canvas-rendering.h"
 #include "engine/grid-engine-states.h"
 #include "utility/memory-util.h"
 #include <stdlib.h>
@@ -83,8 +84,13 @@ struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToS
 	return listOfMatchingCanvases;
 }
 
-// TODO: implement after engine refactor and gameState is decoupled from canvas draw
-void canvasArrayDraw(struct CanvasArray* const canvasArray);
+void canvasArrayDraw(struct CanvasArray* const canvasArray, struct ShaderProgramManager* const shaderProgramManager)
+{
+	for (int idx = canvasArray->num - 1; idx >= 0; idx--)
+	{
+		canvasDraw(canvasArray->elements[idx], shaderProgramManager);
+	}
+}
 
 void canvasArrayDestroy(struct CanvasArray* const canvasArray)
 {

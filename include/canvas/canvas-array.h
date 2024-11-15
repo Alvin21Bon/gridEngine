@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 struct CoordinateCanvas;
+struct ShaderProgramManager;
 
 struct CanvasArray {
 	union {
@@ -30,7 +31,7 @@ bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* 
 struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToSearch, const char* id);
 
 // NOTE: the array is drawn back of array to the front, so the first element is on top
-void canvasArrayDraw(struct CanvasArray* const canvasArray);
+void canvasArrayDraw(struct CanvasArray* const canvasArray, struct ShaderProgramManager* const shaderProgramManager);
 
 // NOTE: will always be called on CanvasArrays full of heap allocated canvases
 void canvasArrayDestroy(struct CanvasArray* const canvasArray);
