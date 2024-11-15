@@ -66,11 +66,6 @@ void canvasClear(struct CoordinateCanvas* const canvas);
 Vec2 canvasGetBorderOrigin(const struct CoordinateCanvas* const canvas);
 Vec2 canvasGetBorderSize(const struct CoordinateCanvas* const canvas);
 
-/*
- * === CANVAS DRAWING FUNCTION ===
-*/
-void canvasDraw(struct CoordinateCanvas* const canvas, struct GameState* const game); 
-
 /* 
  * === DESTROYER FUNCTIONS ===
 */
