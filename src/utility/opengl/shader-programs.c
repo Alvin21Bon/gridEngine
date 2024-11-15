@@ -132,52 +132,36 @@ struct ShaderProgramManager shaderProgramManager()
 	};
 
 	struct ShaderProgramManager shaderProgramManager;
-	shaderProgramManager.programs.canvas = constructShaderProgramFromString(canvasShaderSource[0], canvasShaderSource[1]);
-	shaderProgramManager.programs.border = constructShaderProgramFromString(borderShaderSource[0], borderShaderSource[1]);
-	shaderProgramManager.programs.currentlyActive = 0;
+	shaderProgramManager.canvas = constructShaderProgramFromString(canvasShaderSource[0], canvasShaderSource[1]);
+	shaderProgramManager.border = constructShaderProgramFromString(borderShaderSource[0], borderShaderSource[1]);
 
-	shaderProgramManager.uniforms.canvasGridUnitCnt = glGetUniformLocation(shaderProgramManager.programs.canvas, "gridUnitCnt");
-	shaderProgramManager.uniforms.borderColor = glGetUniformLocation(shaderProgramManager.programs.border, "borderColor");
-	shaderProgramManager.uniforms.canvasOriginInBorderShaderNDC = glGetUniformLocation(shaderProgramManager.programs.border, "aCanvasBottomLeftCoordsInNDC");
+	shaderProgramManager.uniforms.canvasGridUnitCnt = glGetUniformLocation(shaderProgramManager.canvas, "gridUnitCnt");
+	shaderProgramManager.uniforms.borderColor = glGetUniformLocation(shaderProgramManager.border, "borderColor");
+	shaderProgramManager.uniforms.canvasOriginInBorderShaderNDC = glGetUniformLocation(shaderProgramManager.border, "aCanvasBottomLeftCoordsInNDC");
 
 	return shaderProgramManager;
 }
 void shaderProgramManagerDestroy(struct ShaderProgramManager* shaderProgramManager)
 {
 	printf("Destroying ShaderProgramManager...\n");
-	glDeleteProgram(shaderProgramManager->programs.canvas);
-	glDeleteProgram(shaderProgramManager->programs.border);
-	shaderProgramManager->programs.currentlyActive = 0;
+	glDeleteProgram(shaderProgramManager->canvas);
+	glDeleteProgram(shaderProgramManager->border);
 }
 
-void shaderProgramManagerUseProgram(struct ShaderProgramManager* const shaderProgramManager, ShaderProgram programToUse)
-{
-	glUseProgram(programToUse);
-	shaderProgramManager->programs.currentlyActive = programToUse;
-}
 void shaderProgramManagerSetGridUnitCntUniform(struct ShaderProgramManager* const shaderProgramManager, const uVec2 gridUnitCnt)
 {
-	// dont use wrapper so currentlyActive is not set
-	glUseProgram(shaderProgramManager->programs.canvas);
-
+	glUseProgram(shaderProgramManager->canvas);
 	glUniform2uiv(shaderProgramManager->uniforms.canvasGridUnitCnt, 1, gridUnitCnt.elements);
-	glUseProgram(shaderProgramManager->programs.currentlyActive);
 }
 void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec3 color)
 {
-	// dont use wrapper so currentlyActive is not set
-	glUseProgram(shaderProgramManager->programs.border);
-
+	glUseProgram(shaderProgramManager->border);
 	glUniform3fv(shaderProgramManager->uniforms.borderColor, 1, color.elements);
-	glUseProgram(shaderProgramManager->programs.currentlyActive);
 }
 void shaderProgramManagerSetCanvasOriginInBorderShaderUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec2 coordsInNDC)
 {
-	// dont use wrapper so currentlyActive is not set
-	glUseProgram(shaderProgramManager->programs.border);
-
+	glUseProgram(shaderProgramManager->border);
 	glUniform2fv(shaderProgramManager->uniforms.canvasOriginInBorderShaderNDC, 1, coordsInNDC.elements);
-	glUseProgram(shaderProgramManager->programs.currentlyActive);
 }
 
 void shaderProgramManagerSetCanvasUniforms(struct ShaderProgramManager* const shaderProgramManager, const struct CoordinateCanvas* const canvas)
