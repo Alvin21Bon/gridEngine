@@ -41,7 +41,12 @@ static inline void DESTROY_2D_ARRAY(void** array)
 // @returns {nullptr} if any num arguments are 0
 static inline void** REALLOCATE_2D_ARRAY(void** array, const size_t oldNumColumns, const size_t oldNumRows, const size_t newNumColumns, const size_t newNumRows, const size_t sizeOfType)
 {
-	if (oldNumColumns == 0 || oldNumRows == 0 || newNumColumns == 0 || newNumRows == 0 || sizeOfType == 0) return nullptr;
+	if (oldNumColumns == 0 || oldNumRows == 0 || newNumColumns == 0 || newNumRows == 0 || sizeOfType == 0) 
+	{
+		// still destroys here in case user sets 2D array to function return value, thus losing the old 2D array
+		DESTROY_2D_ARRAY(array); 
+		return nullptr;
+	}
 
 	void** new2DArray = ALLOCATE_2D_ARRAY(newNumColumns, newNumRows, sizeOfType);
 
