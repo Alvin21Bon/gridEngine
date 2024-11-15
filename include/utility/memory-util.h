@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "utility/math-util.h"
 
 // Takes a splice of memory on range [start, end) and copies it to another address
 // @exception {SegmentationFault}
@@ -19,7 +20,7 @@ static inline void** ALLOCATE_2D_ARRAY(const size_t numColumns, const size_t num
 	void** pointerArray = malloc(numColumns * sizeof(void*));
 	void* memoryFor2DArray = calloc(numColumns * numRows, sizeOfType); 
 
-	for (int col = 0; col < numColumns; col++)
+	for (size_t col = 0; col < numColumns; col++)
 	{
 		pointerArray[col] = memoryFor2DArray + (col * numRows * sizeOfType);
 	}
@@ -35,3 +36,24 @@ static inline void DESTROY_2D_ARRAY(void** array)
 	free(array);
 	array = nullptr;
 }
+
+// allocates new 2D array grid space and copies fitting data from old 2D array. destroys the old 2D array
+// @returns {nullptr} if any num arguments are 0
+static inline void** REALLOCATE_2D_ARRAY(void** array, const size_t oldNumColumns, const size_t oldNumRows, const size_t newNumColumns, const size_t newNumRows, const size_t sizeOfType)
+{
+	if (oldNumColumns == 0 || oldNumRows == 0 || newNumColumns == 0 || newNumRows == 0 || sizeOfType == 0) return nullptr;
+
+	void** new2DArray = ALLOCATE_2D_ARRAY(newNumColumns, newNumRows, sizeOfType);
+
+	size_t smallerNumColumns = MIN(oldNumColumns, newNumColumns);
+	size_t smallerNumRows = MIN(oldNumRows, newNumRows);
+	for (size_t newColumnIdx = 0; newColumnIdx < smallerNumColumns; newColumnIdx++)
+	{
+		memcpy(new2DArray[newColumnIdx], array[newColumnIdx], smallerNumRows * sizeOfType);
+	}
+
+	DESTROY_2D_ARRAY(array);
+
+	return new2DArray;
+}
+
