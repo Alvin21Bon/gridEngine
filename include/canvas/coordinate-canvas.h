@@ -35,7 +35,8 @@ struct CoordinateCanvas {
 struct CoordinateCanvas canvas(const char* id, const Vec2 origin, const Vec2 size, const uVec2 gridUnitCnt);
 
 // NOTE: THIS FUNCTION TRUNCATES OR EXPANDS THE MEMORY ALLOCATED TO CANVASDATA
-void canvasSetGrid(struct CoordinateCanvas* const canvas, const uVec2 newGridUnitCnt);
+// NOTE: This function clamps gridUnitCnt values to a minimum of 1
+void canvasSetGrid(struct CoordinateCanvas* const canvas, uVec2 newGridUnitCnt);
 void canvasSetSize(struct CoordinateCanvas* const canvas, const Vec2 newSize);
 void canvasScale(struct CoordinateCanvas* const canvas, const float scalar);
 void canvasTranslate(struct CoordinateCanvas* const canvas, const Vec2 translate);
