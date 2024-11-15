@@ -5,7 +5,10 @@
 #include "utility/opengl/glad.h"
 #include "utility/opengl/shader-programs.h"
 #include "utility/opengl/viewports.h"
+#include "utility/constants.h"
 #include <stddef.h>
+#include <lina/lina.h>
+#include <sys/types.h>
 
 // NOTE: these static functions are all used to either create the renderer in the constructor, or to update 
 // 	 specific values in the renderer in the update function.
@@ -55,7 +58,7 @@ void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManag
 
 	glBindVertexArray(canvas->renderer.VAO);
 	{
-		shaderProgramManagerUseProgram(shaderProgramManager, shaderProgramManager->programs.canvas);
+		glUseProgram(shaderProgramManager->canvas);
 		{
 			viewportUse(&canvas->renderer.canvasViewport);
 			glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, canvas->numPixels);
@@ -63,7 +66,7 @@ void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManag
 
 		if (canvas->border.isVisible)
 		{
-			shaderProgramManagerUseProgram(shaderProgramManager, shaderProgramManager->programs.border);
+			glUseProgram(shaderProgramManager->border);
 			{
 				viewportUse(&canvas->renderer.borderViewport);
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -73,9 +76,92 @@ void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManag
 }
 
 
-static void canvasRendererCreateGLObjects(struct CanvasRenderer* const canvasRenderer);
-static void canvasRendererVertexSpecification(struct CanvasRenderer* const canvasRenderer);
-static void canvasRendererAllocateVertexBuffer(struct CanvasRenderer* const canvasRenderer);
-static void canvasUpdateRendererViewports(struct CoordinateCanvas* const canvas);
-static void canvasUpdateRendererVertexBuffer(struct CoordinateCanvas* const canvas);
+static void canvasRendererCreateGLObjects(struct CanvasRenderer* const canvasRenderer)
+{
+	glGenBuffers(1, &canvasRenderer->VBO);
+	glGenVertexArrays(1, &canvasRenderer->VAO);
+}
+static void canvasRendererVertexSpecification(struct CanvasRenderer* const canvasRenderer)
+{
+	// these are made here and are static so the same buffers can be used across ALL made VAOS
+	static uint unitSquareVBO = 0;
+	static uint EBO = 0;
+	// these ifs make it so that these buffers are only generated and filled with data ONCE, so there is 
+	// only ever one buffer each for the unitsquarevbo and EBO data that every single VAO will point to
+	if (unitSquareVBO == 0)
+	{
+		float unitSquareModelData[4][2] = {
+			{0, 0}, // bottom left
+			{0, 1}, // top left
+			{1, 1}, // top right
+			{1, 0} // bottom right
+		};
+		glGenBuffers(1, &unitSquareVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, unitSquareVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(unitSquareModelData), unitSquareModelData, GL_STATIC_DRAW);
+	}
+	if (EBO == 0)
+	{
+		uint unitSquareIndices[2][3] = {
+			{0, 1, 2},
+			{0, 2, 3}
+		};
+		glGenBuffers(1, &EBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unitSquareIndices), unitSquareIndices, GL_STATIC_DRAW);
+	}
+
+	glBindVertexArray(canvasRenderer->VAO);
+	{
+		// index buffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+		// pixel data vertex attribute pointers
+		glBindBuffer(GL_ARRAY_BUFFER, canvasRenderer->VBO);
+		{
+			// instanced array: color
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(struct CanvasPixel), (void*)0);
+			glVertexAttribDivisor(0, 1);
+
+			// instanced array: isVisible
+			glEnableVertexAttribArray(1);
+			glVertexAttribIPointer(1, 1, GL_UNSIGNED_BYTE, sizeof(struct CanvasPixel), (void*)sizeof(Vec3));
+			glVertexAttribDivisor(1, 1);
+		}
+
+		// unit square model data vertex attribute pointers
+		glBindBuffer(GL_ARRAY_BUFFER, unitSquareVBO);
+		{
+			// unit square model position attribute
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		}
+	}
+}
+static void canvasRendererAllocateVertexBuffer(struct CanvasRenderer* const canvasRenderer)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, canvasRenderer->VBO);
+		glBufferData(GL_ARRAY_BUFFER, canvasRenderer->sizeOfVertexBuffer, NULL, GL_DYNAMIC_DRAW);
+}
+static void canvasUpdateRendererViewports(struct CoordinateCanvas* const canvas)
+{
+	struct CanvasRenderer* const renderer = &canvas->renderer;
+
+	renderer->canvasViewport.origin = ivec2(canvas->origin.x, canvas->origin.y);
+	renderer->canvasViewport.size = ivec2(canvas->size.width, canvas->size.height);
+
+
+	float borderThicknessInPixels = canvas->border.thickness * GRID_BORDER_THICKNESS_MULTIPLIER;
+	iVec2 borderOrigin = ivec2Sub(ivec2(canvas->origin.x, canvas->origin.y), ivec2Fill(borderThicknessInPixels));
+	iVec2 borderSize = ivec2Add(ivec2(canvas->size.width, canvas->size.height), ivec2Fill(2 * borderThicknessInPixels));
+
+	renderer->borderViewport.origin = borderOrigin;
+	renderer->borderViewport.size = borderSize;
+}
+static void canvasUpdateRendererVertexBuffer(struct CoordinateCanvas* const canvas)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, canvas->renderer.VBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, canvas->renderer.sizeOfVertexBuffer, canvas->addressOfPixelArray);
+}
 
