@@ -53,6 +53,5 @@ void canvasRowFillColor(struct CoordinateCanvas* const canvas, const uint rowNum
 void canvasSetPixel(struct CoordinateCanvas* const canvas, const uVec2 pixelCoords, const struct CanvasPixel pixel);
 void canvasClear(struct CoordinateCanvas* const canvas);
 
-void canvasDataFree(struct CoordinateCanvas* canvas);
 void canvasDestroy(struct CoordinateCanvas* canvas);
 
