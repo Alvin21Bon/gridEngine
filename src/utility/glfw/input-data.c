@@ -11,17 +11,17 @@ struct InputData inputData()
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	struct InputData* inputData = glfwGetWindowUserPointer(window);
+	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
 	inputData->keyFlags[key] = action; // press is true, release is false, repeat doesnt matter
 }
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-	struct InputData* inputData = glfwGetWindowUserPointer(window);
+	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
 	inputData->mouseFlags[button] = action;
 }
 void cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 {
-	struct InputData* inputData = glfwGetWindowUserPointer(window);
+	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
 	inputData->cursorPos.x = xPos;
 
 	// invert the y because by default, the coordinates are relative to the top left corner (so dumb)
