@@ -2,7 +2,7 @@
 
 #include "engine/grid-engine-states.h"
 
-static bool defaultPreAndPostUpdateFunction(struct GameState* gameState) {return GRID_ENGINE_SUCCESS;}
+static enum GridEngineStates defaultPreAndPostUpdateFunction(struct GameState* const gameState) {return GRID_ENGINE_RUNNING;}
 
 struct GameState gameState()
 {
@@ -18,9 +18,9 @@ struct GameState gameState()
 	return gameState;
 }
 
-void gameStateAttachPreUpdateFunction(struct GameState* gameState, bool (*preUpdateFunction)(struct GameState*))
+void gameStateAttachPreUpdateFunction(struct GameState* gameState, enum GridEngineStates (*preUpdateFunction)(struct GameState* const))
 	{gameState->preUpdate = preUpdateFunction;}
-void gameStateAttachPostUpdateFunction(struct GameState* gameState, bool (*postUpdateFunction)(struct GameState*))
+void gameStateAttachPostUpdateFunction(struct GameState* gameState, enum GridEngineStates (*postUpdateFunction)(struct GameState* const))
 	{gameState->postUpdate = postUpdateFunction;}
 
 void gameStateDestroy(struct GameState* const gameState)

@@ -5,6 +5,8 @@
 #include "utility/glfw/input-data.h"
 #include "utility/glfw/time-data.h"
 
+enum GridEngineStates;
+
 /* 
  * ===
  * GameState is for the user to interact with the engine. This is the interface in which user
@@ -21,13 +23,13 @@ struct GameState {
 	struct InputData input;
 	struct TimeData time;
 
-	bool (*preUpdate)(struct GameState*);
-	bool (*postUpdate)(struct GameState*);
+	enum GridEngineStates (*preUpdate)(struct GameState* const);
+	enum GridEngineStates (*postUpdate)(struct GameState* const);
 };
 
 struct GameState gameState();
 
-void gameStateAttachPreUpdateFunction(struct GameState* gameState, bool (*preUpdateFunction)(struct GameState*));
-void gameStateAttachPostUpdateFunction(struct GameState* gameState, bool (*postUpdateFunction)(struct GameState*));
+void gameStateAttachPreUpdateFunction(struct GameState* gameState, enum GridEngineStates (*preUpdateFunction)(struct GameState* const));
+void gameStateAttachPostUpdateFunction(struct GameState* gameState, enum GridEngineStates (*postUpdateFunction)(struct GameState* const));
 
 void gameStateDestroy(struct GameState* const gameState);
