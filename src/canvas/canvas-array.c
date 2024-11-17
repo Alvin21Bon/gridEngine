@@ -2,7 +2,6 @@
 
 #include "canvas/coordinate-canvas.h"
 #include "utility/opengl/canvas-rendering.h"
-#include "engine/grid-engine-states.h"
 #include "utility/memory-util.h"
 #include <stdlib.h>
 #include <string.h>
@@ -14,15 +13,15 @@ struct CanvasArray canvasArray()
 	return canvasArray;
 }
 
-// @returns {bool} GRID_ENGINE_ERROR if canvas array full
+// @returns {bool} false if canvas array full
 // NOTE: limited to this file scope since CanvasArray elements must typically always be on heap
 static bool canvasArrayAdd(struct CanvasArray* const canvasArray, struct CoordinateCanvas* const canvas)
 {
-	if (canvasArray->num == GRID_MAX_CANVAS_AMT) return GRID_ENGINE_ERROR;
+	if (canvasArray->num == GRID_MAX_CANVAS_AMT) return false;
 
 	canvasArray->elements[canvasArray->num] = canvas;
 	canvasArray->num++;
-	return GRID_ENGINE_SUCCESS;
+	return true;
 }
 
 bool canvasArrayAddHeapCopy(struct CanvasArray* const canvasArray, const struct CoordinateCanvas* canvas)
@@ -30,14 +29,14 @@ bool canvasArrayAddHeapCopy(struct CanvasArray* const canvasArray, const struct 
 	struct CoordinateCanvas* canvasOnHeap = malloc(sizeof(struct CoordinateCanvas));
 	*canvasOnHeap = *canvas;
 
-	if (canvasArrayAdd(canvasArray, canvasOnHeap) == GRID_ENGINE_ERROR)
+	if (!canvasArrayAdd(canvasArray, canvasOnHeap))
 	{
 		free(canvasOnHeap);
-		return GRID_ENGINE_ERROR;
+		return false;
 	}
 
 	canvas = canvasOnHeap;
-	return GRID_ENGINE_SUCCESS;
+	return true;
 }
 
 bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* id)
@@ -63,10 +62,10 @@ bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* 
 		idx++;
 	}
 
-	if (canvasesToRemove.num == 0) return GRID_ENGINE_ERROR;
+	if (canvasesToRemove.num == 0) return false;
 	canvasArrayDestroy(&canvasesToRemove);
 
-	return GRID_ENGINE_SUCCESS;
+	return true;
 }
 
 struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToSearch, const char* id)

@@ -1,6 +1,5 @@
 #include "game/game-object-array.h"
 
-#include "engine/grid-engine-states.h"
 #include "game/game-object.h"
 #include "utility/memory-util.h"
 #include <stdlib.h>
@@ -13,15 +12,15 @@ struct GameObjectArray gameObjectArray()
 	return gameObjectArray;
 }
 
-// @returns {bool} GRID_ENGINE_ERROR if object array full
+// @returns {bool} false if object array full
 // NOTE: limited to this file scope since game objects typically must already be heap allocated before adding
 static bool gameObjectArrayAdd(struct GameObjectArray* const gameObjectArray, struct GameObject* const gameObject)
 {
-	if (gameObjectArray->num == GRID_MAX_GAME_OBJECTS_AMT) return GRID_ENGINE_ERROR;
+	if (gameObjectArray->num == GRID_MAX_GAME_OBJECTS_AMT) return false;
 
 	gameObjectArray->elements[gameObjectArray->num] = gameObject;
 	gameObjectArray->num++;
-	return GRID_ENGINE_SUCCESS;
+	return true;
 }
 
 bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, const struct GameObject* gameObject, const size_t sizeOfGameObject)
@@ -30,14 +29,14 @@ bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, c
 	struct GameObject* gameObjectOnHeap = malloc(sizeOfGameObject);
 	memcpy(gameObjectOnHeap, gameObject, sizeOfGameObject);
 
-	if (gameObjectArrayAdd(gameObjectArray, gameObjectOnHeap) == GRID_ENGINE_ERROR)
+	if (!gameObjectArrayAdd(gameObjectArray, gameObjectOnHeap))
 	{
 		free(gameObjectOnHeap);
-		return GRID_ENGINE_ERROR;
+		return false;
 	}
 
 	gameObject = gameObjectOnHeap;
-	return GRID_ENGINE_SUCCESS;
+	return true;
 }
 
 bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, const char* id)
@@ -62,10 +61,10 @@ bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, 
 		idx++;
 	}
 
-	if (gameObjectsToRemove.num == 0) return GRID_ENGINE_ERROR;
+	if (gameObjectsToRemove.num == 0) return false;
 	gameObjectArrayDestroy(&gameObjectsToRemove);
 
-	return GRID_ENGINE_SUCCESS;
+	return true;
 }
 
 struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const gameObjectArrayToSearch, const char* id)

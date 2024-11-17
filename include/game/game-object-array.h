@@ -19,14 +19,15 @@ struct GameObjectArray gameObjectArray();
 // Allocates objects to the heap and stores it in object array
 // @param {sizeOfGameObject} since GameObjects extend the base GameObject struct, this is to know how much space to allocate
 // @param {gameObject} pointer gets changed to point to new game object on heap
-// @returns {bool} GRID_ENGINE_ERROR if game object array full
+// @returns {bool} false if game object array full
 bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, const struct GameObject* gameObject, const size_t sizeOfGameObject);
 
-// @returns {bool} GRID_ENGINE_ERROR if id not found
+// @returns {bool} false if id not found
 // NOTE: this destroys the removed game objects
 bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, const char* id);
 
 // @returns array of game objects that match the ID
+// NOTE: up to the user to check if gameObjectArrat has a num of 0 if id not found
 // WARN: any altering of the GameObjects in the returned array, such as destroying/freeing, will impact the original GameObjectArray
 struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const gameObjectArrayToSearch, const char* id);
 
