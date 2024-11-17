@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lina/lina.h>
+#include <utility/color.h>
 
 struct CoordinateCanvas;
 
@@ -33,7 +34,7 @@ struct ShaderProgramManager shaderProgramManager();
 void shaderProgramManagerDestroy(struct ShaderProgramManager* shaderProgramManager);
 
 void shaderProgramManagerSetGridUnitCntUniform(struct ShaderProgramManager* const shaderProgramManager, const uVec2 gridUnitCnt);
-void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec3 color);
+void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* const shaderProgramManager, const Color color);
 void shaderProgramManagerSetCanvasOriginInBorderShaderUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec2 coordsInNDC);
 
 void shaderProgramManagerSetCanvasUniforms(struct ShaderProgramManager* const shaderProgramManager, const struct CoordinateCanvas* const canvas);

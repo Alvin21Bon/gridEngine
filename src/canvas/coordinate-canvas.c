@@ -6,6 +6,7 @@
 #include "utility/math-util.h"
 #include "utility/memory-util.h"
 #include "utility/constants.h"
+#include "utility/color.h"
 #include <math.h>
 #include <lina/lina.h>
 #include <sys/types.h>
@@ -20,7 +21,7 @@ struct CoordinateCanvas canvas(const char* id, const Vec2 origin, const Vec2 siz
 	canvasSetSize(&canvas, size); // to abide by min canvas dimensions
 	// gridUnitCnt is set down below
 	canvas.aspectRatio = canvas.size.width / canvas.size.height;
-	canvas.border = border(vec3(255, 255, 255), 1);
+	canvas.border = border(color(255, 255, 255), 1);
 
 	canvas.options.isMoveableWithMouse = true;
 	canvas.options.isMoveable = true;
@@ -108,7 +109,7 @@ Vec2 canvasGetBorderSize(const struct CoordinateCanvas* const canvas)
 	return vec2Add(canvas->size, vec2Fill(2 * borderThicknessInPixels));
 }
 
-void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color)
+void canvasFillColor(struct CoordinateCanvas* const canvas, const Color color)
 {
 	struct CanvasPixel fillPixel = pixel(color);
 
@@ -118,7 +119,7 @@ void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color)
 		canvas->addressOfPixelArray[idx] = fillPixel;
 	}
 }
-void canvasRowFillColor(struct CoordinateCanvas* const canvas, const uint rowNum, const Vec3 color)
+void canvasRowFillColor(struct CoordinateCanvas* const canvas, const uint rowNum, const Color color)
 {
 	if (rowNum >= canvas->gridUnitCnt.y) return;
 

@@ -5,6 +5,7 @@
 #include "utility/opengl/glad.h"
 #include "utility/opengl/shader-programs.h"
 #include "utility/opengl/viewports.h"
+#include "utility/color.h"
 #include "utility/constants.h"
 #include <stddef.h>
 #include <lina/lina.h>
@@ -126,7 +127,7 @@ static void canvasRendererVertexSpecification(struct CanvasRenderer* const canva
 
 			// instanced array: isVisible
 			glEnableVertexAttribArray(1);
-			glVertexAttribIPointer(1, 1, GL_UNSIGNED_BYTE, sizeof(struct CanvasPixel), (void*)sizeof(Vec3));
+			glVertexAttribIPointer(1, 1, GL_UNSIGNED_BYTE, sizeof(struct CanvasPixel), (void*)sizeof(Color));
 			glVertexAttribDivisor(1, 1);
 		}
 

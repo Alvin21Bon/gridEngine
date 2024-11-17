@@ -4,6 +4,7 @@
 #include "canvas/canvas-border.h"
 #include "canvas/canvas-pixel.h"
 #include "utility/opengl/canvas-rendering.h"
+#include "utility/color.h"
 
 struct CoordinateCanvas {
 	const char* id; 
@@ -48,8 +49,8 @@ void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas);
 Vec2 canvasGetBorderOrigin(const struct CoordinateCanvas* const canvas);
 Vec2 canvasGetBorderSize(const struct CoordinateCanvas* const canvas);
 
-void canvasFillColor(struct CoordinateCanvas* const canvas, const Vec3 color);
-void canvasRowFillColor(struct CoordinateCanvas* const canvas, const uint rowNum, const Vec3 color);
+void canvasFillColor(struct CoordinateCanvas* const canvas, const Color color);
+void canvasRowFillColor(struct CoordinateCanvas* const canvas, const uint rowNum, const Color color);
 void canvasSetPixel(struct CoordinateCanvas* const canvas, const uVec2 pixelCoords, const struct CanvasPixel pixel);
 void canvasClear(struct CoordinateCanvas* const canvas);
 

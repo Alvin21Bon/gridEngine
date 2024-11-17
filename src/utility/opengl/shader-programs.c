@@ -153,7 +153,7 @@ void shaderProgramManagerSetGridUnitCntUniform(struct ShaderProgramManager* cons
 	glUseProgram(shaderProgramManager->canvas);
 	glUniform2uiv(shaderProgramManager->uniforms.canvasGridUnitCnt, 1, gridUnitCnt.elements);
 }
-void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec3 color)
+void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* const shaderProgramManager, const Color color)
 {
 	glUseProgram(shaderProgramManager->border);
 	glUniform3fv(shaderProgramManager->uniforms.borderColor, 1, color.elements);
