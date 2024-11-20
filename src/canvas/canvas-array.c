@@ -85,7 +85,7 @@ struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToS
 
 void canvasArrayDraw(struct CanvasArray* const canvasArray, struct ShaderProgramManager* const shaderProgramManager)
 {
-	for (int idx = canvasArray->num - 1; idx >= 0; idx--)
+	for (int idx = 0; idx < canvasArray->num; idx++)
 	{
 		canvasDraw(canvasArray->elements[idx], shaderProgramManager);
 	}

@@ -31,7 +31,6 @@ bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* 
 // WARN: the returned CanvasArray must not be destroyed, or the canvases inside be removed, or else the original CanvasArray will be affected
 struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToSearch, const char* id);
 
-// NOTE: the array is drawn back of array to the front, so the first element is on top
 void canvasArrayDraw(struct CanvasArray* const canvasArray, struct ShaderProgramManager* const shaderProgramManager);
 
 // NOTE: will always be called on CanvasArrays full of heap allocated canvases
