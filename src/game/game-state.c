@@ -5,6 +5,7 @@
 #include "engine/grid-engine-states.h"
 #include "utility/glfw/time-data.h"
 #include "utility/glfw/input-data.h"
+#include "glfw.h"
 
 static enum GridEngineStates defaultPreAndPostUpdateFunction(struct GameState* const gameState) {return GRID_ENGINE_RUNNING;}
 
@@ -23,7 +24,15 @@ struct GameState gameState()
 	return gameState;
 }
 
-enum GridEngineStates gameStateUpdate(struct GameState* const gameState);
+enum GridEngineStates gameStateUpdate(struct GameState* const gameState)
+{
+	timeDataUpdate(&gameState->time);
+
+	gameState->previousInput = gameState->input;
+	glfwPollEvents(); // updates the input member in the gameState
+	
+	// PRE UPDATE
+}
 
 void gameStateDestroy(struct GameState* const gameState)
 {
