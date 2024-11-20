@@ -11,6 +11,7 @@ struct GameState gameState()
 	gameState.gameObjectArray = gameObjectArray();
 	gameState.time = timeData();
 	gameState.input = inputData();
+	gameState.previousInput = inputData();
 
 	gameState.preUpdate = defaultPreAndPostUpdateFunction;
 	gameState.postUpdate = defaultPreAndPostUpdateFunction;

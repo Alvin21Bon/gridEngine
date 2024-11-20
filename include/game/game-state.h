@@ -21,6 +21,7 @@ struct GameState {
 	struct CanvasArray canvasArray;
 	struct GameObjectArray gameObjectArray;
 	struct InputData input;
+	struct InputData previousInput;
 	struct TimeData time;
 
 	enum GridEngineStates (*preUpdate)(struct GameState* const);
