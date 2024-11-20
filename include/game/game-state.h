@@ -29,8 +29,9 @@ struct GameState {
 };
 
 struct GameState gameState();
+enum GridEngineStates gameStateUpdate(struct GameState* const gameState);
+void gameStateDestroy(struct GameState* const gameState);
 
 void gameStateAttachPreUpdateFunction(struct GameState* gameState, enum GridEngineStates (*preUpdateFunction)(struct GameState* const));
 void gameStateAttachPostUpdateFunction(struct GameState* gameState, enum GridEngineStates (*postUpdateFunction)(struct GameState* const));
 
-void gameStateDestroy(struct GameState* const gameState);

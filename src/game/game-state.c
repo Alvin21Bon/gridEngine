@@ -1,6 +1,10 @@
 #include "game/game-state.h"
 
+#include "canvas/canvas-array.h"
+#include "game/game-object-array.h"
 #include "engine/grid-engine-states.h"
+#include "utility/glfw/time-data.h"
+#include "utility/glfw/input-data.h"
 
 static enum GridEngineStates defaultPreAndPostUpdateFunction(struct GameState* const gameState) {return GRID_ENGINE_RUNNING;}
 
@@ -19,10 +23,7 @@ struct GameState gameState()
 	return gameState;
 }
 
-void gameStateAttachPreUpdateFunction(struct GameState* gameState, enum GridEngineStates (*preUpdateFunction)(struct GameState* const))
-	{gameState->preUpdate = preUpdateFunction;}
-void gameStateAttachPostUpdateFunction(struct GameState* gameState, enum GridEngineStates (*postUpdateFunction)(struct GameState* const))
-	{gameState->postUpdate = postUpdateFunction;}
+enum GridEngineStates gameStateUpdate(struct GameState* const gameState);
 
 void gameStateDestroy(struct GameState* const gameState)
 {
@@ -33,3 +34,9 @@ void gameStateDestroy(struct GameState* const gameState)
 	printf("Destroying GAME OBJECT ARRAY\n");
 	gameObjectArrayDestroy(&gameState->gameObjectArray);
 }
+
+void gameStateAttachPreUpdateFunction(struct GameState* gameState, enum GridEngineStates (*preUpdateFunction)(struct GameState* const))
+	{gameState->preUpdate = preUpdateFunction;}
+void gameStateAttachPostUpdateFunction(struct GameState* gameState, enum GridEngineStates (*postUpdateFunction)(struct GameState* const))
+	{gameState->postUpdate = postUpdateFunction;}
+
