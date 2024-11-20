@@ -31,7 +31,7 @@ bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, 
 // WARN: any altering of the GameObjects in the returned array, such as destroying/freeing, will impact the original GameObjectArray
 struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const gameObjectArrayToSearch, const char* id);
 
-// NOTE: calling the update/draw functions of all game objects will not be made a function. this will just be in the main game loop.
+// NOTE: calling the update/draw functions of all game objects function will be made for the GameState struct
 
 // NOTE: will always be called on GameObjectArrays full of heap allocated game objects
 void gameObjectArrayDestroy(struct GameObjectArray* const gameObjectArray);
