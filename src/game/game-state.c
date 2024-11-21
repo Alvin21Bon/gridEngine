@@ -2,10 +2,12 @@
 
 #include "canvas/canvas-array.h"
 #include "game/game-object-array.h"
+#include "game/game-object.h"
 #include "engine/grid-engine-states.h"
 #include "utility/glfw/time-data.h"
 #include "utility/glfw/input-data.h"
 #include "glfw.h"
+#include <stdio.h> // replace with logging thing later
 
 static enum GridEngineStates defaultPreAndPostUpdateFunction(struct GameState* const gameState) {return GRID_ENGINE_RUNNING;}
 
@@ -27,11 +29,90 @@ struct GameState gameState()
 enum GridEngineStates gameStateUpdate(struct GameState* const gameState)
 {
 	timeDataUpdate(&gameState->time);
-
 	gameState->previousInput = gameState->input;
 	glfwPollEvents(); // updates the input member in the gameState
 	
-	// PRE UPDATE
+	// used to capture any GRID_ENGINE_PAUSED return value, which will wait for the entire gameStateUpdate to be finished before returning the need for engine to pause
+	bool shouldEnginePause = false;
+
+	// PRE-UPDATE
+	enum GridEngineStates updateFunctionReturnedState;
+	updateFunctionReturnedState = gameState->preUpdate(gameState);
+	
+	switch (updateFunctionReturnedState)
+	{
+		case GRID_ENGINE_RUNNING:
+			break;
+		case GRID_ENGINE_PAUSED:
+			shouldEnginePause = true;
+			break;
+
+		default:
+			printf("GAME STATE PRE UPDATE ERROR: returned value must be of enum GridEngineStates\n");
+		case GRID_ENGINE_ERROR:
+			printf("GAME STATE PRE UPDATE ERROR\n");
+		case GRID_ENGINE_SUCCESS:
+			return updateFunctionReturnedState;
+	}
+
+	// PERFORM ALL GAME OBJECT UPDATE AND DRAW FUNCTIONS
+	struct GameObject* object;
+	struct CanvasArray canvasesToDrawOn;
+	struct CoordinateCanvas* canvas;
+	for (int idx = 0; idx < gameState->gameObjectArray.num; idx++)
+	{
+		object = gameState->gameObjectArray.elements[idx];
+
+		// object update function
+		updateFunctionReturnedState = object->update(object, gameState);
+		switch (updateFunctionReturnedState)
+		{
+			case GRID_ENGINE_RUNNING:
+				break;
+			case GRID_ENGINE_PAUSED:
+				shouldEnginePause = true;
+				break;
+
+			default:
+				printf("OBJECT (%s) UPDATE ERROR: returned value must be of enum GridEngineStates\n", object->id);
+			case GRID_ENGINE_ERROR:
+				printf("OBJECT (%s) UPDATE ERROR\n", object->id);
+			case GRID_ENGINE_SUCCESS:
+				return updateFunctionReturnedState;
+		}
+
+		// object draw (on canvases) function
+		canvasesToDrawOn = canvasArrayGet(&gameState->canvasArray, object->canvasId);
+		if (canvasesToDrawOn.num == 0)
+			printf("OBJECT (%s) DRAW WARN: canvas (%s) is not in GameState canvasArray\n", object->id, object->canvasId);
+
+		for (int idx = 0; idx < canvasesToDrawOn.num; idx++)
+		{
+			canvas = canvasesToDrawOn.elements[idx];
+			object->draw(object, canvas);
+		}
+	}
+
+	// POST-UPDATE
+	updateFunctionReturnedState = gameState->postUpdate(gameState);
+	switch (updateFunctionReturnedState)
+	{
+		case GRID_ENGINE_RUNNING:
+			break;
+		case GRID_ENGINE_PAUSED:
+			shouldEnginePause = true;
+			break;
+
+		default:
+			printf("GAME STATE POST UPDATE ERROR: returned value must be of enum GridEngineStates\n");
+		case GRID_ENGINE_ERROR:
+			printf("GAME STATE POST UPDATE ERROR\n");
+		case GRID_ENGINE_SUCCESS:
+			return updateFunctionReturnedState;
+	}
+
+	// GAME STATE IS NOW FULLY UPDATED. 
+	return shouldEnginePause ? GRID_ENGINE_PAUSED : GRID_ENGINE_RUNNING;
 }
 
 void gameStateDestroy(struct GameState* const gameState)
