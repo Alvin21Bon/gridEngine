@@ -2,7 +2,7 @@
 
 #include "game/game-state.h"
 #include "utility/opengl/shader-programs.h"
-#include "utility/glfw/cursor-state-manager.h"
+#include "utility/glfw/cursor-shape-manager.h"
 #include "engine/grid-engine-states.h"
 
 /*
@@ -16,7 +16,7 @@
 struct GridEngine {
 	struct GameState gameState;
 	struct ShaderProgramManager shaderProgramManager;
-	struct CursorStateManager cursorStateManager;
+	struct CursorShapeManager cursorShapeManager;
 
 	enum GridEngineStates state;
 	enum GridEngineStates (*pausedStateFunction)(struct GameState* const);
