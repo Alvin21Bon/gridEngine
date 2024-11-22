@@ -1,11 +1,11 @@
 #pragma once
 
-#include "utility/constants.h"
 #include <stddef.h>
 
 struct CoordinateCanvas;
 struct ShaderProgramManager;
 
+#define GRID_MAX_CANVAS_AMT 64
 struct CanvasArray {
 	union {
 		struct CoordinateCanvas* elements[GRID_MAX_CANVAS_AMT];

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "utility/constants.h"
 #include <stddef.h>
 
 struct GameObject;
 
+#define GRID_MAX_GAME_OBJECTS_AMT 512
 struct GameObjectArray {
 	union {
 		struct GameObject* elements[GRID_MAX_GAME_OBJECTS_AMT];

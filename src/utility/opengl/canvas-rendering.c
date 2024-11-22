@@ -6,7 +6,6 @@
 #include "utility/opengl/shader-programs.h"
 #include "utility/opengl/viewports.h"
 #include "utility/color.h"
-#include "utility/constants.h"
 #include <stddef.h>
 #include <lina/lina.h>
 #include <sys/types.h>

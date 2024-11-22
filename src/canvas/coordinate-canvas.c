@@ -5,8 +5,8 @@
 #include "utility/opengl/canvas-rendering.h"
 #include "utility/math-util.h"
 #include "utility/memory-util.h"
-#include "utility/constants.h"
 #include "utility/color.h"
+#include "engine/grid-engine-options.h"
 #include <math.h>
 #include <lina/lina.h>
 #include <sys/types.h>
