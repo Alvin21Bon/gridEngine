@@ -8,12 +8,6 @@
 enum GridEngineStates;
 struct GridEngine;
 
-/* 
- * ===
- * GameState encapsulates all things pertaining to a user's game in the engine. 
- * This is the data the user will mostly modify to develop their programs.
- * ===
-*/
 struct GameState {
 	struct CanvasArray canvasArray;
 	struct GameObjectArray gameObjectArray;

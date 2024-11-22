@@ -24,6 +24,8 @@ struct InputData {
 struct InputData inputData();
 void inputDataUpdate(struct InputData* const inputData);
 
+// TODO: API FOR GETTING INFO FOR EVERY KEY/BUTTON AND STUFF
+
 /*
  * 	THESE CALLBACKS ARE SET FOR GLFW DURING THE CREATION OF THE GRIDWINDOW
 */
