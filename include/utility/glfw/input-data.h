@@ -1,19 +1,31 @@
 #pragma once
 
 #include <lina/lina.h>
+#include <sys/types.h>
 #include "glfw.h"
 
+struct InputEntry {
+	bool isDown;
+	// these extra members are used to calculate how many frames a key/button has been in either pressed/released state.
+	ulong frameFirstPressed; 
+	ulong frameFirstReleased;
+};
 struct InputData {
-	// NOTE: keeps arrays first field so constructor initializes all fields to zero correctly
-	bool keyFlags[GLFW_KEY_LAST + 1];
-	bool mouseFlags[GLFW_MOUSE_BUTTON_LAST + 1];
+	struct InputEntry keyFlags[GLFW_KEY_LAST + 1];
+	struct InputEntry mouseFlags[GLFW_MOUSE_BUTTON_LAST + 1];
+
 	dVec2 cursorPos;
+	dVec2 previousCursorPos;
+	dVec2 cursorPosDelta; // this is calculated here since this is commonly needed when working with cursor coordinates
+
+	ulong numTotalUpdates; // essentially, acts as frames since the InputData was created. Used for measuring frames pressed/released
 };
 
 struct InputData inputData();
+void inputDataUpdate(struct InputData* const inputData);
 
 /*
- * 	THESE CALLBACKS ARE SET IN THE INITIATION OF THE ENGINE
+ * 	THESE CALLBACKS ARE SET FOR GLFW DURING THE CREATION OF THE GRIDWINDOW
 */
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
