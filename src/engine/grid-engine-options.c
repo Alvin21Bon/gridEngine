@@ -8,9 +8,9 @@
 uint GRID_MAX_FPS = 60;
 uint GRID_BORDER_THICKNESS_MULTIPLIER = 1;
 Color GRID_CLEAR_COLOR = {.r = 0.2, .g = 0.3, .b = 0.3};
-char* GRID_WINDOW_CREATION_TITLE = "My Grid Engine Project";
-uint GRID_WINDOW_CREATION_WIDTH = 1000;
-uint GRID_WINDOW_CREATION_HEIGHT = 1000;
+char* GRID_WINDOW_TITLE = "My Grid Engine Project";
+uint GRID_WINDOW_WIDTH = 1000;
+uint GRID_WINDOW_HEIGHT = 1000;
 enum LoggingLevels GRID_LOGGING_LEVEL = GRID_LOGGING_WARN;
 
 void gridEngineChangeOption(const enum GridEngineOptions option, const void* const optionValue)
@@ -26,14 +26,14 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 		case GRID_OPTION_CLEAR_COLOR:
 			GRID_CLEAR_COLOR = *(Color*)optionValue;
 			break;
-		case GRID_OPTION_WINDOW_CREATION_TITLE:
-			GRID_WINDOW_CREATION_TITLE = (char*)optionValue;
+		case GRID_OPTION_WINDOW_TITLE:
+			GRID_WINDOW_TITLE = (char*)optionValue;
 			break;
-		case GRID_OPTION_WINDOW_CREATION_WIDTH:
-			GRID_WINDOW_CREATION_WIDTH = *(uint*)optionValue; 
+		case GRID_OPTION_WINDOW_WIDTH:
+			GRID_WINDOW_WIDTH = *(uint*)optionValue; 
 			break;
-		case GRID_OPTION_WINDOW_CREATION_HEIGHT:
-			GRID_WINDOW_CREATION_HEIGHT = *(uint*)optionValue; 
+		case GRID_OPTION_WINDOW_HEIGHT:
+			GRID_WINDOW_HEIGHT = *(uint*)optionValue; 
 			break;
 		case GRID_OPTION_LOGGING_LEVEL:
 			enum LoggingLevels castedLoggingLevel = *(enum LoggingLevels*)optionValue;
