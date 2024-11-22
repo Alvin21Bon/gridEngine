@@ -10,8 +10,7 @@
  * running session of the engine. APIs to the engine are provided to the user, since none of the GridEngine
  * struct definition is not visible to the user
  *
- * The user can work with the gamestate and edit engine configurations
- * in the user defined engine init function.
+ * The user can edit engine configurations in the user defined engine init function.
 */
 struct GridEngine {
 	struct GameState gameState;
@@ -19,7 +18,7 @@ struct GridEngine {
 	struct CursorShapeManager cursorShapeManager;
 
 	enum GridEngineStates state;
-	enum GridEngineStates (*pausedStateFunction)(struct GameState* const);
+	enum GridEngineStates (*pausedStateFunction)(struct GridEngine* const);
 
 	// WINDOW/GLFW
 };
@@ -28,5 +27,4 @@ struct GridEngine {
 void gridEngineInit(struct GridEngine* const engine);
 
 // getters and setters
-void gridEngineAttachPausedStateFunction(struct GridEngine* const engine, enum GridEngineStates (*pausedStateFunction)(struct GameState* const));
-struct GameState* gridEngineGetGameState(const struct GridEngine* const engine);
+void gridEngineAttachPausedStateFunction(struct GridEngine* const engine, enum GridEngineStates (*pausedStateFunction)(struct GridEngine* const));

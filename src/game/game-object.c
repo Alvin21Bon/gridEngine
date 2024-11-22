@@ -2,7 +2,7 @@
 
 #include "engine/grid-engine-states.h"
 
-static enum GridEngineStates defaultObjectUpdateFunction(struct GameObject* const object, struct GameState* const game) {return GRID_ENGINE_RUNNING;}
+static enum GridEngineStates defaultObjectUpdateFunction(struct GameObject* const object, struct GridEngine* const engine) {return GRID_ENGINE_RUNNING;}
 static void defaultObjectDrawFunction(const struct GameObject* const object, struct CoordinateCanvas* const canvas) {return;}
 static void defaultObjectDestroyFunction(struct GameObject* object) {return;}
 
@@ -17,7 +17,7 @@ struct GameObject gameObject(const char* id, char* canvasId)
 
 	return gameObject;
 }
-void gameObjectAttachUpdateFunction(struct GameObject* const object, enum GridEngineStates (*updateFunction)(struct GameObject* const, struct GameState* const))
+void gameObjectAttachUpdateFunction(struct GameObject* const object, enum GridEngineStates (*updateFunction)(struct GameObject* const, struct GridEngine* const))
 	{object->update = updateFunction;}
 void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const, struct CoordinateCanvas* const))
 	{object->draw = drawFunction;}

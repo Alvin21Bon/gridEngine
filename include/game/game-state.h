@@ -1,20 +1,17 @@
 #pragma once
 
-#include "game-object-array.h"
+#include "game/game-object-array.h"
 #include "canvas/canvas-array.h"
 #include "utility/glfw/input-data.h"
 #include "utility/glfw/time-data.h"
 
 enum GridEngineStates;
+struct GridEngine;
 
 /* 
  * ===
- * GameState is for the user to interact with the engine. This is the interface in which user
- * can most directly develop the content of their programs.
- * 
- * A singleton GameState will be made on program run, and will be a member of a bigger 
- * GridEngine singleton that encompassess all engine functions. This GameState is the only
- * thing passed to the user for their program development. 
+ * GameState encapsulates all things pertaining to a user's game in the engine. 
+ * This is the data the user will mostly modify to develop their programs.
  * ===
 */
 struct GameState {
@@ -24,14 +21,14 @@ struct GameState {
 	struct InputData previousInput;
 	struct TimeData time;
 
-	enum GridEngineStates (*preUpdate)(struct GameState* const);
-	enum GridEngineStates (*postUpdate)(struct GameState* const);
+	enum GridEngineStates (*preUpdate)(struct GridEngine* const);
+	enum GridEngineStates (*postUpdate)(struct GridEngine* const);
 };
 
 struct GameState gameState();
-enum GridEngineStates gameStateUpdate(struct GameState* const gameState);
 void gameStateDestroy(struct GameState* const gameState);
 
-void gameStateAttachPreUpdateFunction(struct GameState* gameState, enum GridEngineStates (*preUpdateFunction)(struct GameState* const));
-void gameStateAttachPostUpdateFunction(struct GameState* gameState, enum GridEngineStates (*postUpdateFunction)(struct GameState* const));
+enum GridEngineStates gridEngineUpdateGameState(struct GridEngine* const engine);
+void gridEngineAttachPreUpdateFunction(struct GridEngine* engine, enum GridEngineStates (*preUpdateFunction)(struct GridEngine* const));
+void gridEngineAttachPostUpdateFunction(struct GridEngine* engine, enum GridEngineStates (*postUpdateFunction)(struct GridEngine* const));
 

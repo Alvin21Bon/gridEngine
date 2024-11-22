@@ -1,7 +1,7 @@
 #pragma once
 
 struct CoordinateCanvas;
-struct GameState;
+struct GridEngine;
 enum GridEngineStates;
 
 /* 
@@ -21,13 +21,13 @@ enum GridEngineStates;
 struct GameObject {
 	const char* id;
 	char* canvasId; // stores ID since storing a pointer to the canvas could be dangerous if canvas is already removed from the renderingArray
-	enum GridEngineStates (*update)(struct GameObject* const, struct GameState* const);
+	enum GridEngineStates (*update)(struct GameObject* const, struct GridEngine* const);
 	void (*draw)(const struct GameObject* const, struct CoordinateCanvas* const);
 	void (*destroy)(struct GameObject*);
 };
 
 struct GameObject gameObject(const char* id, char* canvasId);
-void gameObjectAttachUpdateFunction(struct GameObject* const object, enum GridEngineStates (*updateFunction)(struct GameObject* const, struct GameState* const));
+void gameObjectAttachUpdateFunction(struct GameObject* const object, enum GridEngineStates (*updateFunction)(struct GameObject* const, struct GridEngine* const));
 void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const, struct CoordinateCanvas* const));
 void gameObjectAttachDestroyFunction(struct GameObject* const object, void (*destroyFunction)(struct GameObject*));
 
