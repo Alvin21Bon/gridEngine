@@ -1,6 +1,7 @@
 #include "engine/grid-engine-options.h"
 
 #include "utility/color.h"
+#include "utility/logging.h"
 #include <lina/lina.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -12,6 +13,7 @@ Color GRID_CLEAR_COLOR = {.r = 0.2, .g = 0.3, .b = 0.3};
 char* GRID_WINDOW_TITLE = "My Grid Engine Project";
 uVec2 GRID_WINDOW_SIZE = {.width = 1000, .height = 1000};
 enum LoggingLevels GRID_LOGGING_LEVEL = GRID_LOGGING_WARN;
+char* GRID_LOGGING_FILEPATH = "";
 
 void gridEngineChangeOption(const enum GridEngineOptions option, const void* const optionValue)
 {
@@ -40,6 +42,9 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 				return;
 			}
 			GRID_LOGGING_LEVEL = castedLoggingLevel;
+			break;
+		case GRID_OPTION_LOGGING_FILEPATH:
+			GRID_LOGGING_FILEPATH = (char*)optionValue;
 			break;
 		default:
 			printf("OPTION SETTING WARN: option must be of enum GridEngineOptions\n");
