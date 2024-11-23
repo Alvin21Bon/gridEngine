@@ -17,20 +17,46 @@ void inputDataUpdate(struct InputData* const inputData)
 	glfwPollEvents(); 
 }
 
+bool inputDataIsKeyDown(const struct InputData* inputData, const int key)
+{
+	return inputData->key[key].isDown;
+}
+ulong inputDataGetKeyFramesPressed(const struct InputData* inputData, const int key)
+{
+	return inputDataIsKeyDown(inputData, key) ? GRID_FRAME_COUNTER - inputData->key[key].frameFirstPressed + 1 : 0;
+}
+ulong inputDataGetKeyFramesReleased(const struct InputData* inputData, const int key)
+{
+	return !inputDataIsKeyDown(inputData, key) ? GRID_FRAME_COUNTER - inputData->key[key].frameFirstReleased + 1 : 0;
+}
+
+bool inputDataIsMouseButtonDown(const struct InputData* inputData, const int button)
+{
+	return inputData->mouseButton[button].isDown;
+}
+ulong inputDataGetMouseButtonFramesPressed(const struct InputData* inputData, const int button)
+{
+	return inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouseButton[button].frameFirstPressed + 1 : 0;
+}
+ulong inputDataGetMouseButtonFramesReleased(const struct InputData* inputData, const int button)
+{
+	return !inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouseButton[button].frameFirstReleased + 1 : 0;
+}
+
 // NOTE: the engine InputData struct is always stored in the window user pointer
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
-	inputData->keyFlags[key].isDown = action; // press is true, release is false, repeat doesnt matter
+	inputData->key[key].isDown = action; // press is true, release is false, repeat doesnt matter
 	
 	switch (action)
 	{
 		case GLFW_PRESS:
-			inputData->keyFlags[key].frameFirstPressed = GRID_FRAME_COUNTER;
+			inputData->key[key].frameFirstPressed = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_RELEASE:
-			inputData->keyFlags[key].frameFirstReleased = GRID_FRAME_COUNTER;
+			inputData->key[key].frameFirstReleased = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed
@@ -42,15 +68,15 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
 	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
-	inputData->mouseFlags[button].isDown = action; // press is true, release is false, repeat doesnt matter
+	inputData->mouseButton[button].isDown = action; // press is true, release is false, repeat doesnt matter
 	
 	switch (action)
 	{
 		case GLFW_PRESS:
-			inputData->mouseFlags[button].frameFirstPressed = GRID_FRAME_COUNTER;
+			inputData->mouseButton[button].frameFirstPressed = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_RELEASE:
-			inputData->mouseFlags[button].frameFirstReleased = GRID_FRAME_COUNTER;
+			inputData->mouseButton[button].frameFirstReleased = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed

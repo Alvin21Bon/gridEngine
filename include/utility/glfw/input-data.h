@@ -11,8 +11,8 @@ struct InputEntry {
 	ulong frameFirstReleased;
 };
 struct InputData {
-	struct InputEntry keyFlags[GLFW_KEY_LAST + 1];
-	struct InputEntry mouseFlags[GLFW_MOUSE_BUTTON_LAST + 1];
+	struct InputEntry key[GLFW_KEY_LAST + 1];
+	struct InputEntry mouseButton[GLFW_MOUSE_BUTTON_LAST + 1];
 
 	dVec2 cursorPos;
 	dVec2 previousCursorPos;
@@ -22,7 +22,13 @@ struct InputData {
 struct InputData inputData();
 void inputDataUpdate(struct InputData* const inputData);
 
-// TODO: API FOR GETTING INFO FOR EVERY KEY/BUTTON AND STUFF
+bool inputDataIsKeyDown(const struct InputData* inputData, const int key);
+ulong inputDataGetKeyFramesPressed(const struct InputData* inputData, const int key);
+ulong inputDataGetKeyFramesReleased(const struct InputData* inputData, const int key);
+
+bool inputDataIsMouseButtonDown(const struct InputData* inputData, const int button);
+ulong inputDataGetMouseButtonFramesPressed(const struct InputData* inputData, const int button);
+ulong inputDataGetMouseButtonFramesReleased(const struct InputData* inputData, const int button);
 
 /*
  * 	THESE CALLBACKS ARE SET FOR GLFW DURING THE CREATION OF THE GRIDWINDOW
