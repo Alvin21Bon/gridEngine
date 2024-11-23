@@ -17,3 +17,6 @@ struct GridWindow gridWindow();
 
 // called every frame to update window, input, and time data
 void gridWindowUpdate(struct GridWindow* const window);
+
+// for updating the engine window size option variable
+void windowSizeCallback(GLFWwindow* window, int width, int height);
