@@ -1,6 +1,7 @@
 #include "utility/glfw/input-data.h"
 
 #include "glfw.h"
+#include "engine/grid-engine-globals.h"
 #include <lina/lina.h>
 #include <stdio.h>
 
@@ -12,8 +13,7 @@ struct InputData inputData()
 }
 void inputDataUpdate(struct InputData* const inputData)
 {
-	// increment this first since a call of this function signals another frame
-	inputData->numTotalUpdates++;  
+	// this is just a nice wrapper
 	glfwPollEvents(); 
 }
 
@@ -27,10 +27,10 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	switch (action)
 	{
 		case GLFW_PRESS:
-			inputData->keyFlags[key].frameFirstPressed = inputData->numTotalUpdates;
+			inputData->keyFlags[key].frameFirstPressed = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_RELEASE:
-			inputData->keyFlags[key].frameFirstReleased = inputData->numTotalUpdates;
+			inputData->keyFlags[key].frameFirstReleased = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed
@@ -47,10 +47,10 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	switch (action)
 	{
 		case GLFW_PRESS:
-			inputData->mouseFlags[button].frameFirstPressed = inputData->numTotalUpdates;
+			inputData->mouseFlags[button].frameFirstPressed = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_RELEASE:
-			inputData->mouseFlags[button].frameFirstReleased = inputData->numTotalUpdates;
+			inputData->mouseFlags[button].frameFirstReleased = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed

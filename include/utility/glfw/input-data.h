@@ -17,8 +17,6 @@ struct InputData {
 	dVec2 cursorPos;
 	dVec2 previousCursorPos;
 	dVec2 cursorPosDelta; // this is calculated here since this is commonly needed when working with cursor coordinates
-
-	ulong numTotalUpdates; // essentially, acts as frames since the InputData was created. Used for measuring frames pressed/released
 };
 
 struct InputData inputData();
