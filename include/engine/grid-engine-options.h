@@ -18,6 +18,8 @@ enum GridEngineOptions {
 	GRID_OPTION_WINDOW_SIZE,
 	// VALUE TYPE: enum LoggingLevels
 	GRID_OPTION_LOGGING_LEVEL,
+	// VALUE TYPE: bool
+	GRID_OPTION_LOGGING_DISABLE_FILEPATH_EXISTS_WARNING,
 	// VALUE TYPE: char*
 	GRID_OPTION_LOGGING_FILEPATH,
 };
@@ -28,6 +30,7 @@ extern Color GRID_CLEAR_COLOR;
 extern char* GRID_WINDOW_TITLE;
 extern uVec2 GRID_WINDOW_SIZE;
 extern enum LoggingLevels GRID_LOGGING_LEVEL;
+extern bool GRID_LOGGING_DISABLE_FILEPATH_EXISTS_WARNING;
 extern char* GRID_LOGGING_FILEPATH;
 
 void gridEngineChangeOption(const enum GridEngineOptions option, const void* const optionValue);
