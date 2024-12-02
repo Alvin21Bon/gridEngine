@@ -33,8 +33,6 @@ void LOG(const enum LoggingLevels logLevel, const char* format, ...)
 			break;
 	}
 
-	// if error, print to stderr
-	// if filepath is set, print to file also inlcuding the console. vprintf
 	const bool wasLoggingFilepathOptionSet = strlen(GRID_LOGGING_FILEPATH) != 0;
 	FILE* fp = wasLoggingFilepathOptionSet ? fopen(GRID_LOGGING_FILEPATH, "a") : nullptr;
 	va_list args;
@@ -62,14 +60,12 @@ void LOG(const enum LoggingLevels logLevel, const char* format, ...)
 		else
 			printf("%s", finalOutputLog);
 
-		// TODO: FINISH WRITING TOT HE FILE. MAKE COMMENTS AB THE FILE STUFF THAT WE ARE GONNA DO IN GRID ENGINE OPTIONS. AHHH. 
-		if 
-		
-
-		// TODO: FINISH IMPLEMENTING CONCATNSTE FOMATTED LOG AND LOG TAG. DO FILE IF FILE EXISTS. 
+		if (fp != nullptr)
+			fprintf(fp, "%s", finalOutputLog);
 	}
 	CLEAN_UP_FUNCTION_AND_RETURN:
 	va_end(args);
 	if (fp != nullptr) fclose(fp);
 	return;
 }
+
