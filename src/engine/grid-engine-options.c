@@ -2,10 +2,12 @@
 
 #include "utility/color.h"
 #include "utility/logging.h"
+#include "utility/user-response.h"
+#include "utility/file-util.h"
 #include <lina/lina.h>
 #include <sys/types.h>
 #include <stdio.h>
-#include <errno.h>
+#include <string.h>
 #include <ctype.h>
 
 // default values
@@ -50,32 +52,38 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 			GRID_LOGGING_DISABLE_FILEPATH_EXISTS_WARNING = *(bool*)optionValue;
 			break;
 		case GRID_OPTION_LOGGING_FILEPATH:
-			// TODO: check if file already exists, issue warning. do u wanna overwrite this file? get input "y" or "n"
-			// TODO: MAX FILE PATH SIZE OF 4096 characters
-			// TODO: make new option to disable the file already exists warning
-			// TODO: if "n", do not set the filepath variable and go on. if "y", then go on and fopen write to the file to clear contents
-			// TODO: if fopen returns an error, do some error analysis. LOG that error, do not set variable. for example, insufficient permissions. 
-			// TODO: if everything is fine, then set the variable and write to the file, then close it right after. we now have a clean open file we can log to. 
-			// try to fopen the filepath with fopen r. if successful, that means the file exists. issue the warning if not disbaled.
-			// if NULL, that means the file does not exist, go on. try to make the file with fopen w. if NULL, check the error codes, and LOG accordingly. 
-			// if successful, now we can set the variable and remember to close the file pointer. 
-			FILE* fp;
 			char* castedLoggingFilepath = (char*)optionValue;
-			fp = fopen(castedLoggingFilepath, "r");
-			if (fp != NULL) // filepath already exists
+			const size_t MAX_FILEPATH_LENGTH = 4096;
+			if (strlen(castedLoggingFilepath) > MAX_FILEPATH_LENGTH)
+			{
+				LOG(GRID_LOGGING_WARN, "given grid logging filepath option value is longer than the max filepath size of %d\n", MAX_FILEPATH_LENGTH);
+				return;
+			}
+
+			// check for file exists so user can choose to overwrite it if warning is not disabled
+			if (CHECK_FILE_EXISTS(castedLoggingFilepath)) 
 			{
 				if (!GRID_LOGGING_DISABLE_FILEPATH_EXISTS_WARNING)
 				{
-					char retrievedChar;
-					do
-					{
-						printf("%s already exists. Do you want to overwrite this file? (y/n): ", castedLoggingFilepath);
-						retrievedChar = getchar();
-						retrievedChar = tolower(retrievedChar);
-					}
-					while (retrievedChar != 'y' && retrievedChar != 'n');
+					const size_t PROMPT_EXTRA_BUFFER_SPACE = 1000;
+					char prompt[MAX_FILEPATH_LENGTH + PROMPT_EXTRA_BUFFER_SPACE];
+					sprintf(prompt, "%s already exists. Do you want to overwrite this file? (y/n): ", castedLoggingFilepath);
+
+					char response = PROMPT_CHAR_RESPONSE_FROM_USER("YyNn", prompt);
+					response = tolower(response);
+
+					if (response == 'n' || response == EOF) return;
 				}
 			}
+
+			bool wasFileCreatedOrCleared = CREATE_OR_CLEAR_FILE(castedLoggingFilepath);
+			if (!wasFileCreatedOrCleared)
+			{
+				LOG(GRID_LOGGING_ERROR, "%s given as logging filepath value was unable to be created or cleared\n", castedLoggingFilepath);
+				return;
+			}
+
+			GRID_LOGGING_FILEPATH = castedLoggingFilepath;
 			break;
 		default:
 			printf("OPTION SETTING WARN: option must be of enum GridEngineOptions\n");
