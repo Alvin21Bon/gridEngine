@@ -7,8 +7,8 @@
 #include "engine/grid-engine.h"
 #include "utility/glfw/time-data.h"
 #include "utility/glfw/input-data.h"
+#include "utility/logging.h"
 #include "glfw.h"
-#include <stdio.h> // replace with logging thing later
 
 static enum GridEngineStates defaultPreAndPostUpdateFunction(struct GridEngine* const engine) {return GRID_ENGINE_RUNNING;}
 
@@ -29,11 +29,11 @@ struct GameState gameState()
 
 void gameStateDestroy(struct GameState* const gameState)
 {
-	printf("Destroying Game State...\n");
-	printf("Destroying CANVAS ARRAY\n");
+	LOG(GRID_LOGGING_FULL, "Destroying Game State...\n");
+	LOG(GRID_LOGGING_FULL, "Destorying Canvas Array...\n");
 	canvasArrayDestroy(&gameState->canvasArray);
 
-	printf("Destroying GAME OBJECT ARRAY\n");
+	LOG(GRID_LOGGING_FULL, "Destorying Game Object Array...\n");
 	gameObjectArrayDestroy(&gameState->gameObjectArray);
 }
 

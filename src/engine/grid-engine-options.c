@@ -43,7 +43,7 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 			enum LoggingLevels castedLoggingLevel = *(enum LoggingLevels*)optionValue;
 			if (castedLoggingLevel < GRID_LOGGING_OFF || castedLoggingLevel > GRID_LOGGING_FULL)
 			{
-				printf("OPTION SETTING WARN: logging level value must be of enum LoggingLevels\n"); // replace with logging function 
+				LOG(GRID_LOGGING_WARN, "option value for GRID_OPTION_LOGGING_LEVEL not of enum LoggingLevels\n");
 				return;
 			}
 			GRID_LOGGING_LEVEL = castedLoggingLevel;
@@ -86,7 +86,7 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 			GRID_LOGGING_FILEPATH = castedLoggingFilepath;
 			break;
 		default:
-			printf("OPTION SETTING WARN: option must be of enum GridEngineOptions\n");
+			LOG(GRID_LOGGING_WARN, "option in gridEngineChangeOption must be of enum GridEngineOptions\n");
 			return;
 	}
 }

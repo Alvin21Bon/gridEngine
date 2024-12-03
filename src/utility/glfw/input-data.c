@@ -2,8 +2,8 @@
 
 #include "glfw.h"
 #include "engine/grid-engine-globals.h"
+#include "utility/logging.h"
 #include <lina/lina.h>
-#include <stdio.h>
 
 struct InputData inputData()
 {
@@ -61,7 +61,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed
 		default:
-			printf("???\n");
+			LOG(GRID_LOGGING_FULL, "action value of %d should not be possible here in keyCallback\n", action);
 			break;
 	}
 }
@@ -81,7 +81,7 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed
 		default:
-			printf("???\n");
+			LOG(GRID_LOGGING_FULL, "action value of %d should not be possible here in mouseButtonCallback\n", action);
 			break;
 	}
 }

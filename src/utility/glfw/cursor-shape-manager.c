@@ -1,7 +1,7 @@
 #include "utility/glfw/cursor-shape-manager.h"
 
 #include "glfw.h"
-#include <stdio.h>
+#include "utility/logging.h"
 
 struct CursorShapeManager cursorShapeManager(GLFWwindow* const window)
 {
@@ -57,7 +57,7 @@ void cursorSetShape(struct CursorShapeManager* const cursor, GLFWwindow* const w
 			glfwSetCursor(window, cursor->notAllowed);
 			break;
 		default:
-			printf("CURSOR_SET_SHAPE WARN: shape must be of enum CursorShapes\n");
+			LOG(GRID_LOGGING_WARN, "shape must be of enum CursorShapes in cursorSetShape\n");
 			cursor->activeShape = GRID_CURSOR_ARROW;
 			glfwSetCursor(window, NULL);
 			break;
@@ -65,7 +65,7 @@ void cursorSetShape(struct CursorShapeManager* const cursor, GLFWwindow* const w
 }
 void cursorShapeManagerDestroy(struct CursorShapeManager* cursor)
 {
-	printf("Destroying CursorShapeManager...\n");
+	LOG(GRID_LOGGING_FULL, "Destroying CursorShapeManager...\n");
 	glfwDestroyCursor(cursor->iBeam);
 	glfwDestroyCursor(cursor->crosshair);
 	glfwDestroyCursor(cursor->pointingHand);
