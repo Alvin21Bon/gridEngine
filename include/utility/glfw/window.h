@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include "utility/glfw/input-data.h"
 #include "utility/glfw/time-data.h"
+#include "utility/glfw/cursor-shape-manager.h"
 
 struct GLFWwindow;
 
@@ -11,6 +12,7 @@ struct GridWindow {
 	GLFWwindow* windowPointer;
 	struct InputData input;
 	struct TimeData time;
+	struct CursorShapeManager cursorShapeManager;
 };
 
 struct GridWindow gridWindow();

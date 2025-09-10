@@ -2,6 +2,7 @@
 
 #include "utility/glfw/input-data.h"
 #include "utility/glfw/time-data.h"
+#include "utility/glfw/cursor-shape-manager.h"
 #include "engine/grid-engine-options.h"
 #include "glfw.h"
 #include <string.h>
@@ -28,6 +29,7 @@ struct GridWindow gridWindow()
 	gridWindow.windowPointer = window;
 	gridWindow.time = timeData();
 	gridWindow.input = inputData();
+	gridWindow.cursorShapeManager = cursorShapeManager(window);
 
 	return gridWindow;
 }
