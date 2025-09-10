@@ -57,7 +57,7 @@ void cursorSetShape(struct CursorShapeManager* const cursor, GLFWwindow* const w
 			glfwSetCursor(window, cursor->notAllowed);
 			break;
 		default:
-			LOG(GRID_LOGGING_WARN, "shape must be of enum CursorShapes in cursorSetShape\n");
+			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "shape must be of enum CursorShapes\n");
 			cursor->activeShape = GRID_CURSOR_ARROW;
 			glfwSetCursor(window, NULL);
 			break;
@@ -65,7 +65,7 @@ void cursorSetShape(struct CursorShapeManager* const cursor, GLFWwindow* const w
 }
 void cursorShapeManagerDestroy(struct CursorShapeManager* cursor)
 {
-	LOG(GRID_LOGGING_FULL, "Destroying CursorShapeManager...\n");
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "Destroying CursorShapeManager...\n");
 	glfwDestroyCursor(cursor->iBeam);
 	glfwDestroyCursor(cursor->crosshair);
 	glfwDestroyCursor(cursor->pointingHand);
@@ -77,3 +77,4 @@ void cursorShapeManagerDestroy(struct CursorShapeManager* cursor)
 	glfwDestroyCursor(cursor->notAllowed);
 	cursor->activeShape = 0;
 }
+
