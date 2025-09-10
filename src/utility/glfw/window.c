@@ -45,6 +45,8 @@ struct GridWindow gridWindow()
 	gridWindow.input = inputData();
 	gridWindow.cursorShapeManager = cursorShapeManager(window);
 
+	glfwSetWindowUserPointer(window, &gridWindow.input); // remains in window user pointer for input callbacks
+
 	return gridWindow;
 }
 void gridWindowUpdate(struct GridWindow* const window)
