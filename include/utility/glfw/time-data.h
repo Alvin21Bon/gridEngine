@@ -2,7 +2,7 @@
 
 struct TimeData {
 	double currentTime;
-	double previousTime;
+	double prevTime;
 	double dt;
 	double FPS;
 };

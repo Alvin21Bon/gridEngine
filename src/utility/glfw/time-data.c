@@ -7,8 +7,8 @@ struct TimeData timeData()
 {
 	struct TimeData timeData;
 	timeData.currentTime = glfwGetTime();
-	timeData.previousTime = 0;
-	timeData.dt = timeData.currentTime - timeData.previousTime;
+	timeData.prevTime = 0;
+	timeData.dt = timeData.currentTime - timeData.prevTime;
 	timeData.FPS = GRID_MAX_FPS;
 
 	return timeData;
@@ -16,8 +16,8 @@ struct TimeData timeData()
 
 void timeDataUpdate(struct TimeData* const timeData)
 {
-	timeData->previousTime = timeData->currentTime;
+	timeData->prevTime = timeData->currentTime;
 	timeData->currentTime = glfwGetTime();
-	timeData->dt = timeData->currentTime - timeData->previousTime;
+	timeData->dt = timeData->currentTime - timeData->prevTime;
 	timeData->FPS = 1.0 / timeData->dt;
 }
