@@ -6,6 +6,7 @@
 #include "utility/opengl/shader-programs.h"
 #include "utility/opengl/viewports.h"
 #include "utility/color.h"
+#include "utility/logging.h"
 #include <stddef.h>
 #include <lina/lina.h>
 #include <sys/types.h>
@@ -19,6 +20,7 @@ static void canvasRendererAllocateVertexBuffer(struct CanvasRenderer* const canv
 static void canvasUpdateRendererViewports(struct CoordinateCanvas* const canvas);
 static void canvasUpdateRendererVertexBuffer(struct CoordinateCanvas* const canvas);
 
+static struct ShaderProgramManager sg_shaderProgramManager = {0};
 
 void canvasCreateRenderer(struct CoordinateCanvas* const canvas)
 {
@@ -47,18 +49,18 @@ void canvasDestroyRenderer(struct CoordinateCanvas* const canvas)
 	glDeleteBuffers(1, &canvas->renderer.VBO);
 	glDeleteVertexArrays(1, &canvas->renderer.VAO);
 }
-void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManager* const shaderProgramManager)
+void canvasDraw(struct CoordinateCanvas* const canvas)
 {
 	// skip entire graphics pipeline if canvas is not visible
 	if (!canvas->options.isVisible) return;
 
 	// setting up renderer and uniforms before drawing
 	canvasUpdateRenderer(canvas);
-	shaderProgramManagerSetCanvasUniforms(shaderProgramManager, canvas);
+	shaderProgramManagerSetCanvasUniforms(&sg_shaderProgramManager, canvas);
 
 	glBindVertexArray(canvas->renderer.VAO);
 	{
-		glUseProgram(shaderProgramManager->canvas);
+		glUseProgram(sg_shaderProgramManager.canvas);
 		{
 			viewportUse(&canvas->renderer.canvasViewport);
 			glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, canvas->numPixels);
@@ -66,7 +68,7 @@ void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManag
 
 		if (canvas->border.isVisible)
 		{
-			glUseProgram(shaderProgramManager->border);
+			glUseProgram(sg_shaderProgramManager.border);
 			{
 				viewportUse(&canvas->renderer.borderViewport);
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -75,6 +77,20 @@ void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManag
 	}
 }
 
+void initCanvasRendering()
+{
+	// prevent multiple inits
+	if (sg_shaderProgramManager.canvas != 0) 
+	{
+		LOG(GRID_LOGGING_WARN, __func__, __LINE__, "repetitive canvas rendering initiationg\n");
+		return;
+	}
+	sg_shaderProgramManager = shaderProgramManager();
+}
+void terminateCanvasRendering()
+{
+	shaderProgramManagerDestroy(&sg_shaderProgramManager);
+}
 
 static void canvasRendererCreateGLObjects(struct CanvasRenderer* const canvasRenderer)
 {

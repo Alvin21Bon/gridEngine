@@ -4,7 +4,6 @@
 #include "viewports.h"
 
 struct CoordinateCanvas;
-struct ShaderProgramManager;
 
 /*
  * This struct encapsulates any rendering or utilization of opengl from the canvas.
@@ -22,4 +21,8 @@ void canvasCreateRenderer(struct CoordinateCanvas* const canvas);
 void canvasUpdateRenderer(struct CoordinateCanvas* const canvas);
 void canvasDestroyRenderer(struct CoordinateCanvas* const canvas);
 
-void canvasDraw(struct CoordinateCanvas* const canvas, struct ShaderProgramManager* const shaderProgramManager);
+void canvasDraw(struct CoordinateCanvas* const canvas);
+
+// NOTE: used for managing the static, single, global instance of a ShaderProgramManager in the canvas rendering src
+void initCanvasRendering();
+void terminateCanvasRendering();
