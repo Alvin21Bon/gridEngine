@@ -32,6 +32,8 @@ void terminateEngine(struct GridEngine* engine);
 struct GridEngine gridEngine();
 void gridEngineDestroy(struct GridEngine* engine);
 
+enum GridEngineStates engineTick(struct GridEngine* const engine);
+
 // attach user defined loop functions
 void gridEngineAttachPreTickFunction(struct GridEngine* engine, enum GridEngineStates (*preTickFunction)(struct GridEngine* const));
 void gridEngineAttachPostTickFunction(struct GridEngine* engine, enum GridEngineStates (*postTickFunction)(struct GridEngine* const));

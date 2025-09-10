@@ -2,6 +2,7 @@
 
 #include "canvas/canvas-array.h"
 #include "game/game-object-array.h"
+#include "game/game-object.h"
 #include "utility/glfw/window.h"
 #include "utility/logging.h"
 #include "engine/grid-engine-states.h"
@@ -31,6 +32,99 @@ struct GridEngine gridEngine()
 
 	initEngine(&gridEngine); // all user-level procedures
 	return gridEngine;
+}
+
+enum GridEngineStates engineTick(struct GridEngine* const engine)
+{
+	gridWindowUpdate(&engine->window);
+
+	if (engine->state == GRID_ENGINE_PAUSED)
+	{
+		return engine->pausedStateFunction(engine);
+	}
+
+	// used to capture any GRID_ENGINE_PAUSED return value, which will wait for the entire gameStateUpdate to be finished before returning the need for engine to pause
+	bool shouldEnginePause = false;
+	enum GridEngineStates returnedEngineState;
+	
+	// PRE-TICK
+	returnedEngineState = engine->preTick(engine);
+	switch (returnedEngineState)
+	{
+		case GRID_ENGINE_RUNNING:
+			break;
+		case GRID_ENGINE_PAUSED:
+			shouldEnginePause = true;
+			break;
+
+		case GRID_ENGINE_ERROR:
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "pre-update error\n");
+		case GRID_ENGINE_SUCCESS:
+			return returnedEngineState;
+
+		default:
+			LOG(GRID_LOGGING_WARN, __func__,  __LINE__, "returned value must be of enum GridEngineStates\n");
+	}
+
+	// PERFORM ALL GAME OBJECT UPDATE AND DRAW FUNCTIONS
+	struct GameObject* object;
+	struct CanvasArray canvasesToDrawOn;
+	struct CoordinateCanvas* canvas;
+	for (int idx = 0; idx < engine->gameObjectArray.num; idx++)
+	{
+		object = engine->gameObjectArray.elements[idx];
+
+		// object update function
+		returnedEngineState = object->update(object, engine);
+		switch (returnedEngineState)
+		{
+			case GRID_ENGINE_RUNNING:
+				break;
+			case GRID_ENGINE_PAUSED:
+				shouldEnginePause = true;
+				break;
+
+			case GRID_ENGINE_ERROR:
+				LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "object (%s) update error\n", object->id);
+			case GRID_ENGINE_SUCCESS:
+				return returnedEngineState;
+
+			default:
+				LOG(GRID_LOGGING_WARN, __func__, __LINE__, "object (%s) update not of enum GridEngineStates\n", object->id);
+		}
+
+		// object draw (on canvases) function
+		canvasesToDrawOn = canvasArrayGet(&engine->canvasArray, object->canvasId);
+		if (canvasesToDrawOn.num == 0)
+			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "object (%s) is not linked to a valid canvas (%s)\n", object->id, object->canvasId);
+
+		for (int idx = 0; idx < canvasesToDrawOn.num; idx++)
+		{
+			canvas = canvasesToDrawOn.elements[idx];
+			object->draw(object, canvas);
+		}
+	}
+
+	// POST-TICK
+	returnedEngineState = engine->postTick(engine);
+	switch (returnedEngineState)
+	{
+		case GRID_ENGINE_RUNNING:
+			break;
+		case GRID_ENGINE_PAUSED:
+			shouldEnginePause = true;
+			break;
+
+		case GRID_ENGINE_ERROR:
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "post-update error\n");
+		case GRID_ENGINE_SUCCESS:
+			return returnedEngineState;
+
+		default:
+			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "post-update return value not of enum GridEngineStates\n");
+	}
+
+	return shouldEnginePause ? GRID_ENGINE_PAUSED : GRID_ENGINE_RUNNING;
 }
 
 void gridEngineAttachPreTickFunction(struct GridEngine* engine, enum GridEngineStates (*preTickFunction)(struct GridEngine* const))
