@@ -5,6 +5,7 @@
 #include "game/game-object.h"
 #include "utility/glfw/window.h"
 #include "utility/logging.h"
+#include "utility/opengl/canvas-rendering.h"
 #include "engine/grid-engine-states.h"
 
 static enum GridEngineStates defaultPreTick(struct GridEngine* const engine) { return GRID_ENGINE_RUNNING; }
@@ -27,6 +28,8 @@ struct GridEngine gridEngine()
 	gridEngine.preTick = defaultPreTick;
 	gridEngine.postTick = defaultPostTick;
 	gridEngine.pausedStateFunction = defaultPaused;
+
+	initCanvasRendering();
 
 	gridEngine.state = GRID_ENGINE_RUNNING;
 
@@ -146,6 +149,7 @@ void gridEngineDestroy(struct GridEngine* engine)
 	gridWindowDestroy(&engine->window);
 	canvasArrayDestroy(&engine->canvasArray);
 	gameObjectArrayDestroy(&engine->gameObjectArray);
+	terminateCanvasRendering();
 
 	terminateEngine(engine);
 }
