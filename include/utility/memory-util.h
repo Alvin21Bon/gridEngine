@@ -22,7 +22,7 @@ static inline void** ALLOCATE_2D_ARRAY(const size_t numColumns, const size_t num
 
 	for (size_t col = 0; col < numColumns; col++)
 	{
-		pointerArray[col] = memoryFor2DArray + (col * numRows * sizeOfType);
+		pointerArray[col] = (char*)memoryFor2DArray + (col * numRows * sizeOfType);
 	}
 
 	return pointerArray;
