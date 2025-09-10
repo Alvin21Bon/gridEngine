@@ -5,15 +5,8 @@
 
 struct CoordinateCanvas;
 
-// ======================== MAKING SHADER PROGRAMS
-typedef unsigned int ShaderProgram;
-
-ShaderProgram constructShaderProgramFromString(const char* vertexSource, const char* fragmentSource);
-ShaderProgram constructShaderProgramFromFile(const char* vertexPath, const char* fragmentPath);
-// ======================== 
-
-// ======================== MANAGING SHADER PROGRAMS
 typedef int Uniform;
+typedef unsigned int ShaderProgram;
 
 struct ShaderProgramManager {
 	ShaderProgram canvas;
@@ -26,10 +19,6 @@ struct ShaderProgramManager {
 	} uniforms;
 };
 
-/*
- * These wrapper functions are provided so that the correct program is in use before setting
- * a uniform
-*/
 struct ShaderProgramManager shaderProgramManager();
 void shaderProgramManagerDestroy(struct ShaderProgramManager* shaderProgramManager);
 
@@ -38,4 +27,4 @@ void shaderProgramManagerSetBorderColorUniform(struct ShaderProgramManager* cons
 void shaderProgramManagerSetCanvasOriginInBorderShaderUniform(struct ShaderProgramManager* const shaderProgramManager, const Vec2 coordsInNDC);
 
 void shaderProgramManagerSetCanvasUniforms(struct ShaderProgramManager* const shaderProgramManager, const struct CoordinateCanvas* const canvas);
-// ======================== 
+
