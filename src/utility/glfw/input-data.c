@@ -32,15 +32,15 @@ ulong inputDataGetKeyFramesReleased(const struct InputData* inputData, const int
 
 bool inputDataIsMouseButtonDown(const struct InputData* inputData, const int button)
 {
-	return inputData->mouseButton[button].isDown;
+	return inputData->mouse.button[button].isDown;
 }
 ulong inputDataGetMouseButtonFramesPressed(const struct InputData* inputData, const int button)
 {
-	return inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouseButton[button].frameFirstPressed + 1 : 0;
+	return inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouse.button[button].frameFirstPressed + 1 : 0;
 }
 ulong inputDataGetMouseButtonFramesReleased(const struct InputData* inputData, const int button)
 {
-	return !inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouseButton[button].frameFirstReleased + 1 : 0;
+	return !inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouse.button[button].frameFirstReleased + 1 : 0;
 }
 
 // NOTE: the engine InputData struct is always stored in the window user pointer
@@ -68,15 +68,15 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
 	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
-	inputData->mouseButton[button].isDown = action; // press is true, release is false, repeat doesnt matter
+	inputData->mouse.button[button].isDown = action; // press is true, release is false, repeat doesnt matter
 	
 	switch (action)
 	{
 		case GLFW_PRESS:
-			inputData->mouseButton[button].frameFirstPressed = GRID_FRAME_COUNTER;
+			inputData->mouse.button[button].frameFirstPressed = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_RELEASE:
-			inputData->mouseButton[button].frameFirstReleased = GRID_FRAME_COUNTER;
+			inputData->mouse.button[button].frameFirstReleased = GRID_FRAME_COUNTER;
 			break;
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed
@@ -93,7 +93,8 @@ void cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 	yPos = height - yPos;
 
 	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
-	inputData->previousCursorPos = inputData->cursorPos;
-	inputData->cursorPos = dvec2(xPos, yPos);
-	inputData->cursorPosDelta = dvec2Sub(inputData->cursorPos, inputData->previousCursorPos);
+	inputData->mouse.prevCursorPos = inputData->mouse.cursorPos;
+	inputData->mouse.cursorPos = dvec2(xPos, yPos);
+	inputData->mouse.deltaCursorPos = dvec2Sub(inputData->mouse.cursorPos, inputData->mouse.prevCursorPos);
 }
+

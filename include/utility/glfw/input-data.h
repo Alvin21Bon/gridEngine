@@ -12,11 +12,13 @@ struct InputEntry {
 };
 struct InputData {
 	struct InputEntry key[GLFW_KEY_LAST + 1];
-	struct InputEntry mouseButton[GLFW_MOUSE_BUTTON_LAST + 1];
 
-	dVec2 cursorPos;
-	dVec2 previousCursorPos;
-	dVec2 cursorPosDelta; // this is calculated here since this is commonly needed when working with cursor coordinates
+	struct {
+		struct InputEntry button[GLFW_MOUSE_BUTTON_LAST + 1];
+		dVec2 cursorPos;
+		dVec2 prevCursorPos;
+		dVec2 deltaCursorPos; // this is calculated here since this is commonly needed when working with cursor coordinates
+	} mouse;
 };
 
 struct InputData inputData();
