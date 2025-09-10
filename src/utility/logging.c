@@ -6,30 +6,30 @@
 #include <stdio.h>
 #include <string.h>
 
-void LOG(const enum LoggingLevels logLevel, const char* format, ...)
+void LOG(const enum LoggingLevels logLevel, const char* funcName, const int lineNum, const char* format, ...)
 {
 	if (logLevel > GRID_LOGGING_LEVEL) return;
 	if (logLevel < GRID_LOGGING_OFF || logLevel > GRID_LOGGING_FULL)
 	{
-		LOG(GRID_LOGGING_WARN, "logLevel not of enum LoggingLevels was given to LOG\n");
+		LOG(GRID_LOGGING_WARN, __func__, __LINE__, "logLevel not of enum LoggingLevels was given to LOG\n");
 		return;
 	}
 
-	const int MAX_BUFFER_SIZE_OF_LOG_TAG = 32;
-	char logTag[MAX_BUFFER_SIZE_OF_LOG_TAG]; // prepend log level and frame count to log messages 
+	const int MAX_BUFFER_SIZE_OF_LOG_TAG = strlen(funcName) + 64;
+	char logTag[MAX_BUFFER_SIZE_OF_LOG_TAG]; // prepend log level, funcName, lineCount, and frame count to log messages 
 	switch (logLevel)
 	{
 		case GRID_LOGGING_OFF:
-			LOG(GRID_LOGGING_WARN, "logLevel of GRID_LOGGING_OFF was given to LOG\n");
+			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "GRID_LOGGING_OFF should not pass logging level checks\n");
 			return;
 		case GRID_LOGGING_ERROR: 
-			snprintf(logTag, MAX_BUFFER_SIZE_OF_LOG_TAG, "[ERROR] %lu: ", GRID_FRAME_COUNTER);
+			snprintf(logTag, MAX_BUFFER_SIZE_OF_LOG_TAG, "[ERROR] %lu %s@%d: ", GRID_FRAME_COUNTER, funcName, lineNum);
 			break;
 		case GRID_LOGGING_WARN:
-			snprintf(logTag, MAX_BUFFER_SIZE_OF_LOG_TAG, "[WARN] %lu: ", GRID_FRAME_COUNTER);
+			snprintf(logTag, MAX_BUFFER_SIZE_OF_LOG_TAG, "[WARN] %lu %s@%d: ", GRID_FRAME_COUNTER, funcName, lineNum);
 			break;
 		case GRID_LOGGING_FULL:
-			snprintf(logTag, MAX_BUFFER_SIZE_OF_LOG_TAG, "%lu: ", GRID_FRAME_COUNTER);
+			snprintf(logTag, MAX_BUFFER_SIZE_OF_LOG_TAG, "%lu: ", GRID_FRAME_COUNTER); // no need to tag funcName of lineNum
 			break;
 	}
 
@@ -42,8 +42,10 @@ void LOG(const enum LoggingLevels logLevel, const char* format, ...)
 		const int bufferSizeOfGivenFormattedLog = vsnprintf(NULL, 0, format, args) + 1; // +1 for \0
 		if (bufferSizeOfGivenFormattedLog <= 0) // also check equal to 0 due to the +1 added onto it
 		{
-			LOG(GRID_LOGGING_ERROR, "log message given to LOG causes an encoding error\n");
-			goto CLEAN_UP_FUNCTION_AND_RETURN;
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "encoding error\n");
+			va_end(args);
+			if (fp != nullptr) fclose(fp);
+			return;
 		}
 		
 		char givenFormattedLog[bufferSizeOfGivenFormattedLog];
@@ -63,7 +65,7 @@ void LOG(const enum LoggingLevels logLevel, const char* format, ...)
 		if (fp != nullptr)
 			fprintf(fp, "%s", finalOutputLog);
 	}
-	CLEAN_UP_FUNCTION_AND_RETURN:
+
 	va_end(args);
 	if (fp != nullptr) fclose(fp);
 	return;

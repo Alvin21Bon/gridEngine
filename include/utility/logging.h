@@ -8,4 +8,6 @@ enum LoggingLevels {
 	GRID_LOGGING_FULL
 };
 
-void LOG(const enum LoggingLevels logLevel, const char* format, ...);
+// @param funcName should always be "__func__"
+// @param lineNum should always be "__LINE__"
+void LOG(const enum LoggingLevels logLevel, const char* funcName, const int lineNum, const char* format, ...);
