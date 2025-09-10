@@ -22,3 +22,5 @@ void gridWindowUpdate(struct GridWindow* const window);
 
 // for updating the engine window size option variable
 void windowSizeCallback(GLFWwindow* window, int width, int height);
+
+void gridWindowDestroy(struct GridWindow* window);

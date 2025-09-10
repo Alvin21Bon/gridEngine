@@ -3,15 +3,23 @@
 #include "utility/glfw/input-data.h"
 #include "utility/glfw/time-data.h"
 #include "utility/glfw/cursor-shape-manager.h"
+#include "utility/logging.h"
 #include "engine/grid-engine-options.h"
 #include "glfw.h"
 #include <string.h>
+#include <stdlib.h>
 
 #define GRID_GLFW_CONTEXT_VERSION_MAJOR 3
 #define GRID_GLFW_CONTEXT_VERSION_MINOR 3
 #define GRID_GLFW_OPENGL_PROFILE GLFW_OPENGL_CORE_PROFILE
 struct GridWindow gridWindow()
 {
+	if (!glfwInit())
+	{
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "GLFW failed to init\n");
+		exit(EXIT_FAILURE);
+	}
+
 	// making the window
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GRID_GLFW_CONTEXT_VERSION_MAJOR);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GRID_GLFW_CONTEXT_VERSION_MINOR);
@@ -53,4 +61,10 @@ void gridWindowUpdate(struct GridWindow* const window)
 void windowSizeCallback(GLFWwindow* window, int width, int height)
 {
 	GRID_WINDOW_SIZE = uvec2(width, height);
+}
+
+void gridWindowDestroy(struct GridWindow* window)
+{
+	cursorShapeManagerDestroy(&window->cursorShapeManager);
+	glfwTerminate();
 }
