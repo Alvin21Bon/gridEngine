@@ -83,11 +83,11 @@ struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToS
 	return listOfMatchingCanvases;
 }
 
-void canvasArrayDraw(struct CanvasArray* const canvasArray, struct ShaderProgramManager* const shaderProgramManager)
+void canvasArrayDraw(struct CanvasArray* const canvasArray)
 {
 	for (int idx = 0; idx < canvasArray->num; idx++)
 	{
-		canvasDraw(canvasArray->elements[idx], shaderProgramManager);
+		canvasDraw(canvasArray->elements[idx]);
 	}
 }
 
@@ -103,3 +103,4 @@ void canvasArrayDestroy(struct CanvasArray* const canvasArray)
 
 	canvasArray->num = 0;
 }
+

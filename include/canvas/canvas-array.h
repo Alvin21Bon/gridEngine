@@ -3,7 +3,6 @@
 #include <stddef.h>
 
 struct CoordinateCanvas;
-struct ShaderProgramManager;
 
 #define GRID_MAX_CANVAS_AMT 64
 struct CanvasArray {
@@ -31,7 +30,7 @@ bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* 
 // WARN: the returned CanvasArray must not be destroyed, or the canvases inside be removed, or else the original CanvasArray will be affected
 struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToSearch, const char* id);
 
-void canvasArrayDraw(struct CanvasArray* const canvasArray, struct ShaderProgramManager* const shaderProgramManager);
+void canvasArrayDraw(struct CanvasArray* const canvasArray);
 
 // NOTE: will always be called on CanvasArrays full of heap allocated canvases
 void canvasArrayDestroy(struct CanvasArray* const canvasArray);
