@@ -43,7 +43,7 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 			enum LoggingLevels castedLoggingLevel = *(enum LoggingLevels*)optionValue;
 			if (castedLoggingLevel < GRID_LOGGING_OFF || castedLoggingLevel > GRID_LOGGING_FULL)
 			{
-				LOG(GRID_LOGGING_WARN, "option value for GRID_OPTION_LOGGING_LEVEL not of enum LoggingLevels\n");
+				LOG(GRID_LOGGING_WARN, __func__, __LINE__, "option value not of enum LoggingLevels\n");
 				return;
 			}
 			GRID_LOGGING_LEVEL = castedLoggingLevel;
@@ -56,7 +56,7 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 			const size_t MAX_FILEPATH_LENGTH = 4096;
 			if (strlen(castedLoggingFilepath) > MAX_FILEPATH_LENGTH)
 			{
-				LOG(GRID_LOGGING_WARN, "given grid logging filepath option value is longer than the max filepath size of %d\n", MAX_FILEPATH_LENGTH);
+				LOG(GRID_LOGGING_WARN, __func__, __LINE__, "filepath longer than max filepath length %d\n", MAX_FILEPATH_LENGTH);
 				return;
 			}
 
@@ -79,14 +79,14 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 			bool wasFileCreatedOrCleared = CREATE_OR_CLEAR_FILE(castedLoggingFilepath);
 			if (!wasFileCreatedOrCleared)
 			{
-				LOG(GRID_LOGGING_ERROR, "%s given as logging filepath value was unable to be created or cleared\n", castedLoggingFilepath);
+				LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "%s could not be created or cleared\n", castedLoggingFilepath);
 				return;
 			}
 
 			GRID_LOGGING_FILEPATH = castedLoggingFilepath;
 			break;
 		default:
-			LOG(GRID_LOGGING_WARN, "option in gridEngineChangeOption must be of enum GridEngineOptions\n");
+			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "option not of enum GridEngineOptions\n");
 			return;
 	}
 }

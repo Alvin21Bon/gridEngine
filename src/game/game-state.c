@@ -29,11 +29,11 @@ struct GameState gameState()
 
 void gameStateDestroy(struct GameState* const gameState)
 {
-	LOG(GRID_LOGGING_FULL, "Destroying Game State...\n");
-	LOG(GRID_LOGGING_FULL, "Destorying Canvas Array...\n");
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "Destroying Game State...\n");
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "Destorying Canvas Array...\n");
 	canvasArrayDestroy(&gameState->canvasArray);
 
-	LOG(GRID_LOGGING_FULL, "Destorying Game Object Array...\n");
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "Destorying Game Object Array...\n");
 	gameObjectArrayDestroy(&gameState->gameObjectArray);
 }
 

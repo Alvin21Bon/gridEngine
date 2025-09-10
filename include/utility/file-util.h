@@ -34,13 +34,13 @@ static inline bool CREATE_OR_CLEAR_FILE(const char* filename)
 		case ENOENT:
 		case ENOTDIR:
 		case EISDIR:
-			LOG(GRID_LOGGING_ERROR, "%s given to CREATE_OR_CLEAR_FILE is invalid\n", filename);
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "%s is invalid\n", filename);
 			break;
 		case EACCES:
-			LOG(GRID_LOGGING_ERROR, "insufficient permissions to write to %s given to CREATE_OR_CLEAR_FILE\n", filename);
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "insufficient permissions to write to %s\n", filename);
 			break;
 		default:
-			LOG(GRID_LOGGING_ERROR, "%s given to CREATE_OR_CLEAR_FILE results in an error: %s\n", filename, strerror(errno));
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "%s results in an error: %s\n", filename, strerror(errno));
 			break;
 	}
 
