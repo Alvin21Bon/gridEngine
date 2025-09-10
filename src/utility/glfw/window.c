@@ -25,6 +25,12 @@ struct GridWindow gridWindow()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GRID_GLFW_CONTEXT_VERSION_MINOR);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GRID_GLFW_OPENGL_PROFILE);
 	GLFWwindow* window = glfwCreateWindow(GRID_WINDOW_SIZE.width, GRID_WINDOW_SIZE.height, GRID_WINDOW_TITLE, NULL, NULL);
+	if (!window)
+	{
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "GLFW window creation failed\n");
+		glfwTerminate();
+		exit(EXIT_FAILURE);
+	}
 	glfwMakeContextCurrent(window);
 
 	// setting the callbacks
