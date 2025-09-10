@@ -61,7 +61,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed
 		default:
-			LOG(GRID_LOGGING_FULL, "action value of %d should not be possible here in keyCallback\n", action);
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "this action value (%d) should not be possible\n", action);
 			break;
 	}
 }
@@ -81,7 +81,7 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 		case GLFW_REPEAT:
 			return; // dont mess up frameFirstPressed
 		default:
-			LOG(GRID_LOGGING_FULL, "action value of %d should not be possible here in mouseButtonCallback\n", action);
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "this action value (%d) should not be possible\n", action);
 			break;
 	}
 }
