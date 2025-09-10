@@ -7,9 +7,12 @@
 #include "utility/opengl/viewports.h"
 #include "utility/color.h"
 #include "utility/logging.h"
+#include "glfw.h"
 #include <stddef.h>
 #include <lina/lina.h>
 #include <sys/types.h>
+#include <stdlib.h>
+
 
 // NOTE: these static functions are all used to either create the renderer in the constructor, or to update 
 // 	 specific values in the renderer in the update function.
@@ -20,7 +23,8 @@ static void canvasRendererAllocateVertexBuffer(struct CanvasRenderer* const canv
 static void canvasUpdateRendererViewports(struct CoordinateCanvas* const canvas);
 static void canvasUpdateRendererVertexBuffer(struct CoordinateCanvas* const canvas);
 
-static struct ShaderProgramManager sg_shaderProgramManager = {0};
+static struct ShaderProgramManager sg_shaderProgramManager;
+static bool hasBeenInitiated = false;
 
 void canvasCreateRenderer(struct CoordinateCanvas* const canvas)
 {
@@ -80,12 +84,21 @@ void canvasDraw(struct CoordinateCanvas* const canvas)
 void initCanvasRendering()
 {
 	// prevent multiple inits
-	if (sg_shaderProgramManager.canvas != 0) 
+	if (hasBeenInitiated) 
 	{
 		LOG(GRID_LOGGING_WARN, __func__, __LINE__, "repetitive canvas rendering initiationg\n");
 		return;
 	}
+	
+	// load GL before constructing shader program 
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "failed to mount OpenGL with GLAD\n");
+		exit(EXIT_FAILURE);
+	}
+	
 	sg_shaderProgramManager = shaderProgramManager();
+	hasBeenInitiated = true;
 }
 void terminateCanvasRendering()
 {
