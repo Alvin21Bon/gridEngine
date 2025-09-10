@@ -60,12 +60,13 @@ enum GridEngineStates gridEngineUpdateGameState(struct GridEngine* const engine)
 			shouldEnginePause = true;
 			break;
 
-		default:
-			printf("PRE UPDATE ERROR: returned value must be of enum GridEngineStates\n");
 		case GRID_ENGINE_ERROR:
-			printf("PRE UPDATE ERROR\n");
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "pre-update error\n");
 		case GRID_ENGINE_SUCCESS:
 			return updateFunctionReturnedState;
+
+		default:
+			LOG(GRID_LOGGING_WARN, __func__,  __LINE__, "returned value must be of enum GridEngineStates\n");
 	}
 
 	// PERFORM ALL GAME OBJECT UPDATE AND DRAW FUNCTIONS
@@ -86,18 +87,19 @@ enum GridEngineStates gridEngineUpdateGameState(struct GridEngine* const engine)
 				shouldEnginePause = true;
 				break;
 
-			default:
-				printf("OBJECT (%s) UPDATE ERROR: returned value must be of enum GridEngineStates\n", object->id);
 			case GRID_ENGINE_ERROR:
-				printf("OBJECT (%s) UPDATE ERROR\n", object->id);
+				LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "object (%s) update error\n", object->id);
 			case GRID_ENGINE_SUCCESS:
 				return updateFunctionReturnedState;
+
+			default:
+				LOG(GRID_LOGGING_WARN, __func__, __LINE__, "object (%s) update not of enum GridEngineStates\n", object->id);
 		}
 
 		// object draw (on canvases) function
 		canvasesToDrawOn = canvasArrayGet(&gameState->canvasArray, object->canvasId);
 		if (canvasesToDrawOn.num == 0)
-			printf("OBJECT (%s) DRAW WARN: canvas (%s) is not in canvasArray\n", object->id, object->canvasId);
+			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "object (%s) is not linked to a valid canvas (%s)\n", object->id, object->canvasId);
 
 		for (int idx = 0; idx < canvasesToDrawOn.num; idx++)
 		{
@@ -116,12 +118,13 @@ enum GridEngineStates gridEngineUpdateGameState(struct GridEngine* const engine)
 			shouldEnginePause = true;
 			break;
 
-		default:
-			printf("POST UPDATE ERROR: returned value must be of enum GridEngineStates\n");
 		case GRID_ENGINE_ERROR:
-			printf("POST UPDATE ERROR\n");
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "post-update error\n");
 		case GRID_ENGINE_SUCCESS:
 			return updateFunctionReturnedState;
+
+		default:
+			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "post-update return value not of enum GridEngineStates\n");
 	}
 
 	// GAME STATE IS NOW FULLY UPDATED. 

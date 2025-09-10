@@ -2,6 +2,7 @@
 
 #include "utility/opengl/glad.h"
 #include "utility/math-util.h"
+#include "utility/logging.h"
 #include "canvas/coordinate-canvas.h"
 #include <stdlib.h>
 
@@ -14,7 +15,7 @@ static char* loadFileIntoString(const char* fileName)
 	infile = fopen(fileName, "r");
 	if (!infile)
 	{
-		printf("loadFileIntoString ERROR: file failed to open\n");
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "%s failed to open \n", fileName);
 		return NULL;
 	}
 	
@@ -25,8 +26,8 @@ static char* loadFileIntoString(const char* fileName)
 	string = malloc((sizeof(char) * numOfBytesInFile) + 1); // +1 to make space for null termination
 	if (!string)
 	{
-		printf("loadFileIntoString ERROR: memory allocation failure\n");
-		return NULL;
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "memory allocation failure\n");
+		abort();
 	}
 
 	// NOTE in linux, it is standard to end every file on an LF (like newline) character. fread reads this
@@ -47,7 +48,7 @@ static void compileShader(unsigned int shaderID, int* success)
 	if (!(*success))
 	{
 		glGetShaderInfoLog(shaderID, 512, NULL, log);
-		printf("%s", log);
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "%s", log);
 	}
 }
 
@@ -78,7 +79,7 @@ ShaderProgram constructShaderProgramFromString(const char* vertexSource, const c
 	if (!success)
 	{
 		glGetProgramInfoLog(shaderProgram, 512, NULL, log);
-		printf("%s", log);
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "%s", log);
 		return 0;
 	}
 
@@ -98,7 +99,7 @@ ShaderProgram constructShaderProgramFromFile(const char* vertexPath, const char*
 	fragmentSource = loadFileIntoString(fragmentPath);
 	if (!vertexSource || !fragmentSource)
 	{
-		printf("constructShaderProgramVF ERROR: failed to load shader source\n");
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "failed to load shader source files\n");
 		return 0;
 	}
 
@@ -142,7 +143,7 @@ struct ShaderProgramManager shaderProgramManager()
 }
 void shaderProgramManagerDestroy(struct ShaderProgramManager* shaderProgramManager)
 {
-	printf("Destroying ShaderProgramManager...\n");
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "Destroying ShaderProgramManager...\n");
 	glDeleteProgram(shaderProgramManager->canvas);
 	glDeleteProgram(shaderProgramManager->border);
 }
