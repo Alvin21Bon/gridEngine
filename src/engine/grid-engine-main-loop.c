@@ -17,6 +17,8 @@ static void waitOnMaxFPS(double startingTime);
 int main()
 {
 	struct GridEngine engine = gridEngine();
+	glfwSetWindowUserPointer(engine.window.windowPointer, &engine.window.input); // WARN: must be done here so this pointer stays valid the entire engine duration
+
 	const enum GridEngineStates endingEngineState = enterEngineLoop(&engine);
 
 	if (endingEngineState == GRID_ENGINE_ERROR)
