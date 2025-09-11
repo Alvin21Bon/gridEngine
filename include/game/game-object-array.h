@@ -6,11 +6,7 @@ struct GameObject;
 
 #define GRID_MAX_GAME_OBJECTS_AMT 512
 struct GameObjectArray {
-	union {
-		struct GameObject* elements[GRID_MAX_GAME_OBJECTS_AMT];
-		struct GameObject** e; // just a shorthand name for the array
-	};
-
+	struct GameObject* elements[GRID_MAX_GAME_OBJECTS_AMT];
 	size_t num;
 };
 

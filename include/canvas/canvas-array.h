@@ -6,11 +6,7 @@ struct CoordinateCanvas;
 
 #define GRID_MAX_CANVAS_AMT 64
 struct CanvasArray {
-	union {
-		struct CoordinateCanvas* elements[GRID_MAX_CANVAS_AMT];
-		struct CoordinateCanvas** e; // just a shorthand name for the array
-	};
-
+	struct CoordinateCanvas* elements[GRID_MAX_CANVAS_AMT];
 	size_t num;
 };
 

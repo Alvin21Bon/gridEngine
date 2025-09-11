@@ -52,7 +52,7 @@ bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, 
 			gameObjectArrayAdd(&gameObjectsToRemove, gameObject);
 
 			// now that object to remove pointer is saved, it can be overwritten in the original GameObjectArray
-			MEMMOVE_RANGE(&gameObjectArrayRemove->e[idx], &gameObjectArrayRemove->e[idx + 1], &gameObjectArrayRemove->e[gameObjectArrayRemove->num]);
+			MEMMOVE_RANGE(&gameObjectArrayRemove->elements[idx], &gameObjectArrayRemove->elements[idx + 1], &gameObjectArrayRemove->elements[gameObjectArrayRemove->num]);
 			gameObjectArrayRemove->num--;
 
 			// continue here so that idx is not incremented since the next element has been shifted back one already
@@ -73,9 +73,9 @@ struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const ga
 
 	for (int idx = 0; idx < gameObjectArrayToSearch->num; idx++)
 	{
-		if (strcmp(gameObjectArrayToSearch->e[idx]->id, id) == 0)
+		if (strcmp(gameObjectArrayToSearch->elements[idx]->id, id) == 0)
 		{
-			gameObjectArrayAdd(&listOfMatchingGameObjects, gameObjectArrayToSearch->e[idx]);
+			gameObjectArrayAdd(&listOfMatchingGameObjects, gameObjectArrayToSearch->elements[idx]);
 		}
 	}
 

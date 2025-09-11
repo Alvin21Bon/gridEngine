@@ -53,7 +53,7 @@ bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* 
 			canvasArrayAdd(&canvasesToRemove, canvas);
 
 			// now that canvas to remove pointer is saved, we can safetly alter the original CanvasArray
-			MEMMOVE_RANGE(&canvasArrayRemove->e[idx], &canvasArrayRemove->e[idx + 1], &canvasArrayRemove->e[canvasArrayRemove->num]);
+			MEMMOVE_RANGE(&canvasArrayRemove->elements[idx], &canvasArrayRemove->elements[idx + 1], &canvasArrayRemove->elements[canvasArrayRemove->num]);
 			canvasArrayRemove->num--;
 
 			// continue here so that idx is not incremented since the next element has been shifted back one already
@@ -74,9 +74,9 @@ struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToS
 
 	for (int idx = 0; idx < canvasArrayToSearch->num; idx++)
 	{
-		if (strcmp(canvasArrayToSearch->e[idx]->id, id) == 0)
+		if (strcmp(canvasArrayToSearch->elements[idx]->id, id) == 0)
 		{
-			canvasArrayAdd(&listOfMatchingCanvases, canvasArrayToSearch->e[idx]);
+			canvasArrayAdd(&listOfMatchingCanvases, canvasArrayToSearch->elements[idx]);
 		}
 	}
 
