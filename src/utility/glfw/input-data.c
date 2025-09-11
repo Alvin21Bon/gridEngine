@@ -17,30 +17,38 @@ void inputDataUpdate(struct InputData* const inputData)
 	glfwPollEvents(); 
 }
 
-bool inputDataIsKeyDown(const struct InputData* inputData, const int key)
+bool inputDataIsKeyDown(const struct InputData* const inputData, const int key)
 {
 	return inputData->key[key].isDown;
 }
-ulong inputDataGetKeyFramesPressed(const struct InputData* inputData, const int key)
+ulong inputDataGetKeyFramesPressed(const struct InputData* const inputData, const int key)
 {
 	return inputDataIsKeyDown(inputData, key) ? GRID_FRAME_COUNTER - inputData->key[key].frameFirstPressed + 1 : 0;
 }
-ulong inputDataGetKeyFramesReleased(const struct InputData* inputData, const int key)
+ulong inputDataGetKeyFramesReleased(const struct InputData* const inputData, const int key)
 {
 	return !inputDataIsKeyDown(inputData, key) ? GRID_FRAME_COUNTER - inputData->key[key].frameFirstReleased + 1 : 0;
 }
+bool inputDataIsKeyFirstFramePressed(const struct InputData* const inputData, const int key)
+{
+	return inputDataGetKeyFramesPressed(inputData, key) == 1;
+}
 
-bool inputDataIsMouseButtonDown(const struct InputData* inputData, const int button)
+bool inputDataIsMouseButtonDown(const struct InputData* const inputData, const int button)
 {
 	return inputData->mouse.button[button].isDown;
 }
-ulong inputDataGetMouseButtonFramesPressed(const struct InputData* inputData, const int button)
+ulong inputDataGetMouseButtonFramesPressed(const struct InputData* const inputData, const int button)
 {
 	return inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouse.button[button].frameFirstPressed + 1 : 0;
 }
-ulong inputDataGetMouseButtonFramesReleased(const struct InputData* inputData, const int button)
+ulong inputDataGetMouseButtonFramesReleased(const struct InputData* const inputData, const int button)
 {
 	return !inputDataIsMouseButtonDown(inputData, button) ? GRID_FRAME_COUNTER - inputData->mouse.button[button].frameFirstReleased + 1 : 0;
+}
+bool inputDataIsMouseButtonFirstFramePressed(const struct InputData* const inputData, const int button)
+{
+	return inputDataGetMouseButtonFramesPressed(inputData, button) == 1;
 }
 
 // NOTE: the engine InputData struct is always stored in the window user pointer

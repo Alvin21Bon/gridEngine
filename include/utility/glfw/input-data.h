@@ -24,13 +24,15 @@ struct InputData {
 struct InputData inputData();
 void inputDataUpdate(struct InputData* const inputData);
 
-bool inputDataIsKeyDown(const struct InputData* inputData, const int key);
-ulong inputDataGetKeyFramesPressed(const struct InputData* inputData, const int key);
-ulong inputDataGetKeyFramesReleased(const struct InputData* inputData, const int key);
+bool inputDataIsKeyDown(const struct InputData* const inputData, const int key);
+ulong inputDataGetKeyFramesPressed(const struct InputData* const inputData, const int key);
+ulong inputDataGetKeyFramesReleased(const struct InputData* const inputData, const int key);
+bool inputDataIsKeyFirstFramePressed(const struct InputData* const inputData, const int key);
 
-bool inputDataIsMouseButtonDown(const struct InputData* inputData, const int button);
-ulong inputDataGetMouseButtonFramesPressed(const struct InputData* inputData, const int button);
-ulong inputDataGetMouseButtonFramesReleased(const struct InputData* inputData, const int button);
+bool inputDataIsMouseButtonDown(const struct InputData* const inputData, const int button);
+ulong inputDataGetMouseButtonFramesPressed(const struct InputData* const inputData, const int button);
+ulong inputDataGetMouseButtonFramesReleased(const struct InputData* const inputData, const int button);
+bool inputDataIsMouseButtonFirstFramePressed(const struct InputData* const inputData, const int button);
 
 /*
  * 	THESE CALLBACKS ARE SET FOR GLFW DURING THE CREATION OF THE GRIDWINDOW
