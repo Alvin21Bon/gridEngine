@@ -4,7 +4,7 @@
 
 struct GameObject;
 
-#define GRID_MAX_GAME_OBJECTS_AMT 512
+#define GRID_MAX_GAME_OBJECTS_AMT 4096
 struct GameObjectArray {
 	struct GameObject* elements[GRID_MAX_GAME_OBJECTS_AMT];
 	size_t num;

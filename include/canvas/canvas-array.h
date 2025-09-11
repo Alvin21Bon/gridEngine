@@ -4,7 +4,7 @@
 
 struct CoordinateCanvas;
 
-#define GRID_MAX_CANVAS_AMT 64
+#define GRID_MAX_CANVAS_AMT 128 
 struct CanvasArray {
 	struct CoordinateCanvas* elements[GRID_MAX_CANVAS_AMT];
 	size_t num;
