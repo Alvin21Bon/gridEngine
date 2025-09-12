@@ -70,9 +70,8 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 	}
 
 	// PERFORM ALL GAME OBJECT UPDATE AND DRAW FUNCTIONS
+	// NOTE: all updates are processed, THEN all draws are called to make sure visual state is accurate
 	struct GameObject* object;
-	struct CanvasArray canvasesToDrawOn;
-	struct CoordinateCanvas* canvas;
 	for (int idx = 0; idx < engine->gameObjectArray.num; idx++)
 	{
 		object = engine->gameObjectArray.elements[idx];
@@ -95,6 +94,13 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 			default:
 				LOG(GRID_LOGGING_WARN, __func__, __LINE__, "object (%s) update not of enum GridEngineStates\n", object->id);
 		}
+	}
+
+	struct CanvasArray canvasesToDrawOn;
+	struct CoordinateCanvas* canvas;
+	for (int idx = 0; idx < engine->gameObjectArray.num; idx++)
+	{
+		object = engine->gameObjectArray.elements[idx];
 
 		// object draw (on canvases) function
 		canvasesToDrawOn = canvasArrayGet(&engine->canvasArray, object->canvasId);
