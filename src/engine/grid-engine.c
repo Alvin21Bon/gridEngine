@@ -104,9 +104,6 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 
 		// object draw (on canvases) function
 		canvasesToDrawOn = canvasArrayGet(&engine->canvasArray, object->canvasId);
-		if (canvasesToDrawOn.num == 0)
-			LOG(GRID_LOGGING_WARN, __func__, __LINE__, "object (%s) is not linked to a valid canvas (%s)\n", object->id, object->canvasId);
-
 		for (int idx = 0; idx < canvasesToDrawOn.num; idx++)
 		{
 			canvas = canvasesToDrawOn.elements[idx];
