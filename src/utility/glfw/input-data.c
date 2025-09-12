@@ -13,8 +13,12 @@ struct InputData inputData()
 }
 void inputDataUpdate(struct InputData* const inputData)
 {
-	// this is just a nice wrapper
+	// WARN: delta cursor calculations happen here instead of in the cursorPosCallback because pollEvents processes a queue of 
+	// 	 events, such as mouse movements, with each call of pollEvents. Thus, the delta cursor position since THE LAST FRAME
+	// 	 would not be accurate if this calculation was done in the callback. Must sandwich the pollEvents call.
+	inputData->mouse.prevCursorPos = inputData->mouse.cursorPos;
 	glfwPollEvents(); 
+	inputData->mouse.deltaCursorPos = dvec2Sub(inputData->mouse.cursorPos, inputData->mouse.prevCursorPos);
 }
 
 bool inputDataIsKeyDown(const struct InputData* const inputData, const int key)
@@ -95,14 +99,12 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 }
 void cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 {
+	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
+
 	// invert the y because by default, the coordinates are relative to the top left corner (so dumb)
 	int height;
 	glfwGetWindowSize(window, NULL, &height);
 	yPos = height - yPos;
-
-	struct InputData* inputData = (struct InputData*)glfwGetWindowUserPointer(window);
-	inputData->mouse.prevCursorPos = inputData->mouse.cursorPos;
 	inputData->mouse.cursorPos = dvec2(xPos, yPos);
-	inputData->mouse.deltaCursorPos = dvec2Sub(inputData->mouse.cursorPos, inputData->mouse.prevCursorPos);
 }
 
