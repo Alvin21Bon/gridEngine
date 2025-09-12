@@ -151,7 +151,7 @@ void gridEngineDestroy(struct GridEngine* engine)
 	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "Terminating engine...\n");
 	gridWindowDestroy(&engine->window);
 	canvasArrayDestroy(&engine->canvasArray);
-	gameObjectArrayDestroy(&engine->gameObjectArray);
+	gameObjectArrayDestroy(&engine->gameObjectArray, engine);
 	terminateCanvasRendering();
 
 	terminateEngine(engine);

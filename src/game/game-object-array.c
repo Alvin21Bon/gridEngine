@@ -39,7 +39,7 @@ bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, c
 	return true;
 }
 
-bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, const char* id)
+bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, const char* id, struct GridEngine* const engine)
 {
 	struct GameObjectArray gameObjectsToRemove = gameObjectArray();
 	int idx = 0;
@@ -62,7 +62,7 @@ bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, 
 	}
 
 	if (gameObjectsToRemove.num == 0) return false;
-	gameObjectArrayDestroy(&gameObjectsToRemove);
+	gameObjectArrayDestroy(&gameObjectsToRemove, engine);
 
 	return true;
 }
@@ -83,12 +83,12 @@ struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const ga
 	return listOfMatchingGameObjects;
 }
 
-void gameObjectArrayDestroy(struct GameObjectArray* const gameObjectArray)
+void gameObjectArrayDestroy(struct GameObjectArray* const gameObjectArray, struct GridEngine* const engine)
 {
 	for (int idx = 0; idx < gameObjectArray->num; idx++)
 	{
 		struct GameObject* gameObject = gameObjectArray->elements[idx];
-		gameObject->destroy(gameObject);
+		gameObject->destroy(gameObject, engine);
 
 		free(gameObject);
 		gameObject = nullptr;

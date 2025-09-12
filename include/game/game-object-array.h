@@ -3,6 +3,7 @@
 #include <stddef.h>
 
 struct GameObject;
+struct GridEngine;
 
 #define GRID_MAX_GAME_OBJECTS_AMT 4096
 struct GameObjectArray {
@@ -20,7 +21,7 @@ bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, c
 
 // @returns {bool} false if id not found
 // NOTE: this destroys the removed game objects
-bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, const char* id);
+bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, const char* id, struct GridEngine* const engine);
 
 // @returns array of game objects that match the ID
 // NOTE: up to the user to check if gameObjectArrat has a num of 0 if id not found
@@ -30,4 +31,4 @@ struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const ga
 // NOTE: calling the update/draw functions of all game objects function will be made for the GameState struct
 
 // NOTE: will always be called on GameObjectArrays full of heap allocated game objects
-void gameObjectArrayDestroy(struct GameObjectArray* const gameObjectArray);
+void gameObjectArrayDestroy(struct GameObjectArray* const gameObjectArray, struct GridEngine* const engine);

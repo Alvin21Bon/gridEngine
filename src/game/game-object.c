@@ -4,7 +4,7 @@
 
 static enum GridEngineStates defaultObjectUpdateFunction(struct GameObject* const object, struct GridEngine* const engine) {return GRID_ENGINE_RUNNING;}
 static void defaultObjectDrawFunction(const struct GameObject* const object, struct CoordinateCanvas* const canvas) {return;}
-static void defaultObjectDestroyFunction(struct GameObject* object) {return;}
+static void defaultObjectDestroyFunction(struct GameObject* object, struct GridEngine* const engine) {return;}
 
 struct GameObject gameObject(const char* id, char* canvasId)
 {
@@ -21,6 +21,6 @@ void gameObjectAttachUpdateFunction(struct GameObject* const object, enum GridEn
 	{object->update = updateFunction;}
 void gameObjectAttachDrawFunction(struct GameObject* const object, void (*drawFunction)(const struct GameObject* const, struct CoordinateCanvas* const))
 	{object->draw = drawFunction;}
-void gameObjectAttachDestroyFunction(struct GameObject* const object, void (*destroyFunction)(struct GameObject*))
+void gameObjectAttachDestroyFunction(struct GameObject* const object, void (*destroyFunction)(struct GameObject*, struct GridEngine* const))
 	{object->destroy = destroyFunction;}
 
