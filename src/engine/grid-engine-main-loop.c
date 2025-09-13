@@ -16,6 +16,9 @@ static void waitOnMaxFPS(double startingTime);
 
 int main()
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "initiating program...\n");
+	initProgram();
+
 	struct GridEngine engine = gridEngine();
 	glfwSetWindowUserPointer(engine.window.windowPointer, &engine.window.input); // WARN: must be done here so this pointer stays valid the entire engine duration
 
@@ -66,4 +69,7 @@ static void waitOnMaxFPS(double startingTime)
 		currentFPS = 1.0 / currentDeltaTime;
 	} while (currentFPS > GRID_MAX_FPS);
 }
+
+#pragma weak initProgram
+void initProgram() { return; }
 
