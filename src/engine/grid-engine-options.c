@@ -19,6 +19,7 @@ uVec2 GRID_WINDOW_SIZE = {.width = 1000, .height = 1000};
 enum LoggingLevels GRID_LOGGING_LEVEL = GRID_LOGGING_WARN;
 bool GRID_LOGGING_DISABLE_FILEPATH_EXISTS_WARNING = false;
 char* GRID_LOGGING_FILEPATH = "";
+bool GRID_LOGGING_ENABLE_FPS = false;
 bool GRID_BUILT_IN_ENABLE_CURSOR_CANVAS_INTERACTIONS = true;
 
 void gridEngineChangeOption(const enum GridEngineOptions option, const void* const optionValue)
@@ -85,6 +86,9 @@ void gridEngineChangeOption(const enum GridEngineOptions option, const void* con
 			}
 
 			GRID_LOGGING_FILEPATH = castedLoggingFilepath;
+			break;
+		case GRID_OPTION_LOGGING_ENABLE_FPS:
+			GRID_LOGGING_ENABLE_FPS = *(bool*)optionValue;
 			break;
 		case GRID_OPTION_BUILT_IN_ENABLE_CURSOR_CANVAS_INTERACTIONS:
 			GRID_BUILT_IN_ENABLE_CURSOR_CANVAS_INTERACTIONS = *(bool*)optionValue;

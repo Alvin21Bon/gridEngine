@@ -48,8 +48,8 @@ enum GridEngineStates enterEngineLoop(struct GridEngine* const engine)
 	while (!glfwWindowShouldClose(engine->window.windowPointer))
 	{
 		GRID_FRAME_COUNTER++;
-		LOG(GRID_LOGGING_FULL, __func__, __LINE__, "FRAME NUM: %lu\n", GRID_FRAME_COUNTER);
-		LOG(GRID_LOGGING_FULL, __func__, __LINE__, "FPS: %lf\n", engine->window.time.FPS);
+		if (GRID_LOGGING_ENABLE_FPS)
+			LOG(GRID_LOGGING_FULL, __func__, __LINE__, "FPS: %lf\n", engine->window.time.FPS);
 
 		engine->state = engineTick(engine);
 		if (engine->state == GRID_ENGINE_ERROR || engine->state == GRID_ENGINE_SUCCESS) return engine->state;

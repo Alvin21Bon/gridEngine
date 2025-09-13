@@ -23,6 +23,8 @@ enum GridEngineOptions {
 	// VALUE TYPE: char*
 	GRID_OPTION_LOGGING_FILEPATH,
 	// VALUE TYPE: bool
+	GRID_OPTION_LOGGING_ENABLE_FPS,
+	// VALUE TYPE: bool
 	GRID_OPTION_BUILT_IN_ENABLE_CURSOR_CANVAS_INTERACTIONS, // TODO: make changing this option work during engine run-time somehow
 };
 
@@ -34,6 +36,7 @@ extern uVec2 GRID_WINDOW_SIZE;
 extern enum LoggingLevels GRID_LOGGING_LEVEL;
 extern bool GRID_LOGGING_DISABLE_FILEPATH_EXISTS_WARNING;
 extern char* GRID_LOGGING_FILEPATH;
+extern bool GRID_LOGGING_ENABLE_FPS;
 extern bool GRID_BUILT_IN_ENABLE_CURSOR_CANVAS_INTERACTIONS;
 
 void gridEngineChangeOption(const enum GridEngineOptions option, const void* const optionValue);
