@@ -161,3 +161,6 @@ void gridEngineDestroy(struct GridEngine* engine)
 	terminateEngine(engine);
 }
 
+#pragma weak terminateEngine
+void terminateEngine(struct GridEngine* engine) { return; }
+
