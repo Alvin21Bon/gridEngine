@@ -33,41 +33,42 @@ void LOG(const enum LoggingLevels logLevel, const char* funcName, const int line
 			break;
 	}
 
-	const bool wasLoggingFilepathOptionSet = strlen(GRID_LOGGING_FILEPATH) != 0;
-	FILE* fp = wasLoggingFilepathOptionSet ? fopen(GRID_LOGGING_FILEPATH, "a") : nullptr;
 	va_list args;
 	va_start(args, format);
+	
+	// NOTE: keep type as int so I can check for encoding error return value negative number
+	const int bufferSizeOfGivenFormattedLog = vsnprintf(NULL, 0, format, args) + 1; // +1 for \0
+	va_end(args); 
+	if (bufferSizeOfGivenFormattedLog <= 0) // also check equal to 0 due to the +1 added onto it
 	{
-		// NOTE: keep type as int so I can check for encoding error return value negative number
-		const int bufferSizeOfGivenFormattedLog = vsnprintf(NULL, 0, format, args) + 1; // +1 for \0
-		if (bufferSizeOfGivenFormattedLog <= 0) // also check equal to 0 due to the +1 added onto it
-		{
-			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "encoding error\n");
-			va_end(args);
-			if (fp != nullptr) fclose(fp);
-			return;
-		}
-		
-		char givenFormattedLog[bufferSizeOfGivenFormattedLog];
-		vsnprintf(givenFormattedLog, bufferSizeOfGivenFormattedLog, format, args); // now stores the supplied log message with formatting
-		
-		const size_t bufferSizeOfFinalOutputLog = bufferSizeOfGivenFormattedLog + MAX_BUFFER_SIZE_OF_LOG_TAG; // final output log is guaranteed to fit in this buffer
-		char finalOutputLog[bufferSizeOfFinalOutputLog];
-		strcpy(finalOutputLog, logTag);
-		strcat(finalOutputLog, givenFormattedLog); // final output log is now done processing
-
-		// now we can output the log message to the console, and, if it exists, to the logging filepath
-		if (logLevel == GRID_LOGGING_ERROR)
-			fprintf(stderr, "%s", finalOutputLog);
-		else
-			printf("%s", finalOutputLog);
-
-		if (fp != nullptr)
-			fprintf(fp, "%s", finalOutputLog);
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "encoding error\n");
+		return;
 	}
 
+	// NOTE: vsnprintf consumes args, thus we must end and start it again
+	va_start(args, format);
+	char givenFormattedLog[bufferSizeOfGivenFormattedLog];
+	vsnprintf(givenFormattedLog, bufferSizeOfGivenFormattedLog, format, args); // now stores the supplied log message with formatting
 	va_end(args);
-	if (fp != nullptr) fclose(fp);
+	
+	const size_t bufferSizeOfFinalOutputLog = bufferSizeOfGivenFormattedLog + MAX_BUFFER_SIZE_OF_LOG_TAG; // final output log is guaranteed to fit in this buffer
+	char finalOutputLog[bufferSizeOfFinalOutputLog];
+	strcpy(finalOutputLog, logTag);
+	strcat(finalOutputLog, givenFormattedLog); // final output log is now done processing
+
+	// now we can output the log message to the console, and, if it exists, to the logging filepath
+	const bool wasLoggingFilepathOptionSet = strlen(GRID_LOGGING_FILEPATH) != 0;
+	FILE* fp = wasLoggingFilepathOptionSet ? fopen(GRID_LOGGING_FILEPATH, "a") : nullptr;
+
+	if (logLevel == GRID_LOGGING_ERROR) fprintf(stderr, "%s", finalOutputLog);
+	else printf("%s", finalOutputLog);
+		
+	if (fp != nullptr)
+	{
+		fprintf(fp, "%s", finalOutputLog);
+		fclose(fp);
+	}
+	
 	return;
 }
 
