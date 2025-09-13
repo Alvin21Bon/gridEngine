@@ -13,6 +13,8 @@ static ShaderProgram constructShaderProgramFromFile(const char* vertexPath, cons
 
 struct ShaderProgramManager shaderProgramManager()
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "creating shader programs...\n");
+
 	// Yep, these shader files im including have been "stringified", so the include statements
 	// basically just paste in a big string literal. pretty nice
 	const char* canvasShaderSource[2] = {
@@ -27,8 +29,22 @@ struct ShaderProgramManager shaderProgramManager()
 	};
 
 	struct ShaderProgramManager shaderProgramManager;
+
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "constructing canvas shader program...\n");
 	shaderProgramManager.canvas = constructShaderProgramFromString(canvasShaderSource[0], canvasShaderSource[1]);
+	if (!shaderProgramManager.canvas)
+	{
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "failed to construct canvas shader program\n");
+		exit(1);
+	}
+
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "constructing border shader program...\n");
 	shaderProgramManager.border = constructShaderProgramFromString(borderShaderSource[0], borderShaderSource[1]);
+	if (!shaderProgramManager.border)
+	{
+		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "failed to construct border shader program\n");
+		exit(1);
+	}
 
 	shaderProgramManager.uniforms.canvasGridUnitCnt = glGetUniformLocation(shaderProgramManager.canvas, "gridUnitCnt");
 	shaderProgramManager.uniforms.borderColor = glGetUniformLocation(shaderProgramManager.border, "borderColor");

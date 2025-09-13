@@ -142,6 +142,7 @@ void canvasClear(struct CoordinateCanvas* const canvas)
 
 void canvasDestroy(struct CoordinateCanvas* canvas)
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "destroying canvas %s...\n", canvas->id);
 	DESTROY_2D_ARRAY((void**)canvas->pixels);
 	canvasDestroyRenderer(canvas);
 }

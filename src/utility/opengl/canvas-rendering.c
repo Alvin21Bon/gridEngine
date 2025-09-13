@@ -50,6 +50,7 @@ void canvasUpdateRenderer(struct CoordinateCanvas* const canvas)
 }
 void canvasDestroyRenderer(struct CoordinateCanvas* const canvas)
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "destroying renderer of canvas %s...\n", canvas->id);
 	glDeleteBuffers(1, &canvas->renderer.VBO);
 	glDeleteVertexArrays(1, &canvas->renderer.VAO);
 }
@@ -91,6 +92,8 @@ void initCanvasRendering()
 	}
 	
 	// load GL before constructing shader program 
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "initating rendering...\n");
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "mounting OpenGL...\n");
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "failed to mount OpenGL with GLAD\n");
@@ -102,6 +105,7 @@ void initCanvasRendering()
 }
 void terminateCanvasRendering()
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "terminating rendering...\n");
 	shaderProgramManagerDestroy(&sg_shaderProgramManager);
 }
 

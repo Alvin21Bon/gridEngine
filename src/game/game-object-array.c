@@ -2,6 +2,7 @@
 
 #include "game/game-object.h"
 #include "utility/memory-util.h"
+#include "utility/logging.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -31,10 +32,12 @@ bool gameObjectArrayAddHeapCopy(struct GameObjectArray* const gameObjectArray, c
 
 	if (!gameObjectArrayAdd(gameObjectArray, gameObjectOnHeap))
 	{
+		LOG(GRID_LOGGING_WARN, __func__, __LINE__, "failed to add object %s, object array reached capacity\n", gameObject->id);
 		free(gameObjectOnHeap);
 		return false;
 	}
 
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "added object %s to object array\n", gameObject->id);
 	gameObject = gameObjectOnHeap;
 	return true;
 }
@@ -49,6 +52,7 @@ bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, 
 		struct GameObject* gameObject = gameObjectArrayRemove->elements[idx];
 		if (strcmp(gameObject->id, id) == 0)
 		{
+			LOG(GRID_LOGGING_FULL, __func__, __LINE__, "removing object %s from object array\n", gameObject->id);
 			gameObjectArrayAdd(&gameObjectsToRemove, gameObject);
 
 			// now that object to remove pointer is saved, it can be overwritten in the original GameObjectArray
@@ -85,9 +89,12 @@ struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const ga
 
 void gameObjectArrayDestroy(struct GameObjectArray* const gameObjectArray, struct GridEngine* const engine)
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "destroying game object array...\n");
 	for (int idx = 0; idx < gameObjectArray->num; idx++)
 	{
 		struct GameObject* gameObject = gameObjectArray->elements[idx];
+		LOG(GRID_LOGGING_FULL, __func__, __LINE__, "destroying object %s...\n", gameObject->id);
+
 		gameObject->destroy(gameObject, engine);
 
 		free(gameObject);

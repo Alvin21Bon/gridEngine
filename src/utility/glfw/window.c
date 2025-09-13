@@ -14,6 +14,7 @@
 #define GRID_GLFW_OPENGL_PROFILE GLFW_OPENGL_CORE_PROFILE
 struct GridWindow gridWindow()
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "initating GLFW...\n");
 	if (!glfwInit())
 	{
 		LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "GLFW failed to init\n");
@@ -21,6 +22,7 @@ struct GridWindow gridWindow()
 	}
 
 	// making the window
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "creating GLFW window...\n");
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GRID_GLFW_CONTEXT_VERSION_MAJOR);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GRID_GLFW_CONTEXT_VERSION_MINOR);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GRID_GLFW_OPENGL_PROFILE);
@@ -34,6 +36,7 @@ struct GridWindow gridWindow()
 	glfwMakeContextCurrent(window);
 
 	// setting the callbacks
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "setting GLFW window callbacks...\n");
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 	glfwSetCursorPosCallback(window, cursorPosCallback);
@@ -54,7 +57,10 @@ void gridWindowUpdate(struct GridWindow* const window)
 	
 	// engine window title option was manually changed via the set option function
 	if (strcmp(glfwGetWindowTitle(window->windowPointer), GRID_WINDOW_TITLE) != 0)
+	{
+		LOG(GRID_LOGGING_FULL, __func__, __LINE__, "window title changed to %s\n", GRID_WINDOW_TITLE);
 		glfwSetWindowTitle(window->windowPointer, GRID_WINDOW_TITLE);
+	}
 
 	// because of the window size callback, this will only run if the engine window size option was manually changed with the option setting function
 	int width, height;
@@ -71,6 +77,8 @@ void windowSizeCallback(GLFWwindow* window, int width, int height)
 
 void gridWindowDestroy(struct GridWindow* window)
 {
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "destroying window...\n");
 	cursorShapeManagerDestroy(&window->cursorShapeManager);
 	glfwTerminate();
 }
+

@@ -34,6 +34,7 @@ struct GridEngine gridEngine()
 
 	gridEngine.state = GRID_ENGINE_RUNNING;
 
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "running user-defined engine initation function...\n");
 	initEngine(&gridEngine); // all user-level procedures
 	
 	injectBuiltIns(&gridEngine); // TODO: fix this location. done here so built in option changes from initEngine() work correctly
@@ -62,10 +63,11 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 			break;
 		case GRID_ENGINE_PAUSED:
 			shouldEnginePause = true;
+			LOG(GRID_LOGGING_FULL, __func__, __LINE__, "engine pause event triggered by pre-tick\n");
 			break;
 
 		case GRID_ENGINE_ERROR:
-			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "pre-update error\n");
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "pre-tick error\n");
 		case GRID_ENGINE_SUCCESS:
 			return returnedEngineState;
 
@@ -87,6 +89,7 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 			case GRID_ENGINE_RUNNING:
 				break;
 			case GRID_ENGINE_PAUSED:
+				LOG(GRID_LOGGING_FULL, __func__, __LINE__, "engine pause event triggered by object %s\n", object->id);
 				shouldEnginePause = true;
 				break;
 
@@ -122,11 +125,12 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 		case GRID_ENGINE_RUNNING:
 			break;
 		case GRID_ENGINE_PAUSED:
+			LOG(GRID_LOGGING_FULL, __func__, __LINE__, "engine pause event triggered by post-tick\n");
 			shouldEnginePause = true;
 			break;
 
 		case GRID_ENGINE_ERROR:
-			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "post-update error\n");
+			LOG(GRID_LOGGING_ERROR, __func__, __LINE__, "post-tick error\n");
 		case GRID_ENGINE_SUCCESS:
 			return returnedEngineState;
 
@@ -158,6 +162,7 @@ void gridEngineDestroy(struct GridEngine* engine)
 	gameObjectArrayDestroy(&engine->gameObjectArray, engine);
 	terminateCanvasRendering();
 
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "running user-defined engine terminate function...\n");
 	terminateEngine(engine);
 }
 

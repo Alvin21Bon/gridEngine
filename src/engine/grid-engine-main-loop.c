@@ -16,12 +16,14 @@ static void waitOnMaxFPS(double startingTime);
 
 int main()
 {
-	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "initiating program...\n");
 	initProgram();
 
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "engine initiating...\n");
 	struct GridEngine engine = gridEngine();
+
 	glfwSetWindowUserPointer(engine.window.windowPointer, &engine.window.input); // WARN: must be done here so this pointer stays valid the entire engine duration
 
+	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "entering engine loop...\n");
 	const enum GridEngineStates endingEngineState = enterEngineLoop(&engine);
 
 	if (endingEngineState == GRID_ENGINE_ERROR)
@@ -46,6 +48,8 @@ enum GridEngineStates enterEngineLoop(struct GridEngine* const engine)
 	while (!glfwWindowShouldClose(engine->window.windowPointer))
 	{
 		GRID_FRAME_COUNTER++;
+		LOG(GRID_LOGGING_FULL, __func__, __LINE__, "FRAME NUM: %lu\n", GRID_FRAME_COUNTER);
+		LOG(GRID_LOGGING_FULL, __func__, __LINE__, "FPS: %lf\n", engine->window.time.FPS);
 
 		engine->state = engineTick(engine);
 		if (engine->state == GRID_ENGINE_ERROR || engine->state == GRID_ENGINE_SUCCESS) return engine->state;
