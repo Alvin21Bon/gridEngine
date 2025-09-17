@@ -49,10 +49,5 @@ void canvasMakeBorderInvisible(struct CoordinateCanvas* const canvas);
 Vec2 canvasGetBorderOrigin(const struct CoordinateCanvas* const canvas);
 Vec2 canvasGetBorderSize(const struct CoordinateCanvas* const canvas);
 
-void canvasFillColor(struct CoordinateCanvas* const canvas, const Color color);
-void canvasRowFillColor(struct CoordinateCanvas* const canvas, const uint rowNum, const Color color);
-void canvasSetPixel(struct CoordinateCanvas* const canvas, const uVec2 pixelCoords, const struct CanvasPixel pixel);
-void canvasClear(struct CoordinateCanvas* const canvas);
-
 void canvasDestroy(struct CoordinateCanvas* canvas);
 
