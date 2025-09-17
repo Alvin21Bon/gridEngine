@@ -17,6 +17,12 @@ static inline float MAP_RANGE(float input, Vec2 originalRange, Vec2 newRange)
 	return (input - originalRange.elements[0]) * ((newRange.elements[1] - newRange.elements[0]) / (originalRange.elements[1] - originalRange.elements[0])) + newRange.elements[0];
 }
 
+// maps an input vector from one grid to another grid
+static inline Vec2 MAP_BOXED_RANGE(Vec2 input, Vec2 originalBotLeft, Vec2 originalTopRight, Vec2 newBotLeft, Vec2 newTopRight)
+{
+	return vec2(MAP_RANGE(input.x, vec2(originalBotLeft.x, originalTopRight.x), vec2(newBotLeft.x, newTopRight.x)), MAP_RANGE(input.y, vec2(originalBotLeft.y, originalTopRight.y), vec2(newBotLeft.y, newTopRight.y)));
+}
+
 static inline bool IS_IN_RANGE(float input, Vec2 range)
 {
 	return range.elements[0] <= input && input <= range.elements[1];
