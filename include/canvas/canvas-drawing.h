@@ -12,3 +12,5 @@ void canvasRowFillColor(struct CoordinateCanvas* const canvas, const uint rowNum
 void canvasSetPixel(struct CoordinateCanvas* const canvas, const uVec2 pixelCoords, const struct CanvasPixel pixel);
 void canvasClear(struct CoordinateCanvas* const canvas);
 
+void canvasDrawLine(struct CoordinateCanvas* const canvas, const Color color, const uVec2 p0, const uVec2 p1);
+
