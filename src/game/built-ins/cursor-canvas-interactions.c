@@ -12,9 +12,9 @@
 #include <sys/types.h>
 #include <lina/lina.h>
 
-struct CursorCanvasInteractions cursorCanvasInteractions()
+struct BuiltInCursorCanvasInteractions builtInCursorCanvasInteractions()
 {
-	struct CursorCanvasInteractions cursorCanvasInteractions;
+	struct BuiltInCursorCanvasInteractions cursorCanvasInteractions;
 	cursorCanvasInteractions.parent = gameObject("built-in-cursor-canvas-interactions", "");
 	cursorCanvasInteractions.interaction.target = NULL;
 	cursorCanvasInteractions.interaction.type = IDLE;
@@ -39,7 +39,7 @@ enum GridEngineStates cursorCanvasInteractionsUpdate(struct GameObject* const ob
 	// 4) if held down, check if this is first frame. If it is, it is time for a STATE CHANGE. update the interaction member 
 	// 5) if not first frame, do not update cursor shape or state at all, just continue performing possible canvas interaction
 	
-	struct CursorCanvasInteractions* interactionsObject = (struct CursorCanvasInteractions*)object;
+	struct BuiltInCursorCanvasInteractions* interactionsObject = (struct BuiltInCursorCanvasInteractions*)object;
 
 	// returns possible interactable canvas under cursor along with possible type of interaction
 	// if interaction exists, interaction is only "locked onto" if the left mouse button is pressed

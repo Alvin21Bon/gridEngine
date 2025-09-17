@@ -3,7 +3,6 @@
 #include "canvas/canvas-array.h"
 #include "game/game-object-array.h"
 #include "game/game-object.h"
-#include "game/built-ins/built-ins.h"
 #include "utility/glfw/window.h"
 #include "utility/logging.h"
 #include "utility/opengl/canvas-rendering.h"
@@ -37,8 +36,6 @@ struct GridEngine gridEngine()
 	LOG(GRID_LOGGING_FULL, __func__, __LINE__, "running user-defined engine initation function...\n");
 	initEngine(&gridEngine); // all user-level procedures
 	
-	injectBuiltIns(&gridEngine); // TODO: fix this location. done here so built in option changes from initEngine() work correctly
-
 	return gridEngine;
 }
 

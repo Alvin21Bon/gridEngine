@@ -20,12 +20,12 @@ struct InteractedCanvas {
 	enum CursorCanvasInteractionTypes type;
 };
 
-struct CursorCanvasInteractions {
+struct BuiltInCursorCanvasInteractions {
 	struct GameObject parent;
 	struct InteractedCanvas interaction;
 };
 
-struct CursorCanvasInteractions cursorCanvasInteractions();
+struct BuiltInCursorCanvasInteractions builtInCursorCanvasInteractions();
 
 struct InteractedCanvas getInteractableCanvasUnderCursor(const struct GridEngine* const engine);
 void updateCursorShape(struct GridEngine* const engine, const struct InteractedCanvas* const interaction);
