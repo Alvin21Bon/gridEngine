@@ -74,6 +74,7 @@ bool gameObjectArrayRemove(struct GameObjectArray* const gameObjectArrayRemove, 
 struct GameObjectArray gameObjectArrayGet(const struct GameObjectArray* const gameObjectArrayToSearch, const char* id)
 {
 	struct GameObjectArray listOfMatchingGameObjects = gameObjectArray();
+	if (!id) return listOfMatchingGameObjects;
 
 	for (int idx = 0; idx < gameObjectArrayToSearch->num; idx++)
 	{

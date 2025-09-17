@@ -75,6 +75,7 @@ bool canvasArrayRemove(struct CanvasArray* const canvasArrayRemove, const char* 
 struct CanvasArray canvasArrayGet(const struct CanvasArray* const canvasArrayToSearch, const char* id)
 {
 	struct CanvasArray listOfMatchingCanvases = canvasArray();
+	if (!id) return listOfMatchingCanvases;
 
 	for (int idx = 0; idx < canvasArrayToSearch->num; idx++)
 	{
