@@ -78,6 +78,7 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 	for (int idx = 0; idx < engine->gameObjectArray.num; idx++)
 	{
 		object = engine->gameObjectArray.elements[idx];
+		if (!object->enabled) continue;
 
 		// object update function
 		returnedEngineState = object->update(object, engine);
@@ -105,6 +106,7 @@ enum GridEngineStates engineTick(struct GridEngine* const engine)
 	for (int idx = 0; idx < engine->gameObjectArray.num; idx++)
 	{
 		object = engine->gameObjectArray.elements[idx];
+		if (!object->enabled) continue;
 
 		// object draw (on canvases) function
 		canvasesToDrawOn = canvasArrayGet(&engine->canvasArray, object->canvasId);

@@ -21,6 +21,7 @@ enum GridEngineStates;
 struct GameObject {
 	const char* id;
 	char* canvasId; // stores ID since storing a pointer to the canvas could be dangerous if canvas is already removed from the renderingArray
+	bool enabled; // if disabled, will not do anything during engine tick
 	enum GridEngineStates (*update)(struct GameObject* const, struct GridEngine* const);
 	void (*draw)(const struct GameObject* const, struct CoordinateCanvas* const);
 	void (*destroy)(struct GameObject*, struct GridEngine* const);

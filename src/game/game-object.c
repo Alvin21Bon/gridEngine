@@ -11,6 +11,7 @@ struct GameObject gameObject(const char* id, char* canvasId)
 	struct GameObject gameObject;
 	gameObject.id = id;
 	gameObject.canvasId = canvasId;
+	gameObject.enabled = true;
 	gameObject.update = defaultObjectUpdateFunction;
 	gameObject.draw = defaultObjectDrawFunction;
 	gameObject.destroy = defaultObjectDestroyFunction;
