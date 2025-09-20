@@ -64,6 +64,9 @@ enum GridEngineStates cursorDrawingUpdate(struct GameObject* const object, struc
 
 	Vec2 mappedCursorPos = MAP_BOXED_RANGE(castedCursorPos, canvasWindowBottomLeft, canvasWindowTopRight, canvasCoordsBottomLeft, canvasCoordsTopRight);
 	Vec2 mappedPrevCursorPos = MAP_BOXED_RANGE(castedPrevCursorPos, canvasWindowBottomLeft, canvasWindowTopRight, canvasCoordsBottomLeft, canvasCoordsTopRight);
+	// TODO: BAD CASTING SIDE EFFECT. MAKE SURE TO GET YOUR TYPES IN ORDER. MUST CHECK FOR UINT UNDERFLOW AS OF RIGHT NOW
+	mappedPrevCursorPos.x = MAX(mappedPrevCursorPos.x, 0);
+	mappedPrevCursorPos.y = MAX(mappedPrevCursorPos.y, 0);
 
 	cursorDrawingObject->cursorPosMappedToCanvas = uvec2(mappedCursorPos.x, mappedCursorPos.y);
 	cursorDrawingObject->prevCursorPosMappedToCanvas = uvec2(mappedPrevCursorPos.x, mappedPrevCursorPos.y);
